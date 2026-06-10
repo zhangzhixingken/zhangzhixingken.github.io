@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Untitled, a staged photography project by Ken Zhang." />
+  <title>Untitled — Ken Zhang</title>
+  <link rel="stylesheet" href="../assets/css/photography-viewer.css?v=20260610-unified-cursor-scroll" />
+  <link rel="stylesheet" href="../assets/css/site-shell.css?v=20260610-pinch-drag-scroll" />
+</head>
+<body data-no-gesture="true">
+  <nav class="site-nav" aria-label="Main navigation">
+    <a class="logo" href="../index.html">Ken Zhang</a>
+    <ul class="nav-links">
+      <li><a href="../arts.html">Arts</a></li>
+      <li><a href="../careers.html">Career</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <a class="back-link" href="../arts.html">Back to Arts</a>
+  </nav>
+
+  <main class="photo-viewer">
+    <div class="photo-track" id="photoTrack" aria-live="polite"></div>
+  </main>
+
+  <div class="viewer-controls" aria-label="Photography navigation">
+    <button class="prev-button" id="prevPhoto" type="button" aria-label="Previous photograph">←</button>
+    <div class="viewer-status" id="viewerStatus"></div>
+    <button class="next-button" id="nextPhoto" type="button" aria-label="Next photograph">→</button>
+  </div>
+  <div class="viewer-progress" aria-hidden="true"><span id="viewerProgress"></span></div>
+
+  <script src="../assets/js/untitled-data.js"></script>
+  <script src="../assets/js/photography-viewer.js?v=20260610-unified-cursor-scroll"></script>
+  <script src="../assets/js/site-shell.js?v=20260610-pinch-drag-scroll"></script>
+</body>
+</html>

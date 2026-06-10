@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Ken Zhang</title>
+  <style>
+    :root {
+      --bg: rgb(238, 234, 233);
+      --accent: #37332e;
+      --text: rgb(22, 20, 19);
+      --muted: rgba(22, 20, 19, 0.58);
+      --line: rgba(22, 20, 19, 0.16);
+      --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --nav-h: 80px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-weight: 500;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    .site-nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: var(--nav-h);
+      z-index: 100;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 140px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(238, 234, 233, 0.82);
+      border-bottom: 0;
+      transition: border-color 300ms ease;
+    }
+
+    .site-nav.scrolled { border-bottom-color: transparent; }
+
+    .logo {
+      justify-self: start;
+      font-size: 13px;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .nav-links, .nav-docs {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-links { justify-self: center; gap: 32px; }
+    .nav-docs { justify-self: end; gap: 14px; }
+
+    .nav-links a,
+    .nav-docs a,
+    .nav-separator {
+      font-size: 11px;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 180ms ease;
+      font-weight: 500;
+    }
+
+    .nav-docs a { color: var(--text); }
+    .nav-separator { color: rgba(22, 20, 19, 0.28); user-select: none; }
+    .nav-links a:hover, .nav-docs a:hover { color: var(--accent); }
+    .nav-links a.is-active { color: var(--text); }
+
+    /* ── Layout ── */
+    .about-wrap {
+      padding-top: calc(var(--nav-h) + 100px);
+      padding-bottom: 120px;
+      padding-left: 140px;
+      padding-right: 140px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 80px;
+      align-items: start;
+    }
+
+    /* ── Left: image portrait ── */
+    .about-portrait {
+      position: sticky;
+      top: calc(var(--nav-h) + 48px);
+      width: min(100%, 430px);
+      justify-self: start;
+    }
+
+    .portrait-frame {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: rgba(22, 20, 19, 0.055);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .portrait-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .portrait-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portrait-placeholder-line {
+      width: 40px;
+      height: 1px;
+      background: rgba(22, 20, 19, 0.18);
+    }
+
+    .portrait-caption {
+      margin-top: 14px;
+      font-size: 10px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── Right: bio text ── */
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .about-name {
+      font-size: clamp(36px, 5vw, 72px);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--accent);
+      margin: 0 0 40px;
+    }
+
+    .about-cn-name {
+      display: block;
+      margin-top: 18px;
+      font-size: clamp(22px, 2.4vw, 34px);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+
+
+
+    .name-audio-btn {
+      display: inline-grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      margin-left: 12px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      vertical-align: middle;
+      transform: translateY(-3px);
+    }
+
+    .name-audio-btn svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .name-audio-btn:hover { color: var(--text); }
+
+    .about-role {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .about-bio {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text);
+      margin: 0 0 48px;
+      max-width: 540px;
+    }
+
+    .about-bio p { margin: 0 0 1.4em; }
+    .about-bio p:last-child { margin-bottom: 0; }
+
+    /* ── Metadata list ── */
+    .about-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 0;
+      padding-top: 8px;
+      margin-bottom: 48px;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 0;
+      font-size: 12px;
+    }
+
+    .meta-key {
+      font-size: 10px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 2px;
+    }
+
+    .meta-val {
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .timeline-entry {
+      margin-bottom: 18px;
+    }
+
+    .timeline-entry:last-child { margin-bottom: 0; }
+
+    .timeline-title {
+      display: block;
+      font-size: 13px;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .timeline-date {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .timeline-note {
+      display: block;
+      margin-top: 5px;
+      color: var(--text);
+    }
+
+    .timeline-list {
+      margin: 6px 0 0;
+      padding-left: 1.1em;
+    }
+
+    .timeline-list li {
+      margin: 4px 0;
+    }
+
+    .meta-val a {
+      border-bottom: 0;
+      padding-bottom: 1px;
+      transition: color 160ms ease, border-color 160ms ease;
+    }
+
+    .meta-val a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── Selected works link ── */
+    .about-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .about-link-btn {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 10px 18px;
+      transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .about-link-btn:hover {
+      color: var(--bg);
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* ── Statement section ── */
+    .statement-section {
+      padding: 80px 140px 100px;
+      border-top: 0;
+    }
+
+    .statement-kicker {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .statement-text {
+      font-size: clamp(18px, 2.4vw, 28px);
+      line-height: 1.55;
+      color: var(--text);
+      max-width: 800px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    /* ── Entrance ── */
+    .about-wrap,
+    .statement-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 650ms ease, transform 650ms ease;
+    }
+
+    .about-wrap.in-view,
+    .statement-section.in-view { opacity: 1; transform: translateY(0); }
+
+    /* ── Mobile ── */
+    @media (max-width: 840px) {
+      :root { --nav-h: 52px; }
+
+      .site-nav { padding: 0 20px; grid-template-columns: 1fr auto; }
+      .nav-links { display: none; }
+
+      .about-wrap {
+        padding: calc(var(--nav-h) + 48px) 24px 80px;
+        grid-template-columns: 1fr;
+        gap: 48px 0;
+      }
+
+      .about-portrait { position: static; width: min(82vw, 360px); }
+      .portrait-frame { aspect-ratio: 3/4; }
+
+      .statement-section { padding: 64px 24px 80px; }
+    }
+  
+
+    /* ── Index-consistent active nav + mobile dropdown ── */
+    .nav-links a.is-active {
+      color: var(--text);
+      position: relative;
+    }
+
+    .nav-links a.is-active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -7px;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .mobile-nav-toggle,
+    .mobile-nav-dropdown {
+      display: none;
+    }
+
+    .mobile-nav-toggle {
+      position: relative;
+      justify-self: end;
+      width: 32px;
+      height: 24px;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      z-index: 130001;
+    }
+
+    .mobile-nav-toggle span {
+      position: absolute;
+      left: 2px;
+      right: 2px;
+      height: 1px;
+      background: var(--accent);
+      transform-origin: center;
+      transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), top 220ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease;
+    }
+
+    .mobile-nav-toggle span:first-child { top: 8px; }
+    .mobile-nav-toggle span:last-child { top: 16px; }
+    body.mobile-nav-open .mobile-nav-toggle span:first-child { top: 12px; transform: rotate(30deg); }
+    body.mobile-nav-open .mobile-nav-toggle span:last-child { top: 12px; transform: rotate(-30deg); }
+
+    .mobile-nav-dropdown {
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      z-index: 129999;
+      padding: 20px 20px 24px;
+      background: rgba(238, 234, 233, 0.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition: opacity 220ms ease, transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.mobile-nav-open .mobile-nav-dropdown {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .mobile-nav-dropdown .mobile-main,
+    .mobile-nav-dropdown .mobile-docs {
+      display: grid;
+      gap: 13px;
+    }
+
+    .mobile-nav-dropdown .mobile-main a,
+    .mobile-nav-dropdown .mobile-docs a {
+      display: block;
+      color: var(--accent);
+      font-size: 21px;
+      line-height: 1.08;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      padding: 2px 0;
+    }
+
+    .mobile-nav-dropdown .mobile-docs {
+      margin-top: 22px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(22, 20, 19, 0.12);
+    }
+
+    .mobile-nav-dropdown .mobile-docs a {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 840px) {
+      .site-nav {
+        grid-template-columns: 1fr auto !important;
+        padding: 0 20px !important;
+      }
+
+      .site-nav > .nav-links,
+      .site-nav > .nav-docs {
+        display: none !important;
+      }
+
+      .mobile-nav-toggle,
+      .mobile-nav-dropdown {
+        display: block;
+      }
+    }
+
+    /* ── Gesture Mode controls, shared with index ── */
+    .gesture-panel {
+      position: fixed;
+      right: 28px;
+      bottom: 27px;
+      z-index: 120000;
+      width: 196px;
+      color: var(--text);
+      font-family: var(--font);
+      pointer-events: auto;
+      user-select: none;
+    }
+
+    .gesture-shell {
+      border: 1px solid rgba(22, 20, 19, 0.12);
+      background: rgba(238, 234, 233, 0.84);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 16px 48px rgba(22, 20, 19, 0.08);
+      overflow: hidden;
+      border-radius: 22px;
+    }
+
+    .gesture-topbar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 10px 0 19px;
+    }
+
+    .gesture-title { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .gesture-kicker { font-size: 8.5px; line-height: 1; letter-spacing: 0.11em; text-transform: uppercase; color: var(--accent); }
+    .gesture-status { display: block; font-size: 8px; line-height: 1; letter-spacing: 0.02em; color: var(--muted); }
+
+    .gesture-switch { position: relative; width: 44px; height: 26px; flex: 0 0 auto; }
+    .gesture-switch input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .gesture-slider { position: absolute; inset: 0; border-radius: 999px; background: rgba(22, 20, 19, 0.16); transition: background 220ms ease; }
+    .gesture-slider::before { content: ""; position: absolute; width: 22px; height: 22px; left: 2px; top: 2px; border-radius: 50%; background: rgb(248, 245, 244); box-shadow: 0 2px 8px rgba(22, 20, 19, 0.18); transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .gesture-switch input:checked + .gesture-slider { background: var(--accent); }
+    .gesture-switch input:checked + .gesture-slider::before { transform: translateX(18px); }
+
+    .gesture-preview-wrap { padding: 0 8px 8px; transition: max-height 260ms ease, opacity 220ms ease, padding 260ms ease; max-height: 190px; opacity: 1; }
+    .gesture-preview { position: relative; height: 126px; overflow: hidden; border-radius: 16px; background: rgba(22, 20, 19, 0.08); border: 1px solid rgba(22, 20, 19, 0.09); }
+    .gesture-preview video, .gesture-preview canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); image-rendering: auto; }
+    .gesture-preview video { filter: saturate(0.82) contrast(0.96); }
+    .gesture-preview canvas { z-index: 2; pointer-events: none; }
+
+    .gesture-collapse { position: absolute; top: 7px; right: 7px; z-index: 4; width: 25px; height: 25px; border: 1px solid rgba(248, 245, 244, 0.50); border-radius: 999px; color: rgba(248, 245, 244, 0.88); background: rgba(22, 20, 19, 0.20); font-size: 15px; line-height: 0; cursor: pointer; display: grid; place-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transform: translateY(-1px); }
+    .gesture-panel.is-error .gesture-shell { border-color: rgba(22, 20, 19, 0.28); }
+    .gesture-panel.is-collapsed .gesture-preview-wrap { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; overflow: hidden; }
+    .gesture-panel.is-running.is-collapsed .gesture-collapse-open { display: inline-grid; }
+    .gesture-panel:not(.is-running) .gesture-preview-wrap { max-height: 0 !important; opacity: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; overflow: hidden !important; }
+    .gesture-panel:not(.is-running) .gesture-collapse-open { display: none !important; }
+    .gesture-collapse-open { display: none; width: 25px; height: 25px; border: 1px solid rgba(22, 20, 19, 0.10); border-radius: 999px; background: rgba(238, 234, 233, 0.78); color: var(--muted); cursor: pointer; place-items: center; font-size: 14px; flex: 0 0 auto; }
+
+    .gesture-cursor { position: fixed; left: 0; top: 0; width: 24px; height: 24px; z-index: 2147483647 !important; pointer-events: none; opacity: 0; transform: translate3d(-100px, -100px, 0) translate(-50%, -50%); transition: opacity 160ms ease, width 120ms ease, height 120ms ease, border-color 120ms ease, background 120ms ease; border-radius: 999px; border: 1px solid var(--accent); background: rgba(199, 69, 69, 0.10); box-shadow: 0 0 0 5px rgba(199, 69, 69, 0.055); }
+    .gesture-cursor.is-visible { opacity: 1; }
+    .gesture-cursor.is-pinching { width: 16px; height: 16px; background: var(--accent); box-shadow: 0 0 0 9px rgba(199, 69, 69, 0.08); }
+    .gesture-cursor.is-scrolling { width: 30px; height: 30px; border-color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.20); box-shadow: 0 0 0 8px rgba(255,255,255,0.08); }
+    body.gesture-active a, body.gesture-active button, body.gesture-active label, body.gesture-active input { cursor: pointer !important; }
+
+    .site-nav .logo, .site-nav .nav-links a, .site-nav .nav-docs a { display: inline-block; transform-origin: center; transition: transform 160ms ease, color 160ms ease, opacity 160ms ease; will-change: transform; }
+    .site-nav .logo.is-gesture-near, .site-nav .nav-links a.is-gesture-near, .site-nav .nav-docs a.is-gesture-near { transform: scale(1.45); color: var(--accent); opacity: 1; position: relative; z-index: 5; }
+
+    .gesture-scroll-zone { position: fixed; left: 50%; z-index: 119998; width: 104px; height: 58px; display: grid; place-items: center; border: 1px solid rgba(22, 20, 19, 0.045); background: rgba(238, 234, 233, 0.72); color: var(--accent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 999px; pointer-events: none; opacity: 0; transform: translateX(-50%) scale(0.96); transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease; box-shadow: 0 12px 38px rgba(22, 20, 19, 0.055); }
+    .gesture-scroll-zone-top { top: calc(var(--nav-h, 64px) + 16px); }
+    .gesture-scroll-zone-bottom { bottom: 26px; }
+    body.gesture-active .gesture-scroll-zone { opacity: 0.42; }
+    body.gesture-active .gesture-scroll-zone.is-gesture-hover { opacity: 1; transform: translateX(-50%) scale(1.08); border-color: rgba(22, 20, 19, 0.10); }
+
+    @media (max-width: 840px) {
+      .gesture-panel { right: 14px; bottom: 14px; width: min(232px, calc(100vw - 28px)); }
+    }
+
+  
+
+    /* ── Unified mobile dropdown nav: match index exactly ───────────── */
+    @media (max-width: 840px) and (orientation: portrait) {
+      :root {
+        --nav-h: 52px;
+      }
+
+      .site-nav {
+        height: var(--nav-h) !important;
+        display: flex !important;
+        grid-template-columns: none !important;
+        grid-template-areas: none !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 16px !important;
+        overflow: visible !important;
+        z-index: 160000 !important;
+        white-space: nowrap !important;
+      }
+
+      .logo {
+        flex: 0 0 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        font-size: 11px !important;
+        letter-spacing: -0.03em !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+      }
+
+      .site-nav > .nav-links,
+      .site-nav > .nav-docs {
+        display: none !important;
+      }
+
+      .mobile-nav-toggle {
+        width: 34px !important;
+        height: 34px !important;
+        border: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: grid !important;
+        place-items: center !important;
+        background: transparent !important;
+        color: var(--accent) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        justify-self: auto !important;
+        z-index: 160001 !important;
+      }
+
+      .mobile-nav-toggle span {
+        position: absolute !important;
+        width: 17px !important;
+        height: 1px !important;
+        background: var(--accent) !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), top 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease !important;
+      }
+
+      .mobile-nav-toggle span:first-child {
+        top: 13px !important;
+      }
+
+      .mobile-nav-toggle span:last-child {
+        top: 20px !important;
+      }
+
+      body.mobile-nav-open .mobile-nav-toggle span:first-child {
+        top: 17px !important;
+        transform: translateX(-50%) rotate(45deg) !important;
+      }
+
+      body.mobile-nav-open .mobile-nav-toggle span:last-child {
+        top: 17px !important;
+        transform: translateX(-50%) rotate(-45deg) !important;
+      }
+
+      .mobile-nav-dropdown {
+        position: fixed !important;
+        top: var(--nav-h) !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 159999 !important;
+        display: block !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transform: translateY(-10px) !important;
+        padding: 0 18px !important;
+        background: rgba(238, 234, 233, 0.96) !important;
+        border-bottom: 0 !important;
+        backdrop-filter: blur(18px) !important;
+        -webkit-backdrop-filter: blur(18px) !important;
+        transition: max-height 420ms cubic-bezier(0.16, 1, 0.3, 1), opacity 220ms ease, transform 420ms cubic-bezier(0.16, 1, 0.3, 1), padding 420ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+
+      body.mobile-nav-open .mobile-nav-dropdown {
+        max-height: calc(100svh - var(--nav-h)) !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transform: translateY(0) !important;
+        padding: 18px 18px 22px !important;
+      }
+
+      .mobile-nav-dropdown .mobile-main,
+      .mobile-nav-dropdown .mobile-docs {
+        display: block !important;
+      }
+
+      .mobile-nav-dropdown .mobile-main a {
+        display: block !important;
+        width: 100% !important;
+        padding: 8px 0 !important;
+        color: var(--accent) !important;
+        font-family: var(--font) !important;
+        font-size: clamp(30px, 10.4vw, 46px) !important;
+        line-height: 0.98 !important;
+        letter-spacing: -0.075em !important;
+        text-transform: uppercase !important;
+        font-weight: 500 !important;
+      }
+
+      .mobile-nav-dropdown .mobile-docs {
+        margin-top: 16px !important;
+        padding-top: 14px !important;
+        border-top: 1px solid rgba(22, 20, 19, 0.10) !important;
+        display: flex !important;
+        gap: 18px !important;
+      }
+
+      .mobile-nav-dropdown .mobile-docs a {
+        display: block !important;
+        width: auto !important;
+        padding: 8px 0 !important;
+        color: var(--accent) !important;
+        font-family: var(--font) !important;
+        font-size: 14px !important;
+        line-height: 1 !important;
+        letter-spacing: -0.025em !important;
+        text-transform: uppercase !important;
+        font-weight: 500 !important;
+      }
+    }
+
+</style>
+  <link rel="stylesheet" href="assets/css/site-shell.css?v=20260610-pinch-drag-scroll" />
+</head>
+<body>
+
+  <!-- Gesture Mode demo UI -->
+  <div class="gesture-cursor" id="gestureCursor" aria-hidden="true"></div>
+  <aside class="gesture-panel is-collapsed" id="gesturePanel" aria-label="Gesture control panel">
+    <div class="gesture-shell">
+      <div class="gesture-topbar">
+        <div class="gesture-title">
+          <span class="gesture-kicker">Gesture Mode</span>
+          <span class="gesture-status" id="gestureStatus">Off</span>
+        </div>
+        <button class="gesture-collapse-open" id="gestureOpenPreview" type="button" aria-label="Open camera preview"><span>⌄</span></button>
+        <label class="gesture-switch" aria-label="Enable gesture mode">
+          <input type="checkbox" id="gestureToggle" />
+          <span class="gesture-slider"></span>
+        </label>
+      </div>
+      <div class="gesture-preview-wrap" id="gesturePreviewWrap">
+        <div class="gesture-preview">
+          <video id="gestureVideo" playsinline muted></video>
+          <canvas id="gestureCanvas"></canvas>
+          <button class="gesture-collapse" id="gestureCollapsePreview" type="button" aria-label="Collapse camera preview"><span>⌄</span></button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <nav class="site-nav" aria-label="Main navigation">
+    <a class="logo" href="index.html">Ken Zhang</a>
+    <ul class="nav-links" aria-label="Site sections">
+      <li><a href="arts.html">Arts</a></li>
+      <li><a href="careers.html">Career</a></li>
+      <li><a href="about.html" class="is-active">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-docs" aria-label="Documents">
+      <a href="assets/docs/Ken_Zhang_Resume.pdf" download="Ken_Zhang_Resume.pdf" title="Download resumé PDF" data-help="Download Ken Zhang’s resumé PDF.">Resumé</a>
+      <span class="nav-separator" aria-hidden="true">｜</span>
+      <a href="assets/docs/Ken_Zhang_Resume.pdf" download="Ken_Zhang_Resume.pdf" title="Download CV PDF" data-help="Download Ken Zhang’s CV / resumé PDF.">CV</a>
+    </div>
+  </nav>
+
+  <div class="about-wrap" id="aboutWrap">
+
+    <!-- Portrait -->
+    <div class="about-portrait">
+      <div class="portrait-frame">
+        <img src="assets/images/about/portrait.webp" alt="Ken Zhixing Zhang" />
+      </div>
+      <p class="portrait-caption">Ken Zhixing Zhang</p>
+    </div>
+
+    <!-- Bio -->
+    <div class="about-content">
+      <h1 class="about-name">Ken<br>Zhang<span class="about-cn-name">张知行<button class="name-audio-btn" id="nameAudioBtn" type="button" aria-label="Play pronunciation of 张知行"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"></path><path d="M16 8.5a4 4 0 0 1 0 7"></path><path d="M18.5 6a7 7 0 0 1 0 12"></path></svg></button></span></h1>
+      <p class="about-role">Interdisciplinary Artist · Visual Designer</p>
+
+      <div class="about-bio">
+        <p>Ken Zhixing Zhang（张知行）is an interdisciplinary artist whose practice spans interactive installation, moving image, photography, and visual design. His work centers on language, translation, and cultural transmission — examining how meaning mutates across systems.</p>
+        <p>Formed through movement across China, Australia, and the United States, his practice is shaped by perpetual translation. He approaches art as a social experiment, with growing interest in artificial intelligence and large language models as artistic material.</p>
+      </div>
+
+      <div class="about-meta">
+        <div class="meta-row">
+          <span class="meta-key">Base</span>
+          <span class="meta-val">Shenzhen, Shanghai, New York</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">Contact</span>
+          <span class="meta-val"><a href="mailto:zz4651@nyu.edu">zz4651@nyu.edu</a></span>
+        </div>
+      </div>
+
+      <div class="about-links">
+        <a class="about-link-btn" href="arts.html">View Arts</a>
+        <a class="about-link-btn" href="careers.html">View Career</a>
+        <a class="about-link-btn" href="contact.html">Contact</a>
+      </div>
+    </div>
+
+  </div>
+
+  <section class="statement-section" id="statementSection">
+    <p class="statement-kicker">Artist Statement</p>
+    <p class="statement-text">
+      My practice begins with a fundamental observation: no signal passes through a medium unchanged. Language, when translated, does not merely shift between systems — it mutates, accumulates, and reveals the gaps between cultures. I am interested in those gaps as material. The untranslatable is not a failure of communication; it is the site where cultural specificity becomes visible.
+    </p>
+  </section>
+
+<script>
+  (() => {
+    const button = document.getElementById("nameAudioBtn");
+    if (!button || !("speechSynthesis" in window)) return;
+    button.addEventListener("click", () => {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance("张知行");
+      utterance.lang = "zh-CN";
+      utterance.rate = 0.72;
+      utterance.pitch = 1;
+      window.speechSynthesis.speak(utterance);
+    });
+  })();
+</script>
+<script>
+    // Nav scroll shadow
+    const nav = document.querySelector(".site-nav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 10);
+    }, { passive: true });
+
+    // Entrance animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05 });
+
+    [document.getElementById("aboutWrap"), document.getElementById("statementSection")].forEach(el => {
+      if (el) observer.observe(el);
+    });
+  </script>
+
+<script>
+  (() => {
+    function setupMobileNav() {
+      document.querySelectorAll(".site-nav").forEach((nav) => {
+        if (nav.dataset.mobileReady === "true") return;
+        nav.dataset.mobileReady = "true";
+
+        const toggle = document.createElement("button");
+        toggle.className = "mobile-nav-toggle";
+        toggle.type = "button";
+        toggle.setAttribute("aria-label", "Open menu");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.innerHTML = "<span></span><span></span>";
+        nav.appendChild(toggle);
+
+        const dropdown = document.createElement("div");
+        dropdown.className = "mobile-nav-dropdown";
+        dropdown.setAttribute("aria-hidden", "true");
+
+        const main = document.createElement("div");
+        main.className = "mobile-main";
+        nav.querySelectorAll(".nav-links a").forEach((link) => {
+          const clone = link.cloneNode(true);
+          clone.removeAttribute("data-filter");
+          main.appendChild(clone);
+        });
+
+        const docs = document.createElement("div");
+        docs.className = "mobile-docs";
+        nav.querySelectorAll(".nav-docs a").forEach((link) => {
+          const clone = link.cloneNode(true);
+          clone.removeAttribute("data-help");
+          docs.appendChild(clone);
+        });
+
+        dropdown.append(main, docs);
+        nav.insertAdjacentElement("afterend", dropdown);
+
+        function setOpen(open) {
+          document.body.classList.toggle("mobile-nav-open", open);
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+          toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+          dropdown.setAttribute("aria-hidden", open ? "false" : "true");
+        }
+
+        toggle.addEventListener("click", () => setOpen(!document.body.classList.contains("mobile-nav-open")));
+        dropdown.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setOpen(false)));
+        document.addEventListener("keydown", (event) => { if (event.key === "Escape") setOpen(false); });
+      });
+    }
+
+    function gestureInsidePanel(element) {
+      return Boolean(element && element.closest && element.closest(".gesture-panel"));
+    }
+
+    function gestureClickable(element) {
+      if (!element || !element.closest) return null;
+      return element.closest("a, button, input, label, [role='button']");
+    }
+
+    let gestureDownTarget = null;
+    let gestureLast = { x: 0, y: 0 };
+    let gestureMoved = 0;
+
+    window.portfolioGestureBridge = window.portfolioGestureBridge || {
+      move(x, y) {
+        if (!gestureDownTarget) return;
+        gestureMoved += Math.abs(x - gestureLast.x) + Math.abs(y - gestureLast.y);
+        gestureLast = { x, y };
+      },
+      down(x, y) {
+        const element = document.elementFromPoint(x, y);
+        if (gestureInsidePanel(element)) return;
+        gestureDownTarget = element;
+        gestureLast = { x, y };
+        gestureMoved = 0;
+      },
+      up(x, y) {
+        const releaseTarget = document.elementFromPoint(x, y);
+        const target = gestureClickable(releaseTarget) || gestureClickable(gestureDownTarget);
+        if (gestureMoved < 20 && target && !gestureInsidePanel(target)) target.click();
+        gestureDownTarget = null;
+      },
+      scrollByDelta(deltaY) {
+        window.scrollBy({ top: deltaY, left: 0, behavior: "auto" });
+      }
+    };
+
+    setupMobileNav();
+  })();
+</script>
+
+<script src="assets/js/gesture-mode.js?v=20260610-safari-camera"></script>
+<script src="assets/js/site-shell.js?v=20260610-pinch-drag-scroll"></script>
+</body>
+</html>

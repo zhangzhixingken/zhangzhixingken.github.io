@@ -1,0 +1,3183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ken Zhang — Artist & Visual Designer</title>
+  <style>
+    :root {
+      --bg: rgb(238, 234, 233);
+      /*--bg: rgb(250, 249, 246);*/
+      --accent: #37332e;
+      /*--accent: rgb(199, 69, 69);*/
+      --text: rgb(22, 20, 19);
+      --muted: rgba(22, 20, 19, 0.58);
+      --line: rgba(22, 20, 19, 0.16);
+      --panel: rgba(238, 234, 233, 0.70);
+      --font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --nav-h: 80px;
+      --card-w: 230px;
+      --card-h: 129px;
+      --radius: 820px;
+      --back-face-transform: rotateY(180deg);
+      --center-opacity: 0.5;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; background: var(--bg); }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-weight: 500;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    body:not(.is-ready) .hero-center-word { opacity: 0; }
+    body:not(.is-ready) .orbit-scene { opacity: 0; transform: translateY(8px); }
+    body.is-ready .orbit-scene { opacity: 1; transform: translateY(0); }
+
+    .site-nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: var(--nav-h);
+      z-index: 100;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 140px;
+      background: var(--bg);
+    }
+
+    .logo {
+      justify-self: start;
+      font-size: 13px;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .nav-links,
+    .nav-docs {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-links {
+      justify-self: center;
+      gap: 32px;
+    }
+
+    .nav-docs {
+      justify-self: end;
+      gap: 14px;
+    }
+
+    .nav-links a,
+    .nav-docs a,
+    .nav-separator {
+      font-size: 11px;
+      letter-spacing: -0em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 180ms ease;
+      font-weight: 500;
+    }
+
+    .nav-docs a {
+      color: var(--text);
+    }
+
+    .nav-separator {
+      color: rgba(22, 20, 19, 0.28);
+      user-select: none;
+    }
+
+    .nav-links a:hover,
+    .nav-docs a:hover { color: var(--accent); }
+
+    .nav-docs a { position: relative; }
+    .nav-docs a::after {
+      content: attr(data-help);
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: max-content;
+      max-width: 180px;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid rgba(22, 20, 19, 0.10);
+      padding: 6px 7px;
+      font-size: 9px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-3px);
+      transition: opacity 160ms ease, transform 160ms ease;
+      white-space: normal;
+    }
+
+    .nav-docs a:hover::after,
+    .nav-docs a:focus-visible::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding-top: var(--nav-h);
+      overflow: hidden;
+    }
+
+    .hero-center-word {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      color: var(--accent);
+      font-size: clamp(56px, 4vw, 230px);
+      line-height: 0.82;
+      letter-spacing: -0.075em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: var(--center-opacity);
+      pointer-events: none;
+      user-select: none;
+      mix-blend-mode: multiply;
+      transition: opacity 800ms ease;
+    }
+
+    /* The scene controls perspective. Width/height are updated by JS on resize. */
+    .orbit-scene {
+      position: relative;
+      z-index: 4;
+      width: 100vw;
+      height: 72vh;
+      perspective: 980px;
+      perspective-origin: 50% 42%;
+      cursor: grab;
+      touch-action: none;
+      transition: opacity 620ms ease, transform 620ms ease;
+    }
+
+    .orbit-scene:active { cursor: grabbing; }
+
+    /* The orbit rotates around Y in landscape and around X in portrait. */
+    .orbit {
+      position: absolute;
+      left: 50%;
+      top: 47%;
+      width: 0;
+      height: 0;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .orbit-card {
+      position: absolute;
+      left: calc(var(--card-w) / -2);
+      top: calc(var(--card-h) / -2);
+      width: var(--card-w);
+      height: var(--card-h);
+      transform-style: preserve-3d;
+      outline: none;
+      opacity: var(--card-opacity, 1);
+      transition: opacity 180ms ease, filter 180ms ease;
+    }
+
+    /* Two-sided card: the back face keeps the image visible when the orbit rotates behind. */
+    .card-shell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transform: scale(var(--depth-scale, 1));
+      transition: transform 180ms ease;
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: var(--panel);
+      border: 0px solid var(--line);
+      border-radius: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transition: border-color 180ms ease, background 180ms ease;
+    }
+
+    .card-back {
+      transform: var(--back-face-transform);
+    }
+
+    .orbit-card:hover .card-shell,
+    .orbit-card:focus-visible .card-shell {
+      transform: scale(calc(var(--depth-scale, 1) * 1.055));
+    }
+
+    .orbit-card:hover .card-face,
+    .orbit-card:focus-visible .card-face {
+      border-color: rgba(22, 20, 19, 0.10);
+      color: var(--accent);
+      background: rgba(238, 234, 233, 0.94);
+    }
+
+    .image-slot {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: rgba(22, 20, 19, 0.045);
+      overflow: hidden;
+    }
+
+    .image-media {
+      position: absolute;
+      inset: 0;
+      transition: opacity 180ms ease;
+      opacity: 0.97;
+    }
+
+    .image-slot img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      opacity: 0.98;
+    }
+
+    .orbit-card,
+    .orbit-card img,
+    .image-slot,
+    .image-media {
+      -webkit-user-drag: none;
+      user-drag: none;
+      user-select: none;
+    }
+
+    .orbit-card img {
+      pointer-events: none;
+    }
+
+    /* Image placeholder: no visible text by default. Future images can replace this area. */
+    .image-placeholder {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(22, 20, 19, 0.040) 0 1px, transparent 1px 100%),
+        radial-gradient(circle at 72% 66%, rgba(22, 20, 19, 0.032) 0 1px, transparent 1px 100%),
+        linear-gradient(90deg, rgba(22, 20, 19, 0.046), rgba(22, 20, 19, 0.018));
+      background-size: 18px 18px, 22px 22px, 100% 100%;
+    }
+
+    /* Hover introduction appears directly on top of the image area. */
+    .image-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 13px 14px;
+      background: rgba(238, 234, 233, 0.78);
+      color: var(--text);
+      opacity: 0;
+      transition: opacity 180ms ease;
+      pointer-events: none;
+    }
+
+    .overlay-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 9px;
+      letter-spacing: 0.10em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .overlay-index {
+      color: rgba(22, 20, 19, 0.45);
+    }
+
+    .overlay-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .overlay-title {
+      max-width: 100%;
+      font-size: 13px;
+      line-height: 1.08;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .overlay-meta {
+      font-size: 9px;
+      line-height: 1.2;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .overlay-keywords {
+      max-width: 100%;
+      font-size: 10.5px;
+      line-height: 1.28;
+      letter-spacing: 0.01em;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    body.is-entering .orbit-card:not(.is-selected) {
+      opacity: 0.06 !important;
+    }
+
+    body.is-entering .orbit-card.is-selected .card-shell {
+      transform: scale(1.12) !important;
+    }
+
+    .orbit-card:hover .image-media,
+    .orbit-card:focus-visible .image-media {
+      opacity: 0.24;
+    }
+
+    .orbit-card:hover .image-overlay,
+    .orbit-card:focus-visible .image-overlay {
+      opacity: 1;
+    }
+
+    /* No project title, label, or text is visible on orbit cards by default. */
+
+    .placeholder-section {
+      min-height: 58vh;
+      padding: 120px 42px;
+      border-top: 1px solid rgba(22, 20, 19, 0.08);
+    }
+
+    .section-inner { max-width: 760px; margin: 0 auto; }
+
+    .placeholder-section h2 {
+      margin: 0 0 18px;
+      font-size: clamp(28px, 5vw, 62px);
+      line-height: 0.95;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .placeholder-section p {
+      margin: 0;
+      max-width: 620px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px 28px;
+      margin-top: 24px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .contact-links a {
+      color: var(--text);
+      border-bottom: 0;
+      padding-bottom: 4px;
+    }
+
+    .contact-links a:hover { color: var(--accent); border-color: rgba(22, 20, 19, 0.10); }
+
+    /* ── Noise texture overlay ──────────────────────────── */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+
+    /* ── Custom cursor ──────────────────────────────────── */
+    @media (pointer: fine) {
+      body { cursor: none; }
+      .orbit-scene { cursor: none; }
+    }
+
+    #cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      pointer-events: none;
+      z-index: 2147483647 !important;
+      transform: translate(-50%, -50%);
+      transition: width 220ms ease, height 220ms ease, background 220ms ease, opacity 220ms ease;
+      mix-blend-mode: multiply;
+      opacity: 0;
+    }
+
+    #cursor.visible { opacity: 1; }
+    #cursor.hover-card { width: 40px; height: 40px; background: rgba(50,50,50,0.18); }
+    #cursor.hover-link { width: 22px; height: 22px; }
+
+    /* ── Nav active state ───────────────────────────────── */
+    .nav-links a.is-active { color: var(--text); }
+
+    /* ── Nav backdrop blur ──────────────────────────────── */
+    .site-nav {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(238, 234, 233, 0.82) !important;
+      border-bottom: 0;
+      transition: border-color 300ms ease;
+    }
+
+    .site-nav.scrolled { border-bottom-color: transparent; }
+
+    /* ── Hero entrance ──────────────────────────────────── */
+    .hero-center-word {
+      clip-path: inset(0 60% 0 0);
+      transition: clip-path 900ms cubic-bezier(0.16, 1, 0.3, 1), opacity 180ms ease !important;
+    }
+
+    body.is-ready .hero-center-word {
+      clip-path: inset(0 0% 0 0);
+    }
+
+    /* ── Scroll indicator ───────────────────────────────── */
+
+
+    /* ── Enhanced card placeholder textures ────────────── */
+    .image-placeholder {
+      background:
+        linear-gradient(135deg,
+          rgba(22, 20, 19, 0.06) 0%,
+          rgba(22, 20, 19, 0.02) 40%,
+          rgba(22, 20, 19, 0.055) 100%
+        ) !important;
+      position: relative;
+    }
+
+    .image-placeholder::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 8px,
+        rgba(22, 20, 19, 0.018) 8px,
+        rgba(22, 20, 19, 0.018) 9px
+      );
+    }
+
+    /* ── Card face refined shadow & border ─────────────── */
+    .card-face {
+      box-shadow: 0 1px 3px rgba(22, 20, 19, 0.06), 0 6px 18px rgba(22, 20, 19, 0.04);
+    }
+
+    .orbit-card:hover .card-face,
+    .orbit-card:focus-visible .card-face {
+      box-shadow: 0 2px 8px rgba(22, 20, 19, 0.12), 0 12px 32px rgba(22, 20, 19, 0.08);
+    }
+
+    /* ── Section reveal animations ──────────────────────── */
+    .placeholder-section {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .placeholder-section.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Section heading decoration ─────────────────────── */
+    .placeholder-section h2 {
+      position: relative;
+      display: inline-block;
+    }
+
+    .placeholder-section h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 800ms cubic-bezier(0.16, 1, 0.3, 1) 200ms;
+    }
+
+    .placeholder-section.in-view h2::after { width: 100%; }
+
+    /* ── Contact links refined ──────────────────────────── */
+    .contact-links a {
+      position: relative;
+      border-bottom: none !important;
+      padding-bottom: 2px !important;
+    }
+
+    .contact-links a::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--text);
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: transform 220ms ease, background 220ms ease;
+    }
+
+    .contact-links a:hover::after {
+      background: var(--accent);
+    }
+
+    /* ── Site footer ─────────────────────────────────────── */
+    .site-footer {
+      padding: 28px 42px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(22, 20, 19, 0.38);
+    }
+
+    /* ── Orbit count badge ───────────────────────────────── */
+    .orbit-count {
+      position: absolute;
+      bottom: 80px;
+      right: 42px;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      transition: opacity 600ms ease 1.8s;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    body.is-ready .orbit-count { opacity: 1; }
+
+
+
+    /* ── Clarity fix for 3D orbit placeholders ─────────────
+       The previous placeholder texture + noise layer + hover scale
+       made the card look grainy after browser 3D resampling. This
+       keeps the placeholder flat and lets only real images fade on hover. */
+    body::before {
+      opacity: 0 !important;
+      background-image: none !important;
+    }
+
+    .orbit-card,
+    .card-shell,
+    .card-face,
+    .image-slot,
+    .image-media,
+    .image-placeholder,
+    .image-overlay {
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    .card-shell {
+      transform: scale(var(--depth-scale, 1)) translateZ(0);
+      will-change: transform;
+    }
+
+    .card-face {
+      background: rgba(238, 234, 233, 0.86) !important;
+      box-shadow: none !important;
+      transform: translateZ(0);
+      contain: paint;
+    }
+
+    .image-slot {
+      background: rgba(22, 20, 19, 0.050) !important;
+      isolation: isolate;
+    }
+
+    .image-media {
+      opacity: 1 !important;
+      transform: translateZ(0);
+      will-change: opacity;
+    }
+
+    .image-slot img {
+      opacity: 1 !important;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .image-placeholder {
+      background: rgba(22, 20, 19, 0.058) !important;
+      background-image: none !important;
+      transform: translateZ(0);
+    }
+
+    .image-placeholder::after {
+      display: none !important;
+      content: none !important;
+    }
+
+    .image-slot.is-placeholder::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      box-shadow: inset 0 0 0 0px rgba(22, 20, 19, 0.035);
+    }
+
+    .orbit-card:hover .card-shell,
+    .orbit-card:focus-visible .card-shell {
+      transform: scale(calc(var(--depth-scale, 1) * 1.012)) translateZ(0) !important;
+    }
+
+    .orbit-card:hover .image-slot.has-image .image-media,
+    .orbit-card:focus-visible .image-slot.has-image .image-media {
+      opacity: 0.34 !important;
+    }
+
+    .orbit-card:hover .image-slot.is-placeholder .image-media,
+    .orbit-card:focus-visible .image-slot.is-placeholder .image-media {
+      opacity: 1 !important;
+    }
+
+    .image-overlay {
+      background: rgba(238, 234, 233, 0.96) !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    .orbit-card:hover .card-face,
+    .orbit-card:focus-visible .card-face {
+      box-shadow: 0 0 0 1px var(--accent) !important;
+      background: rgba(238, 234, 233, 0.96) !important;
+    }
+
+    #cursor {
+      mix-blend-mode: normal !important;
+    }
+
+    #cursor.hover-card {
+      width: 28px !important;
+      height: 28px !important;
+      background: transparent !important;
+      border: 1px solid rgba(50, 50, 50, 0.42) !important;
+    }
+
+    @media (max-width: 840px) {
+      :root { --nav-h: 78px; }
+      .site-nav {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "logo docs"
+          "menu menu";
+        row-gap: 9px;
+        align-content: center;
+        padding: 10px 18px 9px;
+      }
+      .logo { grid-area: logo; font-size: 12px; letter-spacing: -0.02em; }
+      .nav-links { grid-area: menu; justify-self: center; gap: 18px; }
+      .nav-docs { grid-area: docs; justify-self: end; gap: 7px; }
+      .nav-links a,
+      .nav-docs a,
+      .nav-separator { font-size: 9px; letter-spacing: -0.015em; }
+      .nav-docs a::after { display: none; }
+      .card-face { position: relative; }
+      .card-back { display: none; }
+      .placeholder-section { padding: 88px 22px; }
+      .site-footer { padding: 22px 18px; flex-direction: column; gap: 6px; text-align: center; }
+      .orbit-count { right: 18px; }
+    }
+
+
+
+
+    /* ── Homepage opening animation ────────────────────── */
+    .home-intro {
+      position: fixed;
+      inset: 0;
+      z-index: 200000;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--accent);
+      pointer-events: none;
+      animation: homeIntroExit 1050ms cubic-bezier(0.16, 1, 0.3, 1) 850ms forwards;
+    }
+
+    .home-intro-word {
+      font-size: clamp(36px, 6vw, 96px);
+      line-height: 0.9;
+      letter-spacing: -0.075em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(12px);
+      clip-path: inset(0 100% 0 0);
+      animation: homeIntroWord 900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms forwards;
+    }
+
+    .home-intro-line {
+      position: absolute;
+      left: 50%;
+      bottom: 42px;
+      width: 1px;
+      height: 54px;
+      background: var(--accent);
+      opacity: 0;
+      transform: translateX(-50%) scaleY(0);
+      transform-origin: top;
+      animation: homeIntroLine 850ms cubic-bezier(0.16, 1, 0.3, 1) 280ms forwards;
+    }
+
+    body.is-ready .orbit-card {
+      animation: orbitCardEnter 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--enter-index, 0) * 34ms + 340ms);
+    }
+
+    @keyframes homeIntroWord {
+      0% { opacity: 0; transform: translateY(12px); clip-path: inset(0 100% 0 0); }
+      100% { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); }
+    }
+
+    @keyframes homeIntroLine {
+      0% { opacity: 0; transform: translateX(-50%) scaleY(0); }
+      100% { opacity: 0.45; transform: translateX(-50%) scaleY(1); }
+    }
+
+    @keyframes homeIntroExit {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); visibility: hidden; }
+    }
+
+    @keyframes orbitCardEnter {
+      0% { opacity: 0; filter: blur(8px); }
+      100% { opacity: var(--card-opacity, 1); filter: blur(0); }
+    }
+
+    /* ── Gesture Mode demo controls ────────────────────── */
+    .gesture-panel {
+      position: fixed;
+      right: 28px;
+      bottom: 27px;
+      z-index: 120000;
+      width: 196px;
+      color: var(--text);
+      font-family: var(--font);
+      pointer-events: auto;
+      user-select: none;
+    }
+
+    .gesture-shell {
+      border: 1px solid rgba(22, 20, 19, 0.12);
+      background: rgba(238, 234, 233, 0.84);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 16px 48px rgba(22, 20, 19, 0.08);
+      overflow: hidden;
+      border-radius: 22px;
+    }
+
+    .gesture-topbar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 10px 0 19px;
+    }
+
+    .gesture-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .gesture-kicker {
+      font-size: 8.5px;
+      line-height: 1;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .gesture-status {
+      display: block;
+      font-size: 8px;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+    }
+
+    .gesture-switch {
+      position: relative;
+      width: 44px;
+      height: 26px;
+      flex: 0 0 auto;
+    }
+
+    .gesture-switch input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .gesture-slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: rgba(22, 20, 19, 0.16);
+      transition: background 220ms ease;
+    }
+
+    .gesture-slider::before {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 2px;
+      top: 2px;
+      border-radius: 50%;
+      background: rgb(248, 245, 244);
+      box-shadow: 0 2px 8px rgba(22, 20, 19, 0.18);
+      transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gesture-switch input:checked + .gesture-slider {
+      background: var(--accent);
+    }
+
+    .gesture-switch input:checked + .gesture-slider::before {
+      transform: translateX(18px);
+    }
+
+    .gesture-preview-wrap {
+      padding: 0 8px 8px;
+      transition: max-height 260ms ease, opacity 220ms ease, padding 260ms ease;
+      max-height: 190px;
+      opacity: 1;
+    }
+
+    .gesture-preview {
+      position: relative;
+      height: 126px;
+      overflow: hidden;
+      border-radius: 16px;
+      background: rgba(22, 20, 19, 0.08);
+      border: 1px solid rgba(22, 20, 19, 0.09);
+    }
+
+    .gesture-preview video,
+    .gesture-preview canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+      image-rendering: auto;
+    }
+
+    .gesture-preview video {
+      filter: saturate(0.82) contrast(0.96);
+    }
+
+    .gesture-preview canvas {
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .gesture-preview::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      z-index: 3;
+      color: rgba(248, 245, 244, 0.72);
+      font-size: 28px;
+      letter-spacing: 0;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.38);
+      pointer-events: none;
+    }
+
+    .gesture-collapse {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      z-index: 4;
+      width: 25px;
+      height: 25px;
+      border: 1px solid rgba(248, 245, 244, 0.50);
+      border-radius: 999px;
+      color: rgba(248, 245, 244, 0.88);
+      background: rgba(22, 20, 19, 0.20);
+      font-size: 15px;
+      line-height: 0;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transform: translateY(-1px);
+    }
+
+    .gesture-help {
+      padding: 9px 3px 0;
+      font-size: 10px;
+      line-height: 0;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+    }
+
+    .gesture-panel.is-error .gesture-shell {
+      border-color: rgba(22, 20, 19, 0.28);
+    }
+
+    .gesture-panel.is-collapsed .gesture-preview-wrap {
+      max-height: 0;
+      opacity: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      overflow: hidden;
+    }
+
+    .gesture-panel.is-running.is-collapsed .gesture-collapse-open {
+      display: inline-grid;
+    }
+
+    .gesture-panel:not(.is-running) .gesture-preview-wrap {
+      max-height: 0 !important;
+      opacity: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      overflow: hidden !important;
+    }
+
+    .gesture-panel:not(.is-running) .gesture-collapse-open {
+      display: none !important;
+    }
+
+    .gesture-collapse-open {
+      display: none;
+      width: 25px;
+      height: 25px;
+      border: 1px solid rgba(22, 20, 19, 0.10);
+      border-radius: 999px;
+      background: rgba(238, 234, 233, 0.78);
+      color: var(--muted);
+      cursor: pointer;
+      place-items: center;
+      font-size: 14px;
+      flex: 0 0 auto;
+    }
+
+    .gesture-cursor {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 24px;
+      height: 24px;
+      z-index: 2147483647 !important;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+      transition: opacity 160ms ease, width 120ms ease, height 120ms ease, border-color 120ms ease, background 120ms ease;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: rgba(199, 69, 69, 0.10);
+      box-shadow: 0 0 0 5px rgba(199, 69, 69, 0.055);
+    }
+
+    .gesture-cursor.is-visible { opacity: 1; }
+    .gesture-cursor.is-pinching {
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+      box-shadow: 0 0 0 9px rgba(199, 69, 69, 0.08);
+    }
+
+    /* When Gesture Mode is active, keep the real mouse usable too.
+       The original custom cursor is hidden, and the native browser cursor returns,
+       so hand control and physical mouse control can work at the same time. */
+    body.gesture-active #cursor {
+      opacity: 0 !important;
+    }
+
+    @media (pointer: fine) {
+      body.gesture-active { cursor: auto !important; }
+      body.gesture-active .orbit-scene { cursor: grab !important; }
+      body.gesture-active .orbit-scene:active { cursor: grabbing !important; }
+      body.gesture-active a,
+      body.gesture-active button,
+      body.gesture-active label,
+      body.gesture-active input { cursor: pointer !important; }
+    }
+
+    .gesture-cursor.is-scrolling {
+      width: 30px;
+      height: 30px;
+      border-color: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.20);
+      box-shadow: 0 0 0 8px rgba(255,255,255,0.08);
+    }
+
+    @media (max-width: 840px) {
+      .gesture-panel {
+        right: 14px;
+        bottom: 14px;
+        width: min(232px, calc(100vw - 28px));
+      }
+    }
+
+  
+    /* ── Gesture proximity targets + hover scroll zones ───────────── */
+    .gesture-status {
+      display: block !important;
+      font-size: 8px;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+    }
+
+    .site-nav .logo,
+    .site-nav .nav-links a,
+    .site-nav .nav-docs a {
+      display: inline-block;
+      transform-origin: center;
+      transition: transform 160ms ease, color 160ms ease, opacity 160ms ease;
+      will-change: transform;
+    }
+
+    .site-nav .logo.is-gesture-near,
+    .site-nav .nav-links a.is-gesture-near,
+    .site-nav .nav-docs a.is-gesture-near {
+      transform: scale(1.45);
+      color: var(--accent);
+      opacity: 1;
+      position: relative;
+      z-index: 5;
+    }
+
+    .gesture-panel.is-error .gesture-shell {
+      border-color: rgba(22, 20, 19, 0.28);
+    }
+
+    .gesture-scroll-zone {
+      position: fixed;
+      left: 50%;
+      z-index: 119998;
+      width: 104px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(22, 20, 19, 0.045);
+      background: rgba(238, 234, 233, 0.72);
+      color: var(--accent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(-50%) scale(0.96);
+      transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease;
+      box-shadow: 0 12px 38px rgba(22, 20, 19, 0.055);
+    }
+
+    .gesture-scroll-zone-top {
+      top: calc(var(--nav-h, 64px) + 16px);
+    }
+
+    .gesture-scroll-zone-bottom {
+      bottom: 26px;
+    }
+
+    body.gesture-active .gesture-scroll-zone {
+      opacity: 0.42;
+    }
+
+    body.gesture-active .gesture-scroll-zone.is-gesture-hover {
+      opacity: 1;
+      transform: translateX(-50%) scale(1.08);
+      border-color: rgba(22, 20, 19, 0.10);
+    }
+
+    body.gesture-active .gesture-scroll-zone.is-gesture-hover span {
+      color: var(--accent);
+    }
+
+    @media (max-width: 840px) {
+      .gesture-scroll-zone {
+        width: min(260px, 68vw);
+        height: 46px;
+      }
+
+      .gesture-scroll-zone-top {
+        top: calc(var(--nav-h, 78px) + 10px);
+      }
+
+      .gesture-scroll-zone-bottom {
+        bottom: 12px;
+      }
+    }
+
+  
+    /* ── iPhone Portrait 375–430px adaptation ───────────── */
+    @media (min-width: 375px) and (max-width: 430px) and (orientation: portrait) {
+      :root { --nav-h: 50px; }
+
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+      }
+
+      .site-nav {
+        height: var(--nav-h) !important;
+        display: grid !important;
+        grid-template-columns: auto 1fr auto !important;
+        grid-template-areas: none !important;
+        align-items: center !important;
+        column-gap: 7px !important;
+        row-gap: 0 !important;
+        padding: 0 8px !important;
+        overflow: visible !important;
+      }
+
+      .logo {
+        grid-area: auto !important;
+        justify-self: start !important;
+        font-size: 9px !important;
+        letter-spacing: -0.03em !important;
+        white-space: nowrap !important;
+      }
+
+      .nav-links {
+        grid-area: auto !important;
+        justify-self: center !important;
+        gap: 7px !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+        min-width: 0 !important;
+      }
+
+      .nav-docs {
+        grid-area: auto !important;
+        justify-self: end !important;
+        gap: 4px !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+      }
+
+      .nav-links a,
+      .nav-docs a,
+      .nav-separator {
+        font-size: 8px !important;
+        letter-spacing: -0.02em !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+      }
+
+      .nav-docs a::after {
+        display: none !important;
+      }
+
+      .hero {
+        min-height: 100svh !important;
+        padding-top: var(--nav-h) !important;
+        overflow: hidden !important;
+      }
+
+      .orbit-scene {
+        width: 100vw !important;
+        height: calc(100svh - var(--nav-h)) !important;
+        max-width: 100vw !important;
+        overflow: hidden !important;
+      }
+
+      .hero-center-word {
+        font-size: clamp(28px, 8vw, 42px) !important;
+        letter-spacing: -0.08em !important;
+      }
+
+      .hero-copy {
+        left: 16px !important;
+        right: 16px !important;
+        bottom: 10vh !important;
+        grid-template-columns: 1fr !important;
+      }
+
+      h1 {
+        font-size: clamp(64px, 24vw, 102px) !important;
+      }
+
+      .statement {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        margin-bottom: 0 !important;
+        mix-blend-mode: normal !important;
+      }
+
+      .statement p {
+        font-size: clamp(30px, 9vw, 54px) !important;
+      }
+
+      .pulled-gallery {
+        height: auto !important;
+        padding: 28px 16px 72px !important;
+        overflow-x: hidden !important;
+      }
+
+      .gallery-sticky {
+        position: relative !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+
+      .gallery-track {
+        display: block !important;
+        margin-left: 0 !important;
+        padding: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+      }
+
+      .gallery-item,
+      .gallery-item.wide,
+      .gallery-item.large,
+      .gallery-item.medium,
+      .gallery-item.tall {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 0 24px !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .gallery-item img,
+      .gallery-item.tall img {
+        width: 100% !important;
+        height: auto !important;
+        display: block !important;
+      }
+
+      .gallery-progress,
+      .gallery-label {
+        display: none !important;
+      }
+
+      .pdf-section,
+      .video-section,
+      .placeholder-section {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+      }
+
+      .video-inner {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+
+      .video-placeholder {
+        min-height: 56vw !important;
+      }
+
+      .gesture-panel {
+        top: calc(var(--nav-h) + 10px) !important;
+        right: 10px !important;
+        bottom: auto !important;
+        width: min(154px, calc(100vw - 20px)) !important;
+      }
+
+      .gesture-topbar {
+        height: 40px !important;
+        padding: 0 8px 0 12px !important;
+        gap: 6px !important;
+      }
+
+      .gesture-kicker {
+        font-size: 7px !important;
+      }
+
+      .gesture-status {
+        font-size: 7px !important;
+      }
+
+      .gesture-switch {
+        width: 38px !important;
+        height: 22px !important;
+      }
+
+      .gesture-slider::before {
+        width: 18px !important;
+        height: 18px !important;
+      }
+
+      .gesture-switch input:checked + .gesture-slider::before {
+        transform: translateX(16px) !important;
+      }
+
+      .gesture-preview-wrap {
+        max-height: 0 !important;
+        opacity: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .gesture-scroll-zone {
+        width: 78px !important;
+        height: 44px !important;
+        font-size: 22px !important;
+      }
+
+      .gesture-scroll-zone-top {
+        top: calc(var(--nav-h) + 8px) !important;
+      }
+
+      .gesture-scroll-zone-bottom {
+        bottom: 12px !important;
+      }
+    }
+
+  
+    /* ── Final mobile + scroll fixes ───────────────────── */
+    .gesture-scroll-zone {
+      width: 116px !important;
+      height: 64px !important;
+      border-color: transparent !important;
+      background: rgba(238, 234, 233, 0.54) !important;
+      box-shadow: 0 16px 46px rgba(22, 20, 19, 0.04) !important;
+      font-size: 32px !important;
+    }
+
+    body.gesture-active .gesture-scroll-zone {
+      opacity: 0.50 !important;
+    }
+
+    body.gesture-active .gesture-scroll-zone.is-gesture-hover {
+      opacity: 1 !important;
+      transform: translateX(-50%) scale(1.10) !important;
+      border-color: transparent !important;
+      background: rgba(238, 234, 233, 0.78) !important;
+    }
+
+    .video-embed {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 1px solid rgba(22, 20, 19, 0.08);
+      background: rgba(22, 20, 19, 0.035);
+      overflow: hidden;
+    }
+
+    .video-embed iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+    }
+
+    @media (max-width: 430px) and (orientation: portrait) {
+      :root { --nav-h: 48px; }
+
+      html,
+      body {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+      }
+
+      .site-nav {
+        height: var(--nav-h) !important;
+        display: flex !important;
+        grid-template-columns: none !important;
+        grid-template-areas: none !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 5px !important;
+        padding: 0 7px !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+      }
+
+      .logo {
+        flex: 0 0 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        font-size: 8.5px !important;
+        letter-spacing: -0.035em !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+        max-width: none !important;
+      }
+
+      .nav-links {
+        flex: 1 1 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        gap: 5px !important;
+        min-width: 0 !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+      }
+
+      .nav-docs {
+        flex: 0 0 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        display: flex !important;
+        gap: 3px !important;
+        min-width: auto !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+      }
+
+      .nav-links a,
+      .nav-docs a,
+      .nav-separator {
+        font-size: 7.2px !important;
+        letter-spacing: -0.035em !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+      }
+
+      .nav-docs a::after {
+        display: none !important;
+      }
+
+      .hero {
+        min-height: 100svh !important;
+        padding-top: var(--nav-h) !important;
+        overflow: hidden !important;
+      }
+
+      .hero-image {
+        height: 100svh !important;
+      }
+
+      .hero-copy {
+        left: 14px !important;
+        right: 14px !important;
+        bottom: 22svh !important;
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+      }
+
+      h1 {
+        font-size: clamp(68px, 23vw, 96px) !important;
+        line-height: 0.78 !important;
+      }
+
+      .hero-meta {
+        font-size: 11px !important;
+        max-width: 86% !important;
+        margin-left: 0 !important;
+      }
+
+      .orbit-scene {
+        width: 100vw !important;
+        height: calc(100svh - var(--nav-h)) !important;
+        max-width: 100vw !important;
+        overflow: hidden !important;
+      }
+
+      .hero-center-word {
+        font-size: clamp(28px, 8vw, 42px) !important;
+      }
+
+      .statement {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        margin-bottom: 0 !important;
+      }
+
+      .pulled-gallery {
+        height: auto !important;
+        padding: 28px 16px 72px !important;
+        overflow-x: hidden !important;
+      }
+
+      .gallery-sticky {
+        position: relative !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+
+      .gallery-track {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 24px !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding: 0 !important;
+        transform: none !important;
+      }
+
+      .gallery-item,
+      .gallery-item.wide,
+      .gallery-item.large,
+      .gallery-item.medium,
+      .gallery-item.tall {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .gallery-item img,
+      .gallery-item.tall img {
+        width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        object-fit: contain !important;
+      }
+
+      .gallery-progress,
+      .gallery-label {
+        display: none !important;
+      }
+
+      .pdf-section,
+      .video-section,
+      .placeholder-section {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+      }
+
+      .video-section {
+        min-height: auto !important;
+        padding-top: 42px !important;
+        padding-bottom: 88px !important;
+      }
+
+      .video-inner {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+
+      .video-embed,
+      .video-placeholder {
+        width: 100% !important;
+        min-height: auto !important;
+      }
+
+      .gesture-panel {
+        top: calc(var(--nav-h) + 8px) !important;
+        right: 8px !important;
+        bottom: auto !important;
+        width: min(150px, calc(100vw - 16px)) !important;
+      }
+
+      .gesture-preview-wrap {
+        max-height: 0 !important;
+        opacity: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .gesture-scroll-zone {
+        width: 82px !important;
+        height: 46px !important;
+        font-size: 24px !important;
+      }
+
+      .gesture-scroll-zone-top {
+        top: calc(var(--nav-h) + 8px) !important;
+      }
+
+      .gesture-scroll-zone-bottom {
+        bottom: 12px !important;
+      }
+    }
+
+  
+    /* ── Final nav / Vimeo / linear scroll overrides ───────────── */
+    .site-nav,
+    .site-nav * {
+      white-space: nowrap !important;
+    }
+
+    .site-nav {
+      overflow: hidden !important;
+    }
+
+    .gesture-scroll-zone {
+      width: 116px !important;
+      height: 64px !important;
+      border-color: transparent !important;
+      background: rgba(238, 234, 233, 0.54) !important;
+      box-shadow: 0 16px 46px rgba(22, 20, 19, 0.04) !important;
+      font-size: 32px !important;
+    }
+
+    body.gesture-active .gesture-scroll-zone {
+      opacity: 0.54 !important;
+    }
+
+    body.gesture-active .gesture-scroll-zone.is-gesture-hover {
+      opacity: 1 !important;
+      transform: translateX(-50%) scale(1.10) !important;
+      border-color: transparent !important;
+      background: rgba(238, 234, 233, 0.78) !important;
+    }
+
+    .video-section {
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding-left: clamp(16px, 4vw, 42px) !important;
+      padding-right: clamp(16px, 4vw, 42px) !important;
+    }
+
+    .video-inner {
+      width: min(100%, 1180px) !important;
+      max-width: 1180px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      display: block !important;
+    }
+
+    .video-embed {
+      width: 100% !important;
+      max-width: 1180px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      aspect-ratio: 16 / 9 !important;
+      border: 1px solid rgba(22, 20, 19, 0.08) !important;
+      background: rgba(22, 20, 19, 0.035) !important;
+      overflow: hidden !important;
+    }
+
+    .video-embed iframe {
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
+      border: 0 !important;
+    }
+
+    @media (max-width: 840px) {
+      :root { --nav-h: 48px; }
+
+      .site-nav {
+        height: var(--nav-h) !important;
+        display: flex !important;
+        grid-template-columns: none !important;
+        grid-template-areas: none !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 4px !important;
+        padding: 0 6px !important;
+        row-gap: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .logo {
+        flex: 0 0 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        font-size: 8px !important;
+        letter-spacing: -0.04em !important;
+        line-height: 1 !important;
+      }
+
+      .nav-links {
+        flex: 1 1 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 4px !important;
+        min-width: 0 !important;
+        flex-wrap: nowrap !important;
+      }
+
+      .nav-docs {
+        flex: 0 0 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+        flex-wrap: nowrap !important;
+      }
+
+      .nav-links a,
+      .nav-docs a,
+      .nav-separator {
+        font-size: 6.8px !important;
+        letter-spacing: -0.045em !important;
+        line-height: 1 !important;
+      }
+
+      .nav-docs a::after {
+        display: none !important;
+      }
+
+      .hero {
+        padding-top: var(--nav-h) !important;
+      }
+
+      .hero-copy {
+        bottom: 24svh !important;
+      }
+
+      .gallery-track {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 24px !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: 100% !important;
+        transform: none !important;
+      }
+
+      .pulled-gallery {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        overflow-x: hidden !important;
+      }
+
+      .gallery-item,
+      .gallery-item.wide,
+      .gallery-item.large,
+      .gallery-item.medium,
+      .gallery-item.tall {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        transform: none !important;
+      }
+
+      .gallery-item img,
+      .gallery-item.tall img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: contain !important;
+      }
+
+      .video-section {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+      }
+
+      .gesture-panel {
+        top: calc(var(--nav-h) + 8px) !important;
+        right: 8px !important;
+        bottom: auto !important;
+        width: min(150px, calc(100vw - 16px)) !important;
+      }
+
+      .gesture-scroll-zone {
+        width: 82px !important;
+        height: 46px !important;
+        font-size: 24px !important;
+      }
+
+      .gesture-scroll-zone-top {
+        top: calc(var(--nav-h) + 8px) !important;
+      }
+
+      .gesture-scroll-zone-bottom {
+        bottom: 12px !important;
+      }
+    }
+
+  
+    /* ── Final fixes: mouse click, nav no-wrap, magnetic scroll button ───────────── */
+    #cursor {
+      display: block !important;
+      mix-blend-mode: normal !important;
+    }
+
+    #cursor.hover-card {
+      width: 28px !important;
+      height: 28px !important;
+      background: transparent !important;
+      border: 1px solid rgba(50, 50, 50, 0.42) !important;
+    }
+
+    @media (pointer: fine) {
+      body {
+        cursor: none !important;
+      }
+
+      .orbit-scene {
+        cursor: none !important;
+      }
+
+      a,
+      button,
+      label,
+      input {
+        cursor: none !important;
+      }
+
+      body.gesture-active,
+      body.gesture-active .orbit-scene,
+      body.gesture-active a,
+      body.gesture-active button,
+      body.gesture-active label,
+      body.gesture-active input {
+        cursor: auto !important;
+      }
+    }
+
+    .gesture-scroll-zone {
+      pointer-events: none !important;
+      width: 116px !important;
+      height: 64px !important;
+      border-color: transparent !important;
+      background: rgba(238, 234, 233, 0.54) !important;
+      box-shadow: 0 16px 46px rgba(22, 20, 19, 0.04) !important;
+      font-size: 18px !important;
+    }
+
+    body.gesture-active .gesture-scroll-zone {
+      opacity: 0.54 !important;
+    }
+
+    body.gesture-active .gesture-scroll-zone.is-gesture-hover {
+      opacity: 1 !important;
+      transform: translateX(-50%) scale(1.10) !important;
+      border-color: transparent !important;
+      background: rgba(238, 234, 233, 0.78) !important;
+    }
+
+    .site-nav,
+    .site-nav * {
+      white-space: nowrap !important;
+    }
+
+    .site-nav {
+      overflow: hidden !important;
+    }
+
+    .video-section {
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding-left: clamp(16px, 4vw, 42px) !important;
+      padding-right: clamp(16px, 4vw, 42px) !important;
+    }
+
+    .video-inner {
+      width: min(100%, 1180px) !important;
+      max-width: 1180px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      display: block !important;
+    }
+
+    .video-embed {
+      width: 100% !important;
+      max-width: 1180px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      aspect-ratio: 16 / 9 !important;
+      border: 1px solid rgba(22, 20, 19, 0.08) !important;
+      background: rgba(22, 20, 19, 0.035) !important;
+      overflow: hidden !important;
+    }
+
+    .video-embed iframe {
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
+      border: 0 !important;
+    }
+
+    @media (max-width: 840px) {
+      :root {
+        --nav-h: 46px;
+      }
+
+      .site-nav {
+        height: var(--nav-h) !important;
+        display: flex !important;
+        grid-template-columns: none !important;
+        grid-template-areas: none !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 3px !important;
+        padding: 0 5px !important;
+        row-gap: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .logo {
+        flex: 0 0 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        font-size: 7.2px !important;
+        letter-spacing: -0.045em !important;
+        line-height: 1 !important;
+      }
+
+      .nav-links {
+        flex: 1 1 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 3.2px !important;
+        min-width: 0 !important;
+        flex-wrap: nowrap !important;
+      }
+
+      .nav-docs {
+        flex: 0 0 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+        flex-wrap: nowrap !important;
+      }
+
+      .nav-links a,
+      .nav-docs a,
+      .nav-separator {
+        font-size: 6.2px !important;
+        letter-spacing: -0.05em !important;
+        line-height: 1 !important;
+      }
+
+      .nav-docs a::after {
+        display: none !important;
+      }
+
+      .hero {
+        padding-top: var(--nav-h) !important;
+      }
+
+      .hero-copy {
+        bottom: 24svh !important;
+      }
+
+      .pulled-gallery {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        overflow-x: hidden !important;
+      }
+
+      .gallery-track {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 24px !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: 100% !important;
+        transform: none !important;
+      }
+
+      .gallery-item,
+      .gallery-item.wide,
+      .gallery-item.large,
+      .gallery-item.medium,
+      .gallery-item.tall {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        transform: none !important;
+      }
+
+      .gallery-item img,
+      .gallery-item.tall img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: contain !important;
+      }
+
+      .video-section {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+      }
+
+      .gesture-panel {
+        top: calc(var(--nav-h) + 8px) !important;
+        right: 8px !important;
+        bottom: auto !important;
+        width: min(150px, calc(100vw - 16px)) !important;
+      }
+
+      .gesture-scroll-zone {
+        width: 82px !important;
+        height: 46px !important;
+        font-size: 18px !important;
+      }
+
+      .gesture-scroll-zone-top {
+        top: calc(var(--nav-h) + 8px) !important;
+      }
+
+      .gesture-scroll-zone-bottom {
+        bottom: 12px !important;
+      }
+    }
+
+  
+    /* ── Mobile dropdown navigation + BABEL title position ───────────── */
+    .mobile-nav-toggle,
+    .mobile-nav-dropdown {
+      display: none;
+    }
+
+    @media (max-width: 840px) and (orientation: portrait) {
+      :root {
+        --nav-h: 52px;
+      }
+
+      .site-nav {
+        height: var(--nav-h) !important;
+        display: flex !important;
+        grid-template-columns: none !important;
+        grid-template-areas: none !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 16px !important;
+        overflow: visible !important;
+        z-index: 160000 !important;
+        white-space: nowrap !important;
+      }
+
+      .logo {
+        flex: 0 0 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        font-size: 11px !important;
+        letter-spacing: -0.03em !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+      }
+
+      .site-nav > .nav-links,
+      .site-nav > .nav-docs {
+        display: none !important;
+      }
+
+      .mobile-nav-toggle {
+        width: 34px;
+        height: 34px;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        display: grid !important;
+        place-items: center;
+        background: transparent;
+        color: var(--accent);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .mobile-nav-toggle span {
+        position: absolute;
+        width: 17px;
+        height: 1px;
+        background: var(--accent);
+        left: 50%;
+        transform: translateX(-50%);
+        transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), top 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease;
+      }
+
+      .mobile-nav-toggle span:first-child {
+        top: 13px;
+      }
+
+      .mobile-nav-toggle span:last-child {
+        top: 20px;
+      }
+
+      body.mobile-nav-open .mobile-nav-toggle span:first-child {
+        top: 17px;
+        transform: translateX(-50%) rotate(45deg);
+      }
+
+      body.mobile-nav-open .mobile-nav-toggle span:last-child {
+        top: 17px;
+        transform: translateX(-50%) rotate(-45deg);
+      }
+
+      .mobile-nav-dropdown {
+        position: fixed;
+        top: var(--nav-h);
+        left: 0;
+        right: 0;
+        z-index: 159999;
+        display: block !important;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+        padding: 0 18px;
+        background: rgba(238, 234, 233, 0.96);
+        border-bottom: 1px solid rgba(22, 20, 19, 0.10);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        transition:
+          max-height 420ms cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 220ms ease,
+          transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+          padding 420ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      body.mobile-nav-open .mobile-nav-dropdown {
+        max-height: calc(100svh - var(--nav-h));
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+        padding: 18px 18px 22px;
+      }
+
+      .mobile-nav-dropdown a {
+        display: block;
+        width: 100%;
+        padding: 8px 0;
+        color: var(--accent);
+        font-family: var(--font);
+        font-size: clamp(30px, 10.4vw, 46px);
+        line-height: 0.98;
+        letter-spacing: -0.075em;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+
+      .mobile-nav-dropdown .mobile-docs {
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(22, 20, 19, 0.10);
+        display: flex;
+        gap: 18px;
+      }
+
+      .mobile-nav-dropdown .mobile-docs a {
+        width: auto;
+        font-size: 14px;
+        line-height: 1;
+        letter-spacing: -0.025em;
+      }
+
+      body.mobile-nav-open {
+        overflow-x: hidden;
+      }
+
+      /* BABEL project title: visible immediately on portrait mobile. */
+      .hero-copy {
+        top: calc(var(--nav-h) + 48px) !important;
+        bottom: auto !important;
+        left: 16px !important;
+        right: 16px !important;
+        grid-template-columns: 1fr !important;
+        align-items: start !important;
+        gap: 12px !important;
+      }
+
+      h1 {
+        font-size: clamp(72px, 24vw, 104px) !important;
+        line-height: 0.76 !important;
+      }
+
+      .hero-meta {
+        margin: 0 !important;
+        max-width: 86% !important;
+        font-size: 11px !important;
+        line-height: 1.12 !important;
+      }
+
+      .hero {
+        min-height: 100svh !important;
+        padding-top: var(--nav-h) !important;
+      }
+
+      .hero-image {
+        height: 100svh !important;
+      }
+
+      .gesture-panel {
+        top: calc(var(--nav-h) + 8px) !important;
+        right: 8px !important;
+        bottom: auto !important;
+      }
+    }
+
+    /* ── Orbit mouse click fix ───────────────────── */
+    .orbit-card {
+      pointer-events: auto !important;
+    }
+
+    .card-shell,
+    .card-face,
+    .image-slot {
+      pointer-events: auto !important;
+    }
+
+    .orbit-card img,
+    .image-media img {
+      pointer-events: none !important;
+    }
+
+  
+    /* ── Mobile orbit restore ───────────────────── */
+    @media (max-width: 840px) and (orientation: portrait) {
+      .orbit-scene {
+        width: 100vw !important;
+        height: min(70svh, 620px) !important;
+        max-width: 100vw !important;
+        overflow: hidden !important;
+        margin-top: 2svh !important;
+        perspective-origin: 50% 44% !important;
+      }
+
+      .orbit {
+        top: 50% !important;
+      }
+
+      .card-face {
+        position: absolute !important;
+      }
+
+      .card-back {
+        display: block !important;
+      }
+
+      .hero-center-word {
+        font-size: clamp(26px, 7.5vw, 40px) !important;
+      }
+    }
+
+  
+
+    /* Active nav state, consistent with subpages */
+    .nav-links a.is-active {
+      color: var(--text);
+      position: relative;
+    }
+
+    .nav-links a.is-active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -7px;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+  
+
+    /* ── Unified mobile dropdown nav: match index exactly ───────────── */
+    @media (max-width: 840px) and (orientation: portrait) {
+      :root {
+        --nav-h: 52px;
+      }
+
+      .site-nav {
+        height: var(--nav-h) !important;
+        display: flex !important;
+        grid-template-columns: none !important;
+        grid-template-areas: none !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 16px !important;
+        overflow: visible !important;
+        z-index: 160000 !important;
+        white-space: nowrap !important;
+      }
+
+      .logo {
+        flex: 0 0 auto !important;
+        grid-area: auto !important;
+        justify-self: auto !important;
+        font-size: 11px !important;
+        letter-spacing: -0.03em !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+      }
+
+      .site-nav > .nav-links,
+      .site-nav > .nav-docs {
+        display: none !important;
+      }
+
+      .mobile-nav-toggle {
+        width: 34px !important;
+        height: 34px !important;
+        border: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: grid !important;
+        place-items: center !important;
+        background: transparent !important;
+        color: var(--accent) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        justify-self: auto !important;
+        z-index: 160001 !important;
+      }
+
+      .mobile-nav-toggle span {
+        position: absolute !important;
+        width: 17px !important;
+        height: 1px !important;
+        background: var(--accent) !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), top 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease !important;
+      }
+
+      .mobile-nav-toggle span:first-child {
+        top: 13px !important;
+      }
+
+      .mobile-nav-toggle span:last-child {
+        top: 20px !important;
+      }
+
+      body.mobile-nav-open .mobile-nav-toggle span:first-child {
+        top: 17px !important;
+        transform: translateX(-50%) rotate(45deg) !important;
+      }
+
+      body.mobile-nav-open .mobile-nav-toggle span:last-child {
+        top: 17px !important;
+        transform: translateX(-50%) rotate(-45deg) !important;
+      }
+
+      .mobile-nav-dropdown {
+        position: fixed !important;
+        top: var(--nav-h) !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 159999 !important;
+        display: block !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transform: translateY(-10px) !important;
+        padding: 0 18px !important;
+        background: rgba(238, 234, 233, 0.96) !important;
+        border-bottom: 0 !important;
+        backdrop-filter: blur(18px) !important;
+        -webkit-backdrop-filter: blur(18px) !important;
+        transition: max-height 420ms cubic-bezier(0.16, 1, 0.3, 1), opacity 220ms ease, transform 420ms cubic-bezier(0.16, 1, 0.3, 1), padding 420ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+
+      body.mobile-nav-open .mobile-nav-dropdown {
+        max-height: calc(100svh - var(--nav-h)) !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transform: translateY(0) !important;
+        padding: 18px 18px 22px !important;
+      }
+
+      .mobile-nav-dropdown .mobile-main,
+      .mobile-nav-dropdown .mobile-docs {
+        display: block !important;
+      }
+
+      .mobile-nav-dropdown .mobile-main a {
+        display: block !important;
+        width: 100% !important;
+        padding: 8px 0 !important;
+        color: var(--accent) !important;
+        font-family: var(--font) !important;
+        font-size: clamp(30px, 10.4vw, 46px) !important;
+        line-height: 0.98 !important;
+        letter-spacing: -0.075em !important;
+        text-transform: uppercase !important;
+        font-weight: 500 !important;
+      }
+
+      .mobile-nav-dropdown .mobile-docs {
+        margin-top: 16px !important;
+        padding-top: 14px !important;
+        border-top: 1px solid rgba(22, 20, 19, 0.10) !important;
+        display: flex !important;
+        gap: 18px !important;
+      }
+
+      .mobile-nav-dropdown .mobile-docs a {
+        display: block !important;
+        width: auto !important;
+        padding: 8px 0 !important;
+        color: var(--accent) !important;
+        font-family: var(--font) !important;
+        font-size: 14px !important;
+        line-height: 1 !important;
+        letter-spacing: -0.025em !important;
+        text-transform: uppercase !important;
+        font-weight: 500 !important;
+      }
+    }
+
+
+
+    /* Requested nav + gesture refinements */
+    .site-nav {
+      height: 80px !important;
+      padding-left: 126px !important;
+      padding-right: 126px !important;
+      border-bottom: 0 !important;
+    }
+    .site-nav.scrolled { border-bottom-color: transparent !important; }
+    .gesture-panel { z-index: 2147483600 !important; }
+    .gesture-cursor { z-index: 2147483647 !important; }
+    .gesture-scroll-zone { z-index: 2147483645 !important; }
+    @media (max-width: 840px) {
+      .site-nav { height: 52px !important; padding-left: 16px !important; padding-right: 16px !important; }
+    }
+
+</style>
+  <link rel="stylesheet" href="assets/css/site-shell.css?v=20260610-pinch-drag-scroll" />
+</head>
+<body data-gesture-edge-scroll="false">
+  <div class="home-intro" aria-hidden="true">
+    <div class="home-intro-word">Ken Zhang</div>
+    <div class="home-intro-line"></div>
+  </div>
+
+  <!-- Custom cursor -->
+  <div id="cursor" aria-hidden="true"></div>
+
+  <!-- Gesture Mode demo UI -->
+  <div class="gesture-cursor" id="gestureCursor" aria-hidden="true"></div>
+  <aside class="gesture-panel is-collapsed" id="gesturePanel" aria-label="Gesture control panel">
+    <div class="gesture-shell">
+      <div class="gesture-topbar">
+        <div class="gesture-title">
+          <span class="gesture-kicker">Gesture Mode</span>
+          <span class="gesture-status" id="gestureStatus">Off</span>
+        </div>
+        <button class="gesture-collapse-open" id="gestureOpenPreview" type="button" aria-label="Open camera preview">
+            <span>⌄</span>
+          </button>
+        <label class="gesture-switch" aria-label="Enable gesture mode">
+          <input type="checkbox" id="gestureToggle" />
+          <span class="gesture-slider"></span>
+        </label>
+      </div>
+      <div class="gesture-preview-wrap" id="gesturePreviewWrap">
+        <div class="gesture-preview">
+          <video id="gestureVideo" playsinline muted></video>
+          <canvas id="gestureCanvas"></canvas>
+          <button class="gesture-collapse" id="gestureCollapsePreview" type="button" aria-label="Collapse camera preview">
+              <span>⌄</span>
+            </button>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <nav class="site-nav" aria-label="Main navigation">
+    <a class="logo" href="#top">Ken Zhang</a>
+    <ul class="nav-links" aria-label="Site sections">
+      <li><a href="arts.html" data-filter="ART">Arts</a></li>
+      <li><a href="careers.html" data-filter="WORK">Career</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-docs" aria-label="Documents">
+      <a href="assets/docs/Ken_Zhang_Resume.pdf" download="Ken_Zhang_Resume.pdf" title="Download resumé PDF" data-help="Download Ken Zhang’s resumé PDF.">Resumé</a>
+      <span class="nav-separator" aria-hidden="true">｜</span>
+      <a href="assets/docs/Ken_Zhang_Resume.pdf" download="Ken_Zhang_Resume.pdf" title="Download CV PDF" data-help="Download Ken Zhang’s CV / resumé PDF.">CV</a>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero" aria-label="Rotating homepage orbit">
+      <div class="orbit-scene" id="orbitScene" aria-label="">
+        <div class="hero-center-word" aria-hidden="true">KEN_______________________ZHANG</div> <!-- 保留这个下划线 -->
+        <div class="orbit" id="orbit"></div>
+      </div>
+
+
+
+    </section>
+
+
+  <script>
+    const projects = [
+      { title: "BABEL", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/babel/thumb.webp", href: "art/babel.html", featured: true },
+      { title: "Tsang Chieh", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/cangjie/thumb.webp", href: "art/cangjie.html", featured: true },
+      { title: "Ephemeral", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/ephemeral/thumb.webp", href: "art/ephemeral.html", featured: true },
+      { title: "Undetected", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/undetected/thumb.webp", href: "art/undetected.html", featured: true },
+      { title: "Untitled", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/untitled/thumb.webp", href: "art/untitled.html", featured: true },
+      { title: "Shanghai Gift: Shanghai Architecture Cultural-Creative Tea Bag Design", label: "WORK", medium: "Packaging Design", keywords: "Architecture / Tea / Cultural Product", slug: "shanghai-gift", image: "assets/images/careers/shanghai-gift/main.jpg", href: "career/shanghai-gift.html", featured: false },
+      { title: "Event Photography", label: "WORK", medium: "Editorial Documentation", keywords: "People / Place / Exchange", slug: "event-photography", image: "assets/images/careers/event/thumb.webp", href: "career/event-photography.html", featured: false },
+      { title: "Stillness", label: "WORK", medium: "Urban Photography", keywords: "Night / Reflection / Atmosphere", slug: "stillness", image: "assets/images/careers/stillness/thumb.webp", href: "career/stillness.html", featured: true },
+      { title: "AIGC Title Sequence", label: "WORK", medium: "Motion Design", keywords: "Recraft / After Effects", slug: "aigc-title", image: "assets/images/careers/aigc-title/thumb.webp", href: "career/aigc-title.html", featured: false }
+    ];
+
+    const homeProjects = projects.filter(project => project.featured && !["aigc-title", "shanghai-gift", "event-photography"].includes(project.slug));
+    if (!homeProjects.length) homeProjects.push(...projects);
+
+    const scene = document.getElementById("orbitScene");
+    const orbit = document.getElementById("orbit");
+    const total = homeProjects.length;
+    const step = 360 / total;
+
+    const centerWord = document.querySelector(".hero-center-word");
+    let cards = [];
+    let currentFilter = "ALL";
+    let rotation = 0;
+    let velocity = 0;
+    let lastTime = null;
+    let paused = false;
+    let dragging = false;
+    let pendingDrag = false;
+    let suppressOrbitClick = false;
+    let dragStartPointer = null;
+    let activePointerId = null;
+    let lastPointer = { x: 0, y: 0 };
+    let layout = null;
+    const ORBIT_DRAG_THRESHOLD_PX = 7;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const shortestAngle = (deg) => {
+      const normalized = ((deg % 360) + 360) % 360;
+      return Math.min(normalized, 360 - normalized);
+    };
+
+    function setFilter(filter = "ALL") {
+      currentFilter = filter;
+      updateDepthAndCenter();
+    }
+
+    function updateDepthAndCenter() {
+      if (!layout || !cards.length) return;
+      let closestFront = 180;
+
+      cards.forEach((card, index) => {
+        const combined = rotation + step * index;
+        const rad = combined * Math.PI / 180;
+        const depth = (Math.cos(rad) + 1) / 2; // 1 = front, 0 = back
+        const baseOpacity = 0.52 + depth * 0.48;
+        const depthScale = 0.965 + depth * 0.035;
+        const filterFactor = currentFilter === "ALL" || card.dataset.label === currentFilter ? 1 : 0.18;
+
+        card.style.setProperty("--card-opacity", (baseOpacity * filterFactor).toFixed(3));
+        card.style.setProperty("--depth-scale", depthScale.toFixed(3));
+        closestFront = Math.min(closestFront, shortestAngle(combined));
+      });
+
+      // The center name behaves like it lives in the orbit's center:
+      // when a card passes the front center, the word becomes quieter.
+      const occlusion = clamp(1 - closestFront / 8.5, 0, 1);
+      const centerOpacity = 0.88 - occlusion * 0.52;
+      centerWord.style.setProperty("--center-opacity", centerOpacity.toFixed(3));
+    }
+
+    function getLayout() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const isLandscape = vw >= vh || vw <= 840; // mobile portrait uses the stable horizontal orbit
+      const stepRad = (Math.PI * 2) / total;
+
+      if (isLandscape) {
+        // Adaptive orbit density:
+        // 3–4 featured works = larger cards + tighter ring.
+        // 5–8 works = medium ring.
+        // 9+ works = full archive orbit.
+        const sparseMode = total <= 4;
+        const mediumMode = total > 4 && total <= 8;
+        const cardScale = sparseMode ? 1.30 : mediumMode ? 1.12 : 1;
+        const ringScale = sparseMode ? 0.58 : mediumMode ? 0.82 : 1;
+
+        // Horizontal image cards, with enough radius to prevent overlap.
+        // Adjacent card spacing uses chord length: 2 * radius * sin(step / 2).
+        const cardW = clamp(vw * 0.108 * cardScale, 150 * cardScale, 210 * cardScale);
+        const cardH = cardW * 9 / 16;
+        const minGap = clamp(vw * 0.004, 6, 14);
+        const minRadiusForGap = (cardW + minGap) / (2 * Math.sin(stepRad / 2));
+        const naturalRadius = vw * 0.30 * ringScale;
+        const maxComfortRadius = Math.max(vw * 0.40 * ringScale, minRadiusForGap);
+        const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
+
+        return {
+          isLandscape,
+          axis: "Y",
+          dragAxis: "x",
+          cardW,
+          cardH,
+          radius,
+          sceneW: vw,
+          sceneH: Math.min(vh * 0.7, 720),
+          perspective: clamp(vw * 20, 760, 1700),
+          baseTilt: -5,
+          speed: sparseMode ? 0.0032 : mediumMode ? 0.0038 : 0.0042
+        };
+      }
+
+      // Portrait keeps horizontal cards, but the orbit rotates vertically.
+      // Spacing is calculated from card height to keep visible gaps.
+      const sparseMode = total <= 4;
+      const mediumMode = total > 4 && total <= 8;
+      const cardScale = sparseMode ? 1.12 : mediumMode ? 1.06 : 1;
+      const ringScale = sparseMode ? 0.70 : mediumMode ? 0.86 : 1;
+
+      const cardW = clamp(vw * 0.54 * cardScale, 170 * cardScale, 280 * cardScale);
+      const cardH = cardW * 9 / 16;
+      const minGap = clamp(vh * 0.007, 8, 18);
+      const minRadiusForGap = (cardH + minGap) / (2 * Math.sin(stepRad / 2));
+      const naturalRadius = vh * 0.28 * ringScale;
+      const maxComfortRadius = Math.max(vh * 0.40 * ringScale, minRadiusForGap);
+      const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
+
+      return {
+        isLandscape,
+        axis: "X",
+        dragAxis: "y",
+        cardW,
+        cardH,
+        radius,
+        sceneW: Math.min(vw, 820),
+        sceneH: Math.min(vh * 0.76, 800),
+        perspective: clamp(vh * 1.08, 820, 1350),
+        baseTilt: 0,
+        speed: sparseMode ? 0.0036 : mediumMode ? 0.0042 : 0.0048
+      };
+    }
+
+    function applyLayout() {
+      layout = getLayout();
+
+      document.documentElement.style.setProperty("--card-w", `${layout.cardW}px`);
+      document.documentElement.style.setProperty("--card-h", `${layout.cardH}px`);
+      document.documentElement.style.setProperty("--radius", `${layout.radius}px`);
+      document.documentElement.style.setProperty("--back-face-transform", layout.isLandscape ? "rotateY(180deg)" : "rotateX(180deg)");
+
+      scene.style.width = `${layout.sceneW}px`;
+      scene.style.height = `${layout.sceneH}px`;
+      scene.style.perspective = `${layout.perspective}px`;
+      scene.style.perspectiveOrigin = layout.isLandscape ? "50% 42%" : "50% 50%";
+
+
+      cards.forEach((card, index) => {
+        const itemAngle = step * index;
+        if (layout.isLandscape) {
+          card.style.transform = `rotateY(${itemAngle}deg) translateZ(${layout.radius}px)`;
+        } else {
+          card.style.transform = `rotateX(${itemAngle}deg) translateZ(${layout.radius}px)`;
+        }
+      });
+
+      updateOrbitTransform();
+      updateDepthAndCenter();
+    }
+
+    function updateOrbitTransform(mouseTilt = 0) {
+      if (!layout) return;
+      if (layout.isLandscape) {
+        orbit.style.transform = `rotateX(${layout.baseTilt + mouseTilt}deg) rotateY(${rotation}deg)`;
+      } else {
+        orbit.style.transform = `rotateX(${rotation}deg) rotateY(0deg)`;
+      }
+      updateDepthAndCenter();
+    }
+
+    function renderCardFace(project, faceClass, index) {
+      return `
+        <div class="card-face ${faceClass}">
+          <div class="image-slot ${project.image ? "has-image" : "is-placeholder"}">
+            <div class="image-media">
+              ${project.image
+                ? `<img src="${project.image}" alt="" loading="lazy" draggable="false" />`
+                : `<div class="image-placeholder" aria-hidden="true"></div>`}
+            </div>
+            <div class="image-overlay" aria-hidden="true">
+              <div class="overlay-top">
+                <span>${project.label}</span>
+                <span class="overlay-index">${String(index + 1).padStart(2, "0")}</span>
+              </div>
+              <div class="overlay-bottom">
+                <div class="overlay-title">${project.title}</div>
+                <div class="overlay-meta">${project.label} / ${project.medium}</div>
+                <div class="overlay-keywords">${project.keywords}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildOrbit() {
+      homeProjects.forEach((project, index) => {
+        const card = document.createElement("a");
+        card.className = "orbit-card";
+        card.style.setProperty("--enter-index", index);
+        card.draggable = false;
+        card.addEventListener("dragstart", (event) => {
+          event.preventDefault();
+        });
+        card.href = project.href;
+        card.dataset.label = project.label;
+        card.setAttribute("aria-label", `${project.title} — ${project.label}`);
+        card.innerHTML = `
+          <div class="card-shell">
+            ${renderCardFace(project, "card-front", index)}
+            ${renderCardFace(project, "card-back", index)}
+          </div>
+        `;
+
+        card.addEventListener("mouseenter", () => { paused = true; });
+        card.addEventListener("mouseleave", () => { paused = false; });
+        card.addEventListener("focus", () => { paused = true; });
+        card.addEventListener("blur", () => { paused = false; });
+        card.addEventListener("click", (event) => {
+          if (suppressOrbitClick) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+
+          event.preventDefault();
+          paused = true;
+          document.body.classList.add("is-entering");
+          cards.forEach((item) => item.classList.remove("is-selected"));
+          card.classList.add("is-selected");
+
+          window.setTimeout(() => {
+            const href = card.getAttribute("href");
+            if (href && !href.startsWith("#")) {
+              window.location.href = href;
+              return;
+            }
+            const target = document.querySelector(href);
+            if (target) target.scrollIntoView({ behavior: "smooth" });
+            document.body.classList.remove("is-entering");
+            card.classList.remove("is-selected");
+            paused = false;
+          }, 320);
+        });
+
+        orbit.appendChild(card);
+        cards.push(card);
+      });
+    }
+
+    function animate(now) {
+      if (lastTime === null) lastTime = now;
+      const delta = now - lastTime;
+      lastTime = now;
+
+      if (!paused && !dragging) rotation += delta * layout.speed;
+      rotation += velocity;
+      velocity *= 0.92;
+      if (Math.abs(velocity) < 0.001) velocity = 0;
+
+      updateOrbitTransform();
+      requestAnimationFrame(animate);
+    }
+
+    scene.addEventListener("pointerdown", (event) => {
+      if (event.button !== undefined && event.button !== 0) return;
+
+      pendingDrag = true;
+      dragging = false;
+      paused = true;
+      activePointerId = event.pointerId;
+      dragStartPointer = { x: event.clientX, y: event.clientY };
+      lastPointer = { x: event.clientX, y: event.clientY };
+    });
+
+    scene.addEventListener("pointermove", (event) => {
+      if ((!pendingDrag && !dragging) || event.pointerId !== activePointerId) return;
+
+      if (!dragging) {
+        const travel = Math.hypot(event.clientX - dragStartPointer.x, event.clientY - dragStartPointer.y);
+        if (travel < ORBIT_DRAG_THRESHOLD_PX) return;
+
+        dragging = true;
+        suppressOrbitClick = true;
+        if (!scene.hasPointerCapture(event.pointerId)) {
+          scene.setPointerCapture(event.pointerId);
+        }
+      }
+
+      event.preventDefault();
+      const dx = event.clientX - lastPointer.x;
+      const dy = event.clientY - lastPointer.y;
+      lastPointer = { x: event.clientX, y: event.clientY };
+
+      const delta = layout.dragAxis === "x" ? dx : -dy;
+      rotation += delta * 0.22;
+      velocity = delta * 0.018;
+      updateOrbitTransform();
+    });
+
+    function endDrag(event) {
+      const wasDragging = dragging;
+      pendingDrag = false;
+      dragging = false;
+      activePointerId = null;
+      dragStartPointer = null;
+      paused = false;
+
+      if (event && scene.hasPointerCapture(event.pointerId)) {
+        scene.releasePointerCapture(event.pointerId);
+      }
+
+      if (wasDragging) {
+        window.setTimeout(() => {
+          suppressOrbitClick = false;
+        }, 120);
+      } else {
+        suppressOrbitClick = false;
+      }
+    }
+
+    scene.addEventListener("pointerup", endDrag);
+    scene.addEventListener("pointercancel", endDrag);
+
+    scene.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      const delta = layout.isLandscape ? event.deltaY : -event.deltaY;
+      velocity += delta * 0.006;
+    }, { passive: false });
+
+    scene.addEventListener("mousemove", (event) => {
+      if (!layout || !layout.isLandscape || dragging) return;
+      const halfH = window.innerHeight / 2;
+      const mouseTilt = (halfH - event.clientY) * 0.001;
+      updateOrbitTransform(mouseTilt);
+    });
+
+    let resizeRaf = null;
+    window.addEventListener("resize", () => {
+      cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => {
+        lastTime = null;
+        applyLayout();
+      });
+    });
+
+    window.addEventListener("orientationchange", () => {
+      setTimeout(() => {
+        lastTime = null;
+        applyLayout();
+      }, 120);
+    });
+
+    document.querySelectorAll(".nav-links a[data-filter]").forEach((link) => {
+      const filter = link.dataset.filter || "ALL";
+      link.addEventListener("mouseenter", () => setFilter(filter));
+      link.addEventListener("focus", () => setFilter(filter));
+      link.addEventListener("mouseleave", () => setFilter("ALL"));
+      link.addEventListener("blur", () => setFilter("ALL"));
+      link.addEventListener("click", () => {
+        setFilter(filter);
+        window.setTimeout(() => setFilter("ALL"), 900);
+      });
+    });
+
+
+
+    // ── Gesture bridge: maps hand movement into the existing orbit interaction ──
+    let gestureDragging = false;
+    let gestureLastPointer = { x: 0, y: 0 };
+    let gestureMovedDistance = 0;
+    let gestureDownTarget = null;
+
+    function isInsideGesturePanel(element) {
+      return Boolean(element && element.closest && element.closest(".gesture-panel"));
+    }
+
+    function getClickableTarget(element) {
+      if (!element || !element.closest) return null;
+      return element.closest("a, button, input, label, .orbit-card");
+    }
+
+    function setGestureHover(x, y) {
+      const element = document.elementFromPoint(x, y);
+      document.querySelectorAll(".orbit-card.gesture-hover").forEach((item) => item.classList.remove("gesture-hover"));
+      const card = element && element.closest ? element.closest(".orbit-card") : null;
+      if (card) card.classList.add("gesture-hover");
+    }
+
+    window.portfolioGestureBridge = {
+      move(x, y) {
+        setGestureHover(x, y);
+
+        if (!gestureDragging || !layout) return;
+        const dx = x - gestureLastPointer.x;
+        const dy = y - gestureLastPointer.y;
+        gestureLastPointer = { x, y };
+        gestureMovedDistance += Math.abs(dx) + Math.abs(dy);
+
+        const delta = layout.dragAxis === "x" ? dx : -dy;
+        rotation += delta * 0.12;
+        velocity = delta * 0.010;
+        updateOrbitTransform();
+      },
+
+      down(x, y) {
+        const element = document.elementFromPoint(x, y);
+        if (isInsideGesturePanel(element)) return;
+
+        gestureDownTarget = element;
+        gestureLastPointer = { x, y };
+        gestureMovedDistance = 0;
+        gestureDragging = Boolean(element && element.closest && element.closest("#orbitScene"));
+
+        if (gestureDragging) {
+          dragging = true;
+          paused = true;
+        }
+      },
+
+      up(x, y) {
+        const wasGestureDragging = gestureDragging;
+        gestureDragging = false;
+        dragging = false;
+        paused = false;
+
+        const releaseTarget = document.elementFromPoint(x, y);
+        const startClickable = getClickableTarget(gestureDownTarget);
+        const releaseClickable = getClickableTarget(releaseTarget);
+        const target = releaseClickable || startClickable;
+
+        // Treat a short pinch as a click. A longer pinch acts like drag.
+        if (gestureMovedDistance < 18 && target && !isInsideGesturePanel(target)) {
+          if (target.tagName === "INPUT") target.click();
+          else if (target.tagName === "LABEL") target.click();
+          else if (target.click) target.click();
+        }
+
+        gestureDownTarget = null;
+        if (wasGestureDragging) updateOrbitTransform();
+      },
+
+      scrollByDelta(deltaY) {
+        // Continuous fist-drag scrolling. Positive deltaY scrolls down;
+        // negative deltaY scrolls up. Keep it immediate so it feels close
+        // to a trackpad instead of firing page-by-page jumps.
+        window.scrollBy({
+          top: deltaY,
+          left: 0,
+          behavior: "auto"
+        });
+      }
+    };
+
+
+    buildOrbit();
+    applyLayout();
+    requestAnimationFrame(animate);
+    window.setTimeout(() => document.body.classList.add("is-ready"), 520);
+
+    // ── Custom cursor ─────────────────────────────────────
+    const cursor = document.getElementById("cursor");
+    let cursorX = -100, cursorY = -100;
+    let rafCursor;
+
+    if (window.matchMedia("(pointer: fine)").matches) {
+      document.addEventListener("mousemove", (e) => {
+        cursorX = e.clientX;
+        cursorY = e.clientY;
+        cursor.classList.add("visible");
+      });
+
+      document.addEventListener("mouseleave", () => cursor.classList.remove("visible"));
+
+      function tickCursor() {
+        cursor.style.transform = `translate(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%))`;
+        rafCursor = requestAnimationFrame(tickCursor);
+      }
+      tickCursor();
+
+      // Cursor states on hover targets
+      document.querySelectorAll(".orbit-card").forEach(el => {
+        el.addEventListener("mouseenter", () => cursor.classList.add("hover-card"));
+        el.addEventListener("mouseleave", () => cursor.classList.remove("hover-card"));
+      });
+
+      document.querySelectorAll("a, button").forEach(el => {
+        el.addEventListener("mouseenter", () => { if (!cursor.classList.contains("hover-card")) cursor.classList.add("hover-link"); });
+        el.addEventListener("mouseleave", () => cursor.classList.remove("hover-link"));
+      });
+    }
+
+    // ── Nav scroll shadow ─────────────────────────────────
+    const nav = document.querySelector(".site-nav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 10);
+    }, { passive: true });
+
+    // ── Section reveal (IntersectionObserver) ─────────────
+    const sections = document.querySelectorAll(".placeholder-section");
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+        }
+      });
+    }, { threshold: 0.12 });
+
+    sections.forEach(s => sectionObserver.observe(s));
+
+    // ── Active nav link (IntersectionObserver) ────────────
+    const navLinks = document.querySelectorAll(".nav-links a[href^='#']");
+    const sectionIds = Array.from(navLinks).map(a => a.getAttribute("href").slice(1));
+    const sectionEls = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.id;
+        const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (link) link.classList.toggle("is-active", entry.isIntersecting);
+      });
+    }, { threshold: 0.4 });
+
+    sectionEls.forEach(s => navObserver.observe(s));
+
+    // ── Update orbit count dynamically ────────────────────
+    const countEl = document.getElementById("orbitCount");
+    if (countEl) {
+      const art = projects.filter(p => p.label === "ART").length;
+      const work = projects.filter(p => p.label === "WORK").length;
+      //countEl.textContent = `${art} Art · ${work} Work`;
+    }
+  </script>
+
+<script src="assets/js/gesture-mode.js?v=20260610-safari-camera"></script>
+
+  <script>
+    (() => {
+      function setupMobileNav() {
+        document.querySelectorAll(".site-nav").forEach((nav) => {
+          if (nav.dataset.mobileReady === "true") return;
+          nav.dataset.mobileReady = "true";
+
+          const toggle = document.createElement("button");
+          toggle.className = "mobile-nav-toggle";
+          toggle.type = "button";
+          toggle.setAttribute("aria-label", "Open menu");
+          toggle.setAttribute("aria-expanded", "false");
+          toggle.innerHTML = "<span></span><span></span>";
+          nav.appendChild(toggle);
+
+          const dropdown = document.createElement("div");
+          dropdown.className = "mobile-nav-dropdown";
+          dropdown.setAttribute("aria-hidden", "true");
+
+          const main = document.createElement("div");
+          main.className = "mobile-main";
+          nav.querySelectorAll(".nav-links a").forEach((link) => {
+            const clone = link.cloneNode(true);
+            clone.removeAttribute("data-filter");
+            main.appendChild(clone);
+          });
+
+          const docs = document.createElement("div");
+          docs.className = "mobile-docs";
+          nav.querySelectorAll(".nav-docs a").forEach((link) => {
+            const clone = link.cloneNode(true);
+            clone.removeAttribute("data-help");
+            docs.appendChild(clone);
+          });
+
+          dropdown.append(main, docs);
+          nav.insertAdjacentElement("afterend", dropdown);
+
+          function setOpen(open) {
+            document.body.classList.toggle("mobile-nav-open", open);
+            toggle.setAttribute("aria-expanded", open ? "true" : "false");
+            toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+            dropdown.setAttribute("aria-hidden", open ? "false" : "true");
+          }
+
+          toggle.addEventListener("click", () => {
+            setOpen(!document.body.classList.contains("mobile-nav-open"));
+          });
+
+          dropdown.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => setOpen(false));
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") setOpen(false);
+          });
+
+          window.addEventListener("resize", () => {
+            if (window.innerWidth > 840) setOpen(false);
+          }, { passive: true });
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setupMobileNav);
+      } else {
+        setupMobileNav();
+      }
+    })();
+  </script>
+
+
+<script src="assets/js/site-shell.js?v=20260610-pinch-drag-scroll"></script>
+</body>
+</html>
