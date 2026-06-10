@@ -100,13 +100,19 @@
         title.style.removeProperty("font-size");
 
         const maximumSize = parseFloat(getComputedStyle(title).fontSize);
-        const minimumSize = Math.min(maximumSize, window.innerWidth <= 480 ? 24 : 32);
+        const minimumSize = Math.min(maximumSize, window.innerWidth <= 480 ? 14 : 16);
 
         const fits = (size) => {
           title.style.fontSize = `${size}px`;
-          const styles = getComputedStyle(title);
-          const lineHeight = parseFloat(styles.lineHeight) || size;
-          const withinTwoLines = title.scrollHeight <= lineHeight * 2 + 3;
+          const range = document.createRange();
+          range.selectNodeContents(title);
+          const lineTops = [];
+          Array.from(range.getClientRects()).forEach((rect) => {
+            if (rect.width > 0 && !lineTops.some((top) => Math.abs(top - rect.top) < 1)) {
+              lineTops.push(rect.top);
+            }
+          });
+          const withinTwoLines = lineTops.length <= 2;
           const withinWidth = title.scrollWidth <= title.clientWidth + 1;
           return withinTwoLines && withinWidth;
         };
