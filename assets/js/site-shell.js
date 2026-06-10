@@ -91,11 +91,55 @@
     };
   }
 
+  function setupResponsiveProjectTitles() {
+    const selector = ".hero-title, .installation-title, .cover-title";
+    let resizeFrame = 0;
+
+    const fitTitles = () => {
+      document.querySelectorAll(selector).forEach((title) => {
+        title.style.removeProperty("font-size");
+
+        const maximumSize = parseFloat(getComputedStyle(title).fontSize);
+        const minimumSize = Math.min(maximumSize, window.innerWidth <= 480 ? 24 : 32);
+
+        const fits = (size) => {
+          title.style.fontSize = `${size}px`;
+          const styles = getComputedStyle(title);
+          const lineHeight = parseFloat(styles.lineHeight) || size;
+          const withinTwoLines = title.scrollHeight <= lineHeight * 2 + 3;
+          const withinWidth = title.scrollWidth <= title.clientWidth + 1;
+          return withinTwoLines && withinWidth;
+        };
+
+        if (fits(maximumSize)) return;
+
+        let low = minimumSize;
+        let high = maximumSize;
+        for (let index = 0; index < 12; index += 1) {
+          const middle = (low + high) / 2;
+          if (fits(middle)) low = middle;
+          else high = middle;
+        }
+        title.style.fontSize = `${low}px`;
+      });
+    };
+
+    const scheduleFit = () => {
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(fitTitles);
+    };
+
+    scheduleFit();
+    window.addEventListener("resize", scheduleFit, { passive: true });
+    document.fonts?.ready.then(scheduleFit);
+  }
+
   const path = window.location.pathname;
   const nested = /\/(art|career)\//.test(path);
   const root = nested ? "../" : "";
   const page = path.split("/").pop() || "index.html";
   setupUnifiedMouseCursor();
+  setupResponsiveProjectTitles();
 
   const section = path.includes("/art/") || page === "arts.html"
     ? "arts"

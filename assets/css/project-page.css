@@ -70,14 +70,19 @@ img, video { display: block; max-width: 100%; }
   align-items: end;
 }
 .hero-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
   margin: 0;
   font-size: clamp(68px, 13vw, 210px);
   line-height: 0.76;
   letter-spacing: -0.08em;
   text-transform: uppercase;
   font-weight: 500;
+  overflow-wrap: normal;
 }
 .hero-meta {
+  flex: 0 0 min(340px, 28vw);
   max-width: 340px;
   margin: 0;
   font-size: 11px;
@@ -151,7 +156,8 @@ img, video { display: block; max-width: 100%; }
   .logo, .back-link { font-size: 10px; }
   .project-hero { min-height: 560px; }
   .hero-copy { left: 18px; right: 18px; bottom: 24px; display: block; }
-  .hero-title { font-size: clamp(50px, 17vw, 82px); white-space: normal; }
+  .hero-title { width: 100%; font-size: clamp(50px, 17vw, 82px); white-space: normal; }
+  .hero-meta { max-width: 340px; }
   .hero-meta { margin-top: 26px; }
   .project-intro { display: block; padding: 70px 20px 84px; }
   .intro-label { margin-bottom: 28px; }
