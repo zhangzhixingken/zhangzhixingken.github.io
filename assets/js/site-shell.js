@@ -162,7 +162,7 @@
   nav.dataset.mobileReady = "true";
   nav.setAttribute("aria-label", "Main navigation");
   nav.innerHTML = `
-    <a class="logo" href="${root}index.html">Ken Zhang</a>
+    <a class="logo" href="${root}index.html">Zhixing Zhang</a>
     <ul class="nav-links">
       <li><a href="${root}arts.html"${section === "arts" ? ' class="is-active"' : ""}>Arts</a></li>
       <li><a href="${root}careers.html"${section === "work" ? ' class="is-active"' : ""}>Career</a></li>
@@ -170,9 +170,9 @@
       <li><a href="${root}contact.html"${section === "contact" ? ' class="is-active"' : ""}>Contact</a></li>
     </ul>
     <div class="nav-docs" aria-label="Documents">
-      <a href="${root}assets/docs/Ken_Zhang_Resume.pdf" download="Ken_Zhang_Resume.pdf" title="Download resumé PDF" data-help="Download Ken Zhang’s resumé PDF.">Resumé</a>
+      <a href="${root}assets/docs/Zhixing_Zhang_Resume.pdf" download="Zhixing_Zhang_Resume.pdf" title="Download resumé PDF" data-help="Download Zhixing Zhang’s resumé PDF.">Resumé</a>
       <span class="nav-separator" aria-hidden="true">｜</span>
-      <a href="${root}assets/docs/Ken_Zhang_Resume.pdf" download="Ken_Zhang_Resume.pdf" title="Download CV PDF" data-help="Download Ken Zhang’s CV / resumé PDF.">CV</a>
+      <a href="${root}assets/docs/Zhixing_Zhang_Resume.pdf" download="Zhixing_Zhang_Resume.pdf" title="Download CV PDF" data-help="Download Zhixing Zhang’s CV / resumé PDF.">CV</a>
     </div>
     <button class="shell-mobile-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
   `;
@@ -190,8 +190,8 @@
     <a href="${root}about.html">About</a>
     <a href="${root}contact.html">Contact</a>
     <div class="shell-mobile-docs">
-      <a href="${root}assets/docs/Ken_Zhang_Resume.pdf" download="Ken_Zhang_Resume.pdf">Resumé</a>
-      <a href="${root}assets/docs/Ken_Zhang_Resume.pdf" download="Ken_Zhang_Resume.pdf">CV</a>
+      <a href="${root}assets/docs/Zhixing_Zhang_Resume.pdf" download="Zhixing_Zhang_Resume.pdf">Resumé</a>
+      <a href="${root}assets/docs/Zhixing_Zhang_Resume.pdf" download="Zhixing_Zhang_Resume.pdf">CV</a>
     </div>
   `;
   nav.insertAdjacentElement("afterend", menu);
