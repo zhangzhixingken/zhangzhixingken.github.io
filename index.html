@@ -747,7 +747,7 @@
 
     .orbit-card:hover .card-shell,
     .orbit-card:focus-visible .card-shell {
-      transform: scale(var(--depth-scale, 1)) translateZ(0) !important;
+      transform: scale(calc(var(--depth-scale, 1) * 1.16)) translateZ(0) !important;
     }
 
     .image-media {
@@ -757,7 +757,7 @@
     .orbit-card:hover .image-slot.has-image .image-media,
     .orbit-card:focus-visible .image-slot.has-image .image-media {
       opacity: 1 !important;
-      transform: scale(1.16) translateZ(0) !important;
+      transform: translateZ(0) !important;
     }
 
     .orbit-card:hover .image-overlay,
