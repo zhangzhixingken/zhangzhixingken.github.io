@@ -162,7 +162,7 @@
   nav.dataset.mobileReady = "true";
   nav.setAttribute("aria-label", "Main navigation");
   nav.innerHTML = `
-    <a class="logo" href="${root}index.html">Zhixing Zhang</a>
+    <a class="logo" href="/">Zhixing Zhang</a>
     <ul class="nav-links">
       <li><a href="${root}arts.html"${section === "arts" ? ' class="is-active"' : ""}>Arts</a></li>
       <li><a href="${root}careers.html"${section === "work" ? ' class="is-active"' : ""}>Career</a></li>
