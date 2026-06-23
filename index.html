@@ -2663,12 +2663,12 @@
 
         // Horizontal image cards, with enough radius to prevent overlap.
         // Adjacent card spacing uses chord length: 2 * radius * sin(step / 2).
-        const cardW = clamp(vw * 0.108 * cardScale, 150 * cardScale, 210 * cardScale);
+        const cardW = clamp(vw * 0.121 * cardScale, 168 * cardScale, 236 * cardScale);
         const cardH = cardW * 9 / 16;
         const minGap = clamp(vw * 0.004, 6, 14);
         const minRadiusForGap = (cardW + minGap) / (2 * Math.sin(stepRad / 2));
-        const naturalRadius = vw * 0.30 * ringScale;
-        const maxComfortRadius = Math.max(vw * 0.40 * ringScale, minRadiusForGap);
+        const naturalRadius = vw * 0.324 * ringScale;
+        const maxComfortRadius = Math.max(vw * 0.432 * ringScale, minRadiusForGap);
         const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
 
         return {
@@ -2679,7 +2679,7 @@
           cardH,
           radius,
           sceneW: vw,
-          sceneH: Math.min(vh * 0.7, 720),
+          sceneH: Math.min(vh * 0.74, 760),
           perspective: clamp(vw * 20, 760, 1700),
           baseTilt: -5,
           speed: sparseMode ? 0.0032 : mediumMode ? 0.0038 : 0.0042
@@ -2693,12 +2693,12 @@
       const cardScale = sparseMode ? 1.12 : mediumMode ? 1.06 : 1;
       const ringScale = sparseMode ? 0.70 : mediumMode ? 0.86 : 1;
 
-      const cardW = clamp(vw * 0.54 * cardScale, 170 * cardScale, 280 * cardScale);
+      const cardW = clamp(vw * 0.60 * cardScale, 190 * cardScale, 314 * cardScale);
       const cardH = cardW * 9 / 16;
       const minGap = clamp(vh * 0.007, 8, 18);
       const minRadiusForGap = (cardH + minGap) / (2 * Math.sin(stepRad / 2));
-      const naturalRadius = vh * 0.28 * ringScale;
-      const maxComfortRadius = Math.max(vh * 0.40 * ringScale, minRadiusForGap);
+      const naturalRadius = vh * 0.302 * ringScale;
+      const maxComfortRadius = Math.max(vh * 0.432 * ringScale, minRadiusForGap);
       const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
 
       return {
@@ -2709,7 +2709,7 @@
         cardH,
         radius,
         sceneW: Math.min(vw, 820),
-        sceneH: Math.min(vh * 0.76, 800),
+        sceneH: Math.min(vh * 0.80, 840),
         perspective: clamp(vh * 1.08, 820, 1350),
         baseTilt: 0,
         speed: sparseMode ? 0.0036 : mediumMode ? 0.0042 : 0.0048
