@@ -611,6 +611,41 @@
 
     body.is-ready .orbit-count { opacity: 1; }
 
+    .orbit-hover-caption {
+      position: absolute;
+      left: 50%;
+      bottom: clamp(30px, 5vh, 58px);
+      z-index: 20;
+      width: min(520px, calc(100vw - 40px));
+      color: var(--accent);
+      text-align: center;
+      text-transform: uppercase;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, 8px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .orbit-hover-caption.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .orbit-hover-title {
+      font-size: clamp(18px, 2.5vw, 34px);
+      line-height: 0.95;
+      letter-spacing: -0.035em;
+      font-weight: 500;
+    }
+
+    .orbit-hover-year {
+      margin-top: 8px;
+      font-size: clamp(10px, 1vw, 13px);
+      line-height: 1;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
 
 
     /* ── Clarity fix for 3D orbit placeholders ─────────────
@@ -708,6 +743,33 @@
     .orbit-card:focus-visible .card-face {
       box-shadow: 0 0 0 1px var(--accent) !important;
       background: rgba(238, 234, 233, 0.96) !important;
+    }
+
+    .orbit-card:hover .card-shell,
+    .orbit-card:focus-visible .card-shell {
+      transform: scale(var(--depth-scale, 1)) translateZ(0) !important;
+    }
+
+    .image-media {
+      transition: opacity 180ms ease, transform 220ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .orbit-card:hover .image-slot.has-image .image-media,
+    .orbit-card:focus-visible .image-slot.has-image .image-media {
+      opacity: 1 !important;
+      transform: scale(1.16) translateZ(0) !important;
+    }
+
+    .orbit-card:hover .image-overlay,
+    .orbit-card:focus-visible .image-overlay {
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+
+    .orbit-card:hover .card-face,
+    .orbit-card:focus-visible .card-face {
+      box-shadow: none !important;
+      background: rgba(238, 234, 233, 0.86) !important;
     }
 
     #cursor {
@@ -2567,6 +2629,10 @@
         <div class="hero-center-word" aria-hidden="true">ZHIXING____________________ZHANG</div> <!-- 保留这个下划线 -->
         <div class="orbit" id="orbit"></div>
       </div>
+      <div class="orbit-hover-caption" id="orbitHoverCaption" aria-live="polite" aria-hidden="true">
+        <div class="orbit-hover-title" id="orbitHoverTitle"></div>
+        <div class="orbit-hover-year" id="orbitHoverYear"></div>
+      </div>
 
 
 
@@ -2575,15 +2641,15 @@
 
   <script>
     const projects = [
-      { title: "BABEL", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/babel/thumb.webp", href: "art/babel.html", featured: true },
-      { title: "Tsang Chieh", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/cangjie/thumb.webp", href: "art/cangjie.html", featured: true },
-      { title: "Ephemeral", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/ephemeral/thumb.webp", href: "art/ephemeral.html", featured: true },
-      { title: "Undetected", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/undetected/thumb.webp", href: "art/undetected.html", featured: true },
-      { title: "Untitled", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/untitled/thumb.webp", href: "art/untitled.html", featured: true },
-      { title: "Shanghai Gift: Shanghai Architecture Cultural-Creative Tea Bag Design", label: "WORK", medium: "Packaging Design", keywords: "Architecture / Tea / Cultural Product", slug: "shanghai-gift", image: "assets/images/careers/shanghai-gift/main.jpg", href: "career/shanghai-gift.html", featured: false },
-      { title: "Event Photography", label: "WORK", medium: "Editorial Documentation", keywords: "People / Place / Exchange", slug: "event-photography", image: "assets/images/careers/event/thumb.webp", href: "career/event-photography.html", featured: false },
-      { title: "Stillness", label: "WORK", medium: "Urban Photography", keywords: "Night / Reflection / Atmosphere", slug: "stillness", image: "assets/images/careers/stillness/thumb.webp", href: "career/stillness.html", featured: true },
-      { title: "AIGC Title Sequence", label: "WORK", medium: "Motion Design", keywords: "Recraft / After Effects", slug: "aigc-title", image: "assets/images/careers/aigc-title/thumb.webp", href: "career/aigc-title.html", featured: false }
+      { title: "BABEL", year: "2024-2026", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/babel/thumb.webp", href: "art/babel.html", featured: true },
+      { title: "Tsang Chieh", year: "2023", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/cangjie/thumb.webp", href: "art/cangjie.html", featured: true },
+      { title: "Ephemeral", year: "2024", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/ephemeral/thumb.webp", href: "art/ephemeral.html", featured: true },
+      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/undetected/thumb.webp", href: "art/undetected.html", featured: true },
+      { title: "Untitled", year: "2022", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/untitled/thumb.webp", href: "art/untitled.html", featured: true },
+      { title: "Shanghai Gift: Shanghai Architecture Cultural-Creative Tea Bag Design", year: "", label: "WORK", medium: "Packaging Design", keywords: "Architecture / Tea / Cultural Product", slug: "shanghai-gift", image: "assets/images/careers/shanghai-gift/main.jpg", href: "career/shanghai-gift.html", featured: false },
+      { title: "Event Photography", year: "", label: "WORK", medium: "Editorial Documentation", keywords: "People / Place / Exchange", slug: "event-photography", image: "assets/images/careers/event/thumb.webp", href: "career/event-photography.html", featured: false },
+      { title: "Stillness", year: "", label: "WORK", medium: "Urban Photography", keywords: "Night / Reflection / Atmosphere", slug: "stillness", image: "assets/images/careers/stillness/thumb.webp", href: "career/stillness.html", featured: true },
+      { title: "AIGC Title Sequence", year: "2025", label: "WORK", medium: "Motion Design", keywords: "Recraft / After Effects", slug: "aigc-title", image: "assets/images/careers/aigc-title/thumb.webp", href: "career/aigc-title.html", featured: false }
     ];
 
     const homeProjects = projects.filter(project => project.featured && !["aigc-title", "shanghai-gift", "event-photography"].includes(project.slug));
@@ -2591,6 +2657,9 @@
 
     const scene = document.getElementById("orbitScene");
     const orbit = document.getElementById("orbit");
+    const hoverCaption = document.getElementById("orbitHoverCaption");
+    const hoverCaptionTitle = document.getElementById("orbitHoverTitle");
+    const hoverCaptionYear = document.getElementById("orbitHoverYear");
     const total = homeProjects.length;
     const step = 360 / total;
 
@@ -2663,12 +2732,12 @@
 
         // Horizontal image cards, with enough radius to prevent overlap.
         // Adjacent card spacing uses chord length: 2 * radius * sin(step / 2).
-        const cardW = clamp(vw * 0.18 * cardScale, 168 * cardScale, 236 * cardScale);
+        const cardW = clamp(vw * 0.18 * cardScale, 190 * cardScale, 272 * cardScale);
         const cardH = cardW * 9 / 16;
         const minGap = clamp(vw * 0.004, 6, 14);
         const minRadiusForGap = (cardW + minGap) / (2 * Math.sin(stepRad / 2));
-        const naturalRadius = vw * 0.324 * ringScale;
-        const maxComfortRadius = Math.max(vw * 0.432 * ringScale, minRadiusForGap);
+        const naturalRadius = vw * 0.35 * ringScale;
+        const maxComfortRadius = Math.max(vw * 0.46 * ringScale, minRadiusForGap);
         const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
 
         return {
@@ -2679,7 +2748,7 @@
           cardH,
           radius,
           sceneW: vw,
-          sceneH: Math.min(vh * 0.74, 760),
+          sceneH: Math.min(vh * 0.78, 800),
           perspective: clamp(vw * 20, 760, 1700),
           baseTilt: -5,
           speed: sparseMode ? 0.0032 : mediumMode ? 0.0038 : 0.0042
@@ -2693,12 +2762,12 @@
       const cardScale = sparseMode ? 1.12 : mediumMode ? 1.06 : 1;
       const ringScale = sparseMode ? 0.70 : mediumMode ? 0.86 : 1;
 
-      const cardW = clamp(vw * 0.60 * cardScale, 190 * cardScale, 314 * cardScale);
+      const cardW = clamp(vw * 0.66 * cardScale, 210 * cardScale, 350 * cardScale);
       const cardH = cardW * 9 / 16;
       const minGap = clamp(vh * 0.007, 8, 18);
       const minRadiusForGap = (cardH + minGap) / (2 * Math.sin(stepRad / 2));
-      const naturalRadius = vh * 0.28 * ringScale;
-      const maxComfortRadius = Math.max(vh * 0.432 * ringScale, minRadiusForGap);
+      const naturalRadius = vh * 0.326 * ringScale;
+      const maxComfortRadius = Math.max(vh * 0.46 * ringScale, minRadiusForGap);
       const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
 
       return {
@@ -2709,7 +2778,7 @@
         cardH,
         radius,
         sceneW: Math.min(vw, 820),
-        sceneH: Math.min(vh * 0.80, 840),
+        sceneH: Math.min(vh * 0.84, 880),
         perspective: clamp(vh * 1.08, 820, 1350),
         baseTilt: 0,
         speed: sparseMode ? 0.0036 : mediumMode ? 0.0042 : 0.0048
@@ -2778,6 +2847,21 @@
       `;
     }
 
+    function showOrbitCaption(project) {
+      if (!hoverCaption || !hoverCaptionTitle || !hoverCaptionYear) return;
+      hoverCaptionTitle.textContent = project.title || "";
+      hoverCaptionYear.textContent = project.year || "";
+      hoverCaptionYear.hidden = !project.year;
+      hoverCaption.classList.add("is-visible");
+      hoverCaption.setAttribute("aria-hidden", "false");
+    }
+
+    function hideOrbitCaption() {
+      if (!hoverCaption) return;
+      hoverCaption.classList.remove("is-visible");
+      hoverCaption.setAttribute("aria-hidden", "true");
+    }
+
     function buildOrbit() {
       homeProjects.forEach((project, index) => {
         const card = document.createElement("a");
@@ -2797,10 +2881,10 @@
           </div>
         `;
 
-        card.addEventListener("mouseenter", () => { paused = true; });
-        card.addEventListener("mouseleave", () => { paused = false; });
-        card.addEventListener("focus", () => { paused = true; });
-        card.addEventListener("blur", () => { paused = false; });
+        card.addEventListener("mouseenter", () => { paused = true; showOrbitCaption(project); });
+        card.addEventListener("mouseleave", () => { paused = false; hideOrbitCaption(); });
+        card.addEventListener("focus", () => { paused = true; showOrbitCaption(project); });
+        card.addEventListener("blur", () => { paused = false; hideOrbitCaption(); });
         card.addEventListener("click", (event) => {
           if (suppressOrbitClick) {
             event.preventDefault();
