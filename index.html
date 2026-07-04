@@ -2361,37 +2361,6 @@
       pointer-events: none !important;
     }
 
-  
-    /* ── Mobile orbit restore ───────────────────── */
-    @media (max-width: 840px) and (orientation: portrait) {
-      .orbit-scene {
-        width: 100vw !important;
-        height: min(78svh, 680px) !important;
-        max-width: 100vw !important;
-        overflow: hidden !important;
-        margin-top: 2svh !important;
-        perspective-origin: 50% 44% !important;
-      }
-
-      .orbit {
-        top: 46% !important;
-      }
-
-      .card-face {
-        position: absolute !important;
-      }
-
-      .card-back {
-        display: block !important;
-      }
-
-      .hero-center-word {
-        font-size: clamp(26px, 7.5vw, 40px) !important;
-      }
-    }
-
-  
-
     /* Active nav state, consistent with subpages */
     .nav-links a.is-active {
       color: var(--text);
