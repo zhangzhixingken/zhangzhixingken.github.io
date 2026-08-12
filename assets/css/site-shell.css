@@ -74,10 +74,11 @@
   line-height: 0 !important;
 }
 
-.site-nav .nav-instagram svg {
+.site-nav .nav-instagram img {
   width: 14px !important;
   height: 14px !important;
   display: block !important;
+  object-fit: cover !important;
 }
 
 .site-nav .nav-separator {
