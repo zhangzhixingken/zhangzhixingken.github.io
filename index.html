@@ -2631,7 +2631,6 @@
   <main id="top">
     <section class="hero" aria-label="Rotating homepage orbit">
       <div class="orbit-scene" id="orbitScene" aria-label="">
-        <div class="hero-center-word" aria-hidden="true">ZHIXING____________________ZHANG</div> <!-- 保留这个下划线 -->
         <div class="orbit" id="orbit"></div>
       </div>
       <div class="orbit-hover-caption" id="orbitHoverCaption" aria-live="polite" aria-hidden="true">
@@ -2668,7 +2667,6 @@
     const total = homeProjects.length;
     const step = 360 / total;
 
-    const centerWord = document.querySelector(".hero-center-word");
     let cards = [];
     let currentFilter = "ALL";
     let rotation = 0;
@@ -2714,9 +2712,6 @@
 
       // The center name behaves like it lives in the orbit's center:
       // when a card passes the front center, the word becomes quieter.
-      const occlusion = clamp(1 - closestFront / 8.5, 0, 1);
-      const centerOpacity = 0.88 - occlusion * 0.52;
-      centerWord.style.setProperty("--center-opacity", centerOpacity.toFixed(3));
     }
 
     function getLayout() {

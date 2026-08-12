@@ -67,6 +67,19 @@
   color: rgb(22, 20, 19) !important;
 }
 
+.site-nav .nav-instagram {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 0 !important;
+}
+
+.site-nav .nav-instagram svg {
+  width: 14px !important;
+  height: 14px !important;
+  display: block !important;
+}
+
 .site-nav .nav-separator {
   color: rgba(22, 20, 19, 0.28) !important;
   user-select: none !important;
