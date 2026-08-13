@@ -93,6 +93,7 @@ a { text-decoration: none; }
 
 .photo-slide {
   position: relative;
+  margin: 0;
   flex: 0 0 100vw;
   width: 100vw;
   height: 100%;
@@ -114,9 +115,54 @@ a { text-decoration: none; }
 }
 
 .photo-slide.is-cover img {
-  object-fit: cover;
-  filter: brightness(0.82);
-  transform: scale(1.015);
+  object-fit: contain;
+  filter: none;
+  transform: none;
+}
+
+/* Two-step cover: the photograph is pinned for one viewport while the
+   introduction layer scrolls away, then remains visible on its own. */
+.photo-slide.is-cover-stage {
+  flex-basis: 200vw;
+  width: 200vw;
+  min-width: 200vw;
+  max-width: 200vw;
+  display: block;
+  overflow: clip;
+}
+
+.photo-slide.is-cover-stage > img {
+  position: sticky;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  width: 100vw !important;
+  height: 100svh !important;
+  max-width: 100vw !important;
+  max-height: 100svh !important;
+  object-fit: contain !important;
+  background: #0d0d0e;
+}
+
+.photo-slide.is-cover-stage .cover-shade {
+  right: auto;
+  width: 100vw;
+}
+
+.photo-slide.is-cover-stage .cover-copy {
+  right: auto;
+  width: calc(100vw - 80px);
+}
+
+.cover-hold {
+  position: absolute;
+  left: 100vw;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  pointer-events: none;
 }
 
 .cover-shade {
@@ -281,6 +327,10 @@ a { text-decoration: none; }
     left: 18px;
     right: 18px;
     bottom: 82px;
+  }
+
+  .photo-slide.is-cover-stage .cover-copy {
+    width: calc(100vw - 36px);
   }
 
   .cover-title {

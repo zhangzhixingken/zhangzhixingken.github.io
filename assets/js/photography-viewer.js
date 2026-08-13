@@ -41,6 +41,14 @@
     figure.appendChild(image);
 
     if (slide.cover) {
+      // The cover occupies two viewport-wide steps. During the first step the
+      // image stays pinned while the copy and shade travel left; the second
+      // step presents the cover on its own before the gallery begins.
+      figure.classList.add("is-cover-stage");
+      const hold = document.createElement("span");
+      hold.className = "cover-hold";
+      hold.setAttribute("aria-hidden", "true");
+
       const shade = document.createElement("div");
       shade.className = "cover-shade";
       shade.setAttribute("aria-hidden", "true");
@@ -55,7 +63,7 @@
         </div>
       `;
 
-      figure.append(shade, copy);
+      figure.append(shade, copy, hold);
     }
 
     fragment.appendChild(figure);
@@ -63,24 +71,27 @@
 
   track.appendChild(fragment);
 
+  // Scroll step 0 is the introduction, step 1 is the clean cover, and the
+  // remaining steps are the project photographs.
+  const stepCount = slides.length + 1;
   let activeIndex = 0;
   let wheelLock = false;
   let scrollTimer = null;
 
   function goTo(index) {
-    const nextIndex = Math.max(0, Math.min(index, slides.length - 1));
+    const nextIndex = Math.max(0, Math.min(index, stepCount - 1));
     track.scrollTo({ left: nextIndex * track.clientWidth, behavior: "smooth" });
     setActive(nextIndex);
   }
 
   function setActive(index) {
-    activeIndex = Math.max(0, Math.min(index, slides.length - 1));
+    activeIndex = Math.max(0, Math.min(index, stepCount - 1));
     prevButton.disabled = activeIndex === 0;
-    nextButton.disabled = activeIndex === slides.length - 1;
+    nextButton.disabled = activeIndex === stepCount - 1;
 
     const visibleNumber = activeIndex === 0 ? "" : String(activeIndex);
     status.textContent = visibleNumber;
-    progress.style.transform = `scaleX(${activeIndex / (slides.length - 1)})`;
+    progress.style.transform = `scaleX(${activeIndex / (stepCount - 1)})`;
   }
 
   function syncFromScroll() {
