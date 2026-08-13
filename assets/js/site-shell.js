@@ -170,7 +170,7 @@
       <li><a href="${root}contact.html"${section === "contact" ? ' class="is-active"' : ""}>Contact</a></li>
     </ul>
     <div class="nav-docs" aria-label="Social media">
-      <a class="nav-instagram" href="https://www.instagram.com/zhixing_gallery/" target="_blank" rel="noopener" title="Instagram" data-help="Visit Zhixing Zhang’s Instagram." aria-label="Visit Zhixing Zhang’s Instagram"><img src="${root}assets/images/ui/instagram.png" alt="" /></a>
+      <a class="nav-instagram" href="https://www.instagram.com/zhixing_gallery/" target="_blank" rel="noopener" title="Instagram" data-help="Visit Zhixing Zhang’s Instagram." aria-label="Visit Zhixing Zhang’s Instagram"><span class="nav-instagram-icon" aria-hidden="true"></span></a>
     </div>
     <button class="shell-mobile-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
   `;
@@ -188,7 +188,7 @@
     <a href="${root}about.html">About</a>
     <a href="${root}contact.html">Contact</a>
     <div class="shell-mobile-docs">
-      <a class="nav-instagram" href="https://www.instagram.com/zhixing_gallery/" target="_blank" rel="noopener" aria-label="Visit Zhixing Zhang’s Instagram"><img src="${root}assets/images/ui/instagram.png" alt="" /></a>
+      <a class="nav-instagram" href="https://www.instagram.com/zhixing_gallery/" target="_blank" rel="noopener" aria-label="Visit Zhixing Zhang’s Instagram"><span class="nav-instagram-icon" aria-hidden="true"></span></a>
     </div>
   `;
   nav.insertAdjacentElement("afterend", menu);

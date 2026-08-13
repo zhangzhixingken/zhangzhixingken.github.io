@@ -51,10 +51,6 @@
       hold.className = "cover-hold";
       hold.setAttribute("aria-hidden", "true");
 
-      const shade = document.createElement("div");
-      shade.className = "cover-shade";
-      shade.setAttribute("aria-hidden", "true");
-
       const copy = document.createElement("div");
       copy.className = "cover-copy";
       copy.innerHTML = `
@@ -65,7 +61,7 @@
         </div>
       `;
 
-      figure.append(media, shade, copy, hold);
+      figure.append(media, copy, hold);
     } else {
       figure.appendChild(image);
     }

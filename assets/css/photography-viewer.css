@@ -166,11 +166,6 @@ a { text-decoration: none; }
   transform: scale(var(--cover-current-scale)) !important;
 }
 
-.photo-slide.is-cover-stage .cover-shade {
-  right: auto;
-  width: 100vw;
-}
-
 .photo-slide.is-cover-stage .cover-copy {
   right: auto;
   width: calc(100vw - 80px);
@@ -185,14 +180,6 @@ a { text-decoration: none; }
   scroll-snap-align: start;
   scroll-snap-stop: always;
   pointer-events: none;
-}
-
-.cover-shade {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(10, 10, 11, 0.12), transparent 40%, rgba(10, 10, 11, 0.52)),
-    linear-gradient(90deg, rgba(10, 10, 11, 0.34), transparent 55%);
 }
 
 .cover-copy {
