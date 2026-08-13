@@ -38,13 +38,20 @@
     image.addEventListener("load", () => {
       figure.classList.toggle("is-portrait", image.naturalHeight > image.naturalWidth);
     }, { once: true });
-    figure.appendChild(image);
-
     if (slide.cover) {
       // The cover occupies two viewport-wide steps. During the first step the
       // image stays pinned while the copy and shade travel left; the second
       // step presents the cover on its own before the gallery begins.
       figure.classList.add("is-cover-stage");
+      const media = document.createElement("div");
+      media.className = "cover-media";
+
+      const fillImage = image.cloneNode(false);
+      fillImage.className = "cover-fill";
+      fillImage.alt = "";
+      fillImage.setAttribute("aria-hidden", "true");
+      media.append(image, fillImage);
+
       const hold = document.createElement("span");
       hold.className = "cover-hold";
       hold.setAttribute("aria-hidden", "true");
@@ -63,7 +70,9 @@
         </div>
       `;
 
-      figure.append(shade, copy, hold);
+      figure.append(media, shade, copy, hold);
+    } else {
+      figure.appendChild(image);
     }
 
     fragment.appendChild(figure);
@@ -77,6 +86,13 @@
   let activeIndex = 0;
   let wheelLock = false;
   let scrollTimer = null;
+
+  function updateCoverTransition() {
+    const coverStage = track.querySelector(".is-cover-stage");
+    if (!coverStage) return;
+    const coverProgress = Math.max(0, Math.min(1, track.scrollLeft / Math.max(1, track.clientWidth)));
+    coverStage.style.setProperty("--cover-transition", String(coverProgress));
+  }
 
   function goTo(index) {
     const nextIndex = Math.max(0, Math.min(index, stepCount - 1));
@@ -125,10 +141,12 @@
   }, { passive: false });
 
   track.addEventListener("scroll", () => {
+    updateCoverTransition();
     window.clearTimeout(scrollTimer);
     scrollTimer = window.setTimeout(syncFromScroll, 80);
   }, { passive: true });
 
   window.addEventListener("resize", () => goTo(activeIndex), { passive: true });
+  updateCoverTransition();
   setActive(0);
 })();

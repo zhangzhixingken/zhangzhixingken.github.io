@@ -123,6 +123,7 @@ a { text-decoration: none; }
 /* Two-step cover: the photograph is pinned for one viewport while the
    introduction layer scrolls away, then remains visible on its own. */
 .photo-slide.is-cover-stage {
+  --cover-transition: 0;
   flex-basis: 200vw;
   width: 200vw;
   min-width: 200vw;
@@ -131,17 +132,39 @@ a { text-decoration: none; }
   overflow: clip;
 }
 
-.photo-slide.is-cover-stage > img {
+.photo-slide.is-cover-stage .cover-media {
   position: sticky;
+  float: left;
   z-index: 0;
   left: 0;
   top: 0;
-  width: 100vw !important;
-  height: 100svh !important;
-  max-width: 100vw !important;
-  max-height: 100svh !important;
-  object-fit: contain !important;
+  width: 100vw;
+  height: 100svh;
   background: #0d0d0e;
+  overflow: hidden;
+}
+
+.photo-slide.is-cover-stage .cover-media > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-position: center center;
+  filter: none;
+  transform: none !important;
+}
+
+.photo-slide.is-cover-stage .cover-media > img:first-child {
+  object-fit: contain !important;
+}
+
+.photo-slide.is-cover-stage .cover-media > .cover-fill {
+  object-fit: cover !important;
+  opacity: calc(1 - var(--cover-transition));
+  will-change: opacity;
 }
 
 .photo-slide.is-cover-stage .cover-shade {
