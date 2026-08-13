@@ -45,12 +45,7 @@
       figure.classList.add("is-cover-stage");
       const media = document.createElement("div");
       media.className = "cover-media";
-
-      const fillImage = image.cloneNode(false);
-      fillImage.className = "cover-fill";
-      fillImage.alt = "";
-      fillImage.setAttribute("aria-hidden", "true");
-      media.append(image, fillImage);
+      media.appendChild(image);
 
       const hold = document.createElement("span");
       hold.className = "cover-hold";
@@ -87,12 +82,35 @@
   let wheelLock = false;
   let scrollTimer = null;
 
+  function measureCoverScale() {
+    const coverStage = track.querySelector(".is-cover-stage");
+    const coverImage = coverStage?.querySelector(".cover-media > img");
+    if (!coverStage || !coverImage?.naturalWidth || !coverImage?.naturalHeight) return;
+
+    const viewportRatio = track.clientWidth / Math.max(1, track.clientHeight);
+    const imageRatio = coverImage.naturalWidth / coverImage.naturalHeight;
+    const fillScale = imageRatio > viewportRatio
+      ? imageRatio / viewportRatio
+      : viewportRatio / imageRatio;
+
+    coverStage.dataset.coverScale = String(fillScale);
+    coverStage.classList.add("is-cover-ready");
+    updateCoverTransition();
+  }
+
   function updateCoverTransition() {
     const coverStage = track.querySelector(".is-cover-stage");
     if (!coverStage) return;
     const coverProgress = Math.max(0, Math.min(1, track.scrollLeft / Math.max(1, track.clientWidth)));
+    const fillScale = Number(coverStage.dataset.coverScale || 1);
+    const currentScale = 1 + ((fillScale - 1) * (1 - coverProgress));
     coverStage.style.setProperty("--cover-transition", String(coverProgress));
+    coverStage.style.setProperty("--cover-current-scale", String(currentScale));
   }
+
+  const coverImage = track.querySelector(".is-cover-stage .cover-media > img");
+  if (coverImage?.complete) measureCoverScale();
+  else coverImage?.addEventListener("load", measureCoverScale, { once: true });
 
   function goTo(index) {
     const nextIndex = Math.max(0, Math.min(index, stepCount - 1));
@@ -146,7 +164,10 @@
     scrollTimer = window.setTimeout(syncFromScroll, 80);
   }, { passive: true });
 
-  window.addEventListener("resize", () => goTo(activeIndex), { passive: true });
+  window.addEventListener("resize", () => {
+    measureCoverScale();
+    goTo(activeIndex);
+  }, { passive: true });
   updateCoverTransition();
   setActive(0);
 })();

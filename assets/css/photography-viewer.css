@@ -124,6 +124,7 @@ a { text-decoration: none; }
    introduction layer scrolls away, then remains visible on its own. */
 .photo-slide.is-cover-stage {
   --cover-transition: 0;
+  --cover-current-scale: 1;
   flex-basis: 200vw;
   width: 200vw;
   min-width: 200vw;
@@ -152,19 +153,17 @@ a { text-decoration: none; }
   height: 100% !important;
   max-width: none !important;
   max-height: none !important;
+  object-fit: cover !important;
   object-position: center center;
   filter: none;
   transform: none !important;
+  transform-origin: center center;
+  will-change: transform;
 }
 
-.photo-slide.is-cover-stage .cover-media > img:first-child {
+.photo-slide.is-cover-stage.is-cover-ready .cover-media > img {
   object-fit: contain !important;
-}
-
-.photo-slide.is-cover-stage .cover-media > .cover-fill {
-  object-fit: cover !important;
-  opacity: calc(1 - var(--cover-transition));
-  will-change: opacity;
+  transform: scale(var(--cover-current-scale)) !important;
 }
 
 .photo-slide.is-cover-stage .cover-shade {
