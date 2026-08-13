@@ -274,12 +274,33 @@ a { text-decoration: none; }
   padding: 0;
   background: transparent;
   color: inherit;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  font-weight: 400;
-  font-size: 25px;
   line-height: 1;
   cursor: pointer;
   pointer-events: auto;
+}
+
+.viewer-controls button span {
+  display: block;
+  width: 19px;
+  height: 15px;
+  margin: auto;
+  background: currentColor;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+
+.prev-button span {
+  -webkit-mask-image: url("../images/ui/arrow-left.svg");
+  mask-image: url("../images/ui/arrow-left.svg");
+}
+
+.next-button span {
+  -webkit-mask-image: url("../images/ui/arrow-right.svg");
+  mask-image: url("../images/ui/arrow-right.svg");
 }
 
 .viewer-controls button:disabled {
