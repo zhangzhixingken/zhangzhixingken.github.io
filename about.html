@@ -137,9 +137,9 @@
     }
 
     .cv-panel .panel-reveal {
-      transform: translate3d(calc((1 - var(--panel-progress)) * 140px), 0, 0);
-      opacity: var(--panel-progress);
-      transition: transform 90ms linear, opacity 180ms ease-out;
+      transform: translate3d(calc((1 - var(--panel-progress)) * 180px), 0, 0);
+      opacity: calc(0.62 + var(--panel-progress) * 0.38);
+      transition: transform 90ms linear, opacity 120ms ease-out;
     }
 
     /* ── Column 1: portrait ── */
@@ -364,10 +364,12 @@
     /* ── Column 3: CV ── */
     .cv-panel {
       width: 142vw;
+      padding-left: clamp(180px, 16vw, 250px);
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: clamp(34px, 4vw, 72px);
       align-content: safe center;
+      opacity: calc(0.72 + var(--panel-progress) * 0.28);
     }
 
     .cv-block {
@@ -462,7 +464,7 @@
         width: 270vw;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 0;
-        padding-left: max(24px, env(safe-area-inset-left));
+        padding-left: max(44px, env(safe-area-inset-left));
         padding-right: max(24px, env(safe-area-inset-right));
       }
 
