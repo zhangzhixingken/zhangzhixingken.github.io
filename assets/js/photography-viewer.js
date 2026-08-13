@@ -3,7 +3,6 @@
   const track = document.getElementById("photoTrack");
   const prevButton = document.getElementById("prevPhoto");
   const nextButton = document.getElementById("nextPhoto");
-  const status = document.getElementById("viewerStatus");
   const progress = document.getElementById("viewerProgress");
 
   if (!project || !track || !project.images.length) return;
@@ -119,8 +118,6 @@
     prevButton.disabled = activeIndex === 0;
     nextButton.disabled = activeIndex === stepCount - 1;
 
-    const visibleNumber = activeIndex === 0 ? "" : String(activeIndex);
-    status.textContent = visibleNumber;
     progress.style.transform = `scaleX(${activeIndex / (stepCount - 1)})`;
   }
 
