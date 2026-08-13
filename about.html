@@ -426,16 +426,29 @@
         padding-bottom: max(32px, env(safe-area-inset-bottom));
       }
 
+      .intro-spread {
+        display: block;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
       .portrait-panel {
-        width: 24vw;
+        width: 100%;
+        height: auto;
         padding-left: max(12px, env(safe-area-inset-left));
-        padding-right: 8px;
+        padding-right: max(16px, env(safe-area-inset-right));
+        padding-bottom: 14px;
+        justify-items: start;
       }
 
       .bio-panel {
-        width: 76vw;
-        padding-left: 10px;
+        width: 100%;
+        height: auto;
+        padding-top: 0;
+        padding-left: max(16px, env(safe-area-inset-left));
         padding-right: max(16px, env(safe-area-inset-right));
+        padding-bottom: max(42px, env(safe-area-inset-bottom));
       }
 
       .statement-panel { width: 100vw; }
@@ -453,12 +466,12 @@
       }
 
       .about-portrait {
-        width: min(18vw, 88px);
+        width: min(40vw, 176px);
       }
       .portrait-frame { aspect-ratio: 3/4; }
 
       .about-name {
-        font-size: clamp(34px, 10vw, 48px);
+        font-size: clamp(40px, 12vw, 56px);
         margin-bottom: 18px;
       }
 
@@ -992,6 +1005,7 @@
     let touchStartX = 0;
     let touchStartY = 0;
     let touchStartScroll = 0;
+    let touchIntro = null;
 
     function updatePanels() {
       animationFrame = 0;
@@ -1025,12 +1039,21 @@
       touchStartX = event.touches[0].clientX;
       touchStartY = event.touches[0].clientY;
       touchStartScroll = scroller.scrollLeft;
+      touchIntro = event.target.closest(".intro-spread");
     }, { passive: true });
 
     scroller.addEventListener("touchmove", (event) => {
       if (event.touches.length !== 1) return;
       const deltaX = touchStartX - event.touches[0].clientX;
       const deltaY = touchStartY - event.touches[0].clientY;
+
+      if (touchIntro && Math.abs(deltaY) > Math.abs(deltaX)) {
+        const atTop = touchIntro.scrollTop <= 0;
+        const atBottom = touchIntro.scrollTop + touchIntro.clientHeight >= touchIntro.scrollHeight - 1;
+        const canScrollIntro = (deltaY > 0 && !atBottom) || (deltaY < 0 && !atTop);
+        if (canScrollIntro) return;
+      }
+
       event.preventDefault();
       scroller.scrollLeft = touchStartScroll + (Math.abs(deltaY) > Math.abs(deltaX) ? deltaY : deltaX);
     }, { passive: false });
