@@ -92,6 +92,7 @@
     .about-horizontal {
       position: fixed;
       inset: var(--nav-h) 0 0;
+      height: calc(100dvh - var(--nav-h));
       display: flex;
       overflow-x: auto;
       overflow-y: hidden;
@@ -100,6 +101,7 @@
       scrollbar-width: thin;
       scrollbar-color: rgba(22, 20, 19, 0.22) transparent;
       cursor: grab;
+      -webkit-overflow-scrolling: touch;
     }
 
     .about-horizontal.is-dragging {
@@ -420,22 +422,35 @@
       .nav-links { display: none; }
 
       .about-panel {
-        padding: 42px 24px 54px;
+        padding-top: max(28px, env(safe-area-inset-top));
+        padding-bottom: max(32px, env(safe-area-inset-bottom));
       }
 
       .portrait-panel {
         width: 24vw;
-        padding: 28px 8px 44px 12px;
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: 8px;
       }
 
       .bio-panel {
         width: 76vw;
-        padding: 28px 16px 40px 10px;
+        padding-left: 10px;
+        padding-right: max(16px, env(safe-area-inset-right));
       }
 
       .statement-panel { width: 100vw; }
 
-      .cv-panel { width: 150vw; }
+      .cv-panel {
+        width: 270vw;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0;
+        padding-left: max(24px, env(safe-area-inset-left));
+        padding-right: max(24px, env(safe-area-inset-right));
+      }
+
+      .cv-panel .cv-block {
+        padding-right: 34px;
+      }
 
       .about-portrait {
         width: min(18vw, 88px);
@@ -474,15 +489,17 @@
       .cv-heading { margin-bottom: 22px; }
 
       .cv-item {
-        grid-template-columns: 82px minmax(0, 1fr);
-        gap: 16px;
-        font-size: 12px;
+        grid-template-columns: 64px minmax(0, 1fr);
+        gap: 12px;
+        font-size: 11px;
       }
 
       .statement-text {
         font-size: clamp(19px, 5.7vw, 25px);
         line-height: 1.48;
       }
+
+      .gesture-panel { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -972,6 +989,9 @@
     let dragStartX = 0;
     let dragStartScroll = 0;
     let animationFrame = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartScroll = 0;
 
     function updatePanels() {
       animationFrame = 0;
@@ -998,6 +1018,21 @@
       const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
       event.preventDefault();
       scroller.scrollLeft += delta;
+    }, { passive: false });
+
+    scroller.addEventListener("touchstart", (event) => {
+      if (event.touches.length !== 1) return;
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+      touchStartScroll = scroller.scrollLeft;
+    }, { passive: true });
+
+    scroller.addEventListener("touchmove", (event) => {
+      if (event.touches.length !== 1) return;
+      const deltaX = touchStartX - event.touches[0].clientX;
+      const deltaY = touchStartY - event.touches[0].clientY;
+      event.preventDefault();
+      scroller.scrollLeft = touchStartScroll + (Math.abs(deltaY) > Math.abs(deltaX) ? deltaY : deltaX);
     }, { passive: false });
 
     scroller.addEventListener("pointerdown", (event) => {
