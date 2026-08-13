@@ -324,6 +324,18 @@ body.gesture-active .gesture-scroll-zone.is-gesture-hover { opacity: 1; transfor
     letter-spacing: -0.025em !important;
   }
 
+  .shell-mobile-docs .nav-instagram {
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  .shell-mobile-docs .nav-instagram img {
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;
+    object-fit: cover !important;
+  }
+
   .gesture-panel { right: 14px; bottom: 14px; width: min(232px, calc(100vw - 28px)); }
 }
 

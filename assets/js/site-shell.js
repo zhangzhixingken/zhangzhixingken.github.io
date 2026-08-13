@@ -169,10 +169,8 @@
       <li><a href="${root}about.html"${section === "about" ? ' class="is-active"' : ""}>About</a></li>
       <li><a href="${root}contact.html"${section === "contact" ? ' class="is-active"' : ""}>Contact</a></li>
     </ul>
-    <div class="nav-docs" aria-label="Documents">
-      <a href="${root}assets/docs/Zhixing_Zhang_Resume.pdf" download="Zhixing_Zhang_Resume.pdf" title="Download resumé PDF" data-help="Download Zhixing Zhang’s resumé PDF.">Resumé</a>
-      <span class="nav-separator" aria-hidden="true">｜</span>
-      <a href="${root}assets/docs/Zhixing_Zhang_Resume.pdf" download="Zhixing_Zhang_Resume.pdf" title="Download CV PDF" data-help="Download Zhixing Zhang’s CV / resumé PDF.">CV</a>
+    <div class="nav-docs" aria-label="Social media">
+      <a class="nav-instagram" href="https://www.instagram.com/zhixing_gallery/" target="_blank" rel="noopener" title="Instagram" data-help="Visit Zhixing Zhang’s Instagram." aria-label="Visit Zhixing Zhang’s Instagram"><img src="${root}assets/images/ui/instagram.png" alt="" /></a>
     </div>
     <button class="shell-mobile-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
   `;
@@ -190,8 +188,7 @@
     <a href="${root}about.html">About</a>
     <a href="${root}contact.html">Contact</a>
     <div class="shell-mobile-docs">
-      <a href="${root}assets/docs/Zhixing_Zhang_Resume.pdf" download="Zhixing_Zhang_Resume.pdf">Resumé</a>
-      <a href="${root}assets/docs/Zhixing_Zhang_Resume.pdf" download="Zhixing_Zhang_Resume.pdf">CV</a>
+      <a class="nav-instagram" href="https://www.instagram.com/zhixing_gallery/" target="_blank" rel="noopener" aria-label="Visit Zhixing Zhang’s Instagram"><img src="${root}assets/images/ui/instagram.png" alt="" /></a>
     </div>
   `;
   nav.insertAdjacentElement("afterend", menu);

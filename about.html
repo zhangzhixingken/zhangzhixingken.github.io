@@ -86,24 +86,77 @@
     .nav-links a:hover, .nav-docs a:hover { color: var(--accent); }
     .nav-links a.is-active { color: var(--text); }
 
-    /* ── Layout ── */
-    .about-wrap {
-      padding-top: calc(var(--nav-h) + 100px);
-      padding-bottom: 72px;
-      padding-left: 140px;
-      padding-right: 140px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 80px;
-      align-items: start;
+    /* ── Horizontal about narrative ── */
+    body { overflow: hidden; }
+
+    .about-horizontal {
+      position: fixed;
+      inset: var(--nav-h) 0 0;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(22, 20, 19, 0.22) transparent;
+      cursor: grab;
     }
 
-    /* ── Left: image portrait ── */
+    .about-horizontal.is-dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .intro-spread {
+      flex: 0 0 100vw;
+      width: 100vw;
+      height: 100%;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .about-panel {
+      --panel-progress: 0;
+      flex: 0 0 auto;
+      height: 100%;
+      min-width: 0;
+      padding: clamp(42px, 6vh, 76px) 140px 54px;
+      overflow-y: auto;
+      opacity: 0.34;
+      transition: opacity 520ms ease;
+    }
+
+    .about-panel.is-active { opacity: 1; }
+
+    .panel-reveal {
+      transform: translate3d(calc((1 - var(--panel-progress)) * 76px), 0, 0);
+      transition: transform 90ms linear;
+      will-change: transform;
+    }
+
+    .cv-panel .panel-reveal {
+      transform: translate3d(calc((1 - var(--panel-progress)) * 140px), 0, 0);
+      opacity: var(--panel-progress);
+      transition: transform 90ms linear, opacity 180ms ease-out;
+    }
+
+    /* ── Column 1: portrait ── */
+    .portrait-panel {
+      width: 40.6vw;
+      padding-left: 98px;
+      padding-right: 32px;
+      display: grid;
+      align-items: safe center;
+      justify-items: center;
+    }
+
     .about-portrait {
-      position: sticky;
-      top: calc(var(--nav-h) + 48px);
-      width: 84%;
-      max-width: 420px;
+      width: min(38vh, 360px, 100%);
+      transform-origin: top center;
+      transform: translate3d(calc((1 - var(--panel-progress)) * 92px), 0, 0)
+        scale(calc(0.92 + var(--panel-progress) * 0.08));
+      opacity: calc(0.2 + var(--panel-progress) * 0.8);
+      will-change: transform, opacity;
     }
 
     .portrait-frame {
@@ -143,11 +196,20 @@
       color: var(--muted);
     }
 
-    /* ── Right: bio text ── */
+    /* ── Column 2: bio text ── */
+    .bio-panel {
+      width: 59.4vw;
+      padding-left: 32px;
+      padding-right: clamp(34px, 5vw, 76px);
+      display: flex;
+      align-items: safe center;
+    }
+
     .about-content {
       display: flex;
       flex-direction: column;
       gap: 0;
+      width: min(100%, 720px);
     }
 
     .about-name {
@@ -157,7 +219,7 @@
       text-transform: uppercase;
       font-weight: 500;
       color: var(--accent);
-      margin: 0 0 40px;
+      margin: 0 0 28px;
     }
 
     .about-cn-name {
@@ -201,8 +263,8 @@
       font-size: 15px;
       line-height: 1.8;
       color: var(--text);
-      margin: 0 0 48px;
-      max-width: 540px;
+      margin: 0 0 20px;
+      max-width: 680px;
     }
 
     .about-bio p { margin: 0 0 1.4em; }
@@ -213,8 +275,8 @@
       display: flex;
       flex-direction: column;
       gap: 0;
-      padding-top: 36px;
-      margin-bottom: 29px;
+      padding-top: 12px;
+      margin-bottom: 0;
     }
 
     .meta-row {
@@ -281,17 +343,11 @@
 
     .meta-val a:hover { color: var(--accent); }
 
-    /* ── Statement section ── */
-    .statement-section {
-      padding: 48px 140px 100px;
-    }
-
-    .statement-kicker {
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 32px;
+    /* ── Column 4: statement ── */
+    .statement-panel {
+      width: 100vw;
+      display: flex;
+      align-items: safe center;
     }
 
     .statement-text {
@@ -303,21 +359,21 @@
       letter-spacing: -0.01em;
     }
 
-    .cv-section {
-      padding: 0 140px 120px;
+    /* ── Column 3: CV ── */
+    .cv-panel {
+      width: 142vw;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(34px, 4vw, 72px);
+      align-content: safe center;
     }
 
     .cv-block {
-      display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
-      gap: 40px;
-      padding: 48px 0;
+      min-width: 0;
     }
 
-    .cv-block:last-child { padding-bottom: 0; }
-
     .cv-heading {
-      margin: 0;
+      margin: 0 0 30px;
       font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -327,14 +383,14 @@
 
     .cv-list {
       display: grid;
-      gap: 18px;
+      gap: 20px;
     }
 
     .cv-item {
       display: grid;
-      grid-template-columns: 116px minmax(0, 1fr);
-      gap: 22px;
-      font-size: 13px;
+      grid-template-columns: 76px minmax(0, 1fr);
+      gap: 14px;
+      font-size: 12px;
       line-height: 1.48;
       color: var(--text);
     }
@@ -356,19 +412,6 @@
       letter-spacing: 0.02em;
       white-space: nowrap;
     }
-    /* ── Entrance ── */
-    .about-wrap,
-    .statement-section,
-    .cv-section {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 650ms ease, transform 650ms ease;
-    }
-
-    .about-wrap.in-view,
-    .statement-section.in-view,
-    .cv-section.in-view { opacity: 1; transform: translateY(0); }
-
     /* ── Mobile ── */
     @media (max-width: 840px) {
       :root { --nav-h: 52px; }
@@ -376,35 +419,76 @@
       .site-nav { padding: 0 20px; grid-template-columns: 1fr auto; }
       .nav-links { display: none; }
 
-      .about-wrap {
-        padding: calc(var(--nav-h) + 48px) 24px 80px;
-        grid-template-columns: 1fr;
-        gap: 48px 0;
+      .about-panel {
+        padding: 42px 24px 54px;
       }
 
+      .portrait-panel {
+        width: 24vw;
+        padding: 28px 8px 44px 12px;
+      }
+
+      .bio-panel {
+        width: 76vw;
+        padding: 28px 16px 40px 10px;
+      }
+
+      .statement-panel { width: 100vw; }
+
+      .cv-panel { width: 150vw; }
+
       .about-portrait {
-        position: static;
-        width: 82%;
-        max-width: 340px;
+        width: min(18vw, 88px);
       }
       .portrait-frame { aspect-ratio: 3/4; }
 
-      .statement-section { padding: 64px 24px 80px; }
-
-      .cv-section { padding: 0 24px 86px; }
-
-      .cv-block {
-        display: block;
-        padding: 38px 0;
+      .about-name {
+        font-size: clamp(34px, 10vw, 48px);
+        margin-bottom: 18px;
       }
 
-      .cv-heading { margin-bottom: 24px; }
+      .about-cn-name {
+        margin-top: 12px;
+        font-size: clamp(18px, 5.6vw, 26px);
+      }
+
+      .about-bio {
+        font-size: clamp(10px, 2.8vw, 12px);
+        line-height: 1.5;
+        margin-bottom: 10px;
+      }
+
+      .about-bio p { margin-bottom: 1em; }
+
+      .about-meta { padding-top: 4px; }
+      .meta-row {
+        grid-template-columns: 72px 1fr;
+        padding: 9px 0;
+        font-size: 10px;
+      }
+      .meta-key { font-size: 8px; }
+
+      .cv-panel { padding-top: 42px; }
+
+      .cv-block { margin-bottom: 0; }
+      .cv-heading { margin-bottom: 22px; }
 
       .cv-item {
         grid-template-columns: 82px minmax(0, 1fr);
         gap: 16px;
         font-size: 12px;
       }
+
+      .statement-text {
+        font-size: clamp(19px, 5.7vw, 25px);
+        line-height: 1.48;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .about-panel,
+      .panel-reveal,
+      .about-portrait { transition: none; }
     }
   
 
@@ -787,83 +871,84 @@
       <li><a href="about.html" class="is-active">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <div class="nav-docs" aria-label="Documents">
+    <div class="nav-docs" aria-label="Social media">
       <a class="nav-instagram" href="https://www.instagram.com/zhixing_gallery/" target="_blank" rel="noopener" title="Instagram" data-help="Visit Zhixing Zhang’s Instagram." aria-label="Visit Zhixing Zhang’s Instagram"><img src="assets/images/ui/instagram.png" alt="" /></a>
-      <span class="nav-separator" aria-hidden="true">|</span>
-      <a href="index.html#cv" title="Artist CV for exhibitions, achievements, and experience" data-help="Artist record for exhibitions, selected works, education, and achievements.">CV</a>
     </div>
   </nav>
 
-  <div class="about-wrap" id="aboutWrap">
-
-    <!-- Portrait -->
-    <div class="about-portrait">
-      <div class="portrait-frame">
-        <img src="assets/images/about/portrait.webp" alt="Zhixing Ken Zhang" />
-      </div>
-      <p class="portrait-caption">Zhixing Ken Zhang</p>
-    </div>
-
-    <!-- Bio -->
-    <div class="about-content">
-      <h1 class="about-name">Zhixing<br>Zhang<span class="about-cn-name">张知行<button class="name-audio-btn" id="nameAudioBtn" type="button" aria-label="Play pronunciation of 张知行"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"></path><path d="M16 8.5a4 4 0 0 1 0 7"></path><path d="M18.5 6a7 7 0 0 1 0 12"></path></svg></button></span></h1>
-
-      <div class="about-bio">
-        <p>Zhixing Ken Zhang（张知行）is an interdisciplinary artist whose practice spans interactive installation, moving image, photography, and visual design. The artist's work centers on language, translation, and cultural transmission — examining how meaning mutates across systems.</p>
-        <p>The artist's practice has been formed through movement across the United States, China, and Australia, and is shaped by perpetual translation. The artist approaches art as a social experiment, with growing interest in artificial intelligence and large language models as artistic material.</p>
-      </div>
-
-      <div class="about-meta">
-        <div class="meta-row">
-          <span class="meta-key">Based in</span>
-          <span class="meta-val">Shenzhen, Shanghai, New York</span>
+  <main class="about-horizontal" id="aboutHorizontal" tabindex="0" aria-label="About Zhixing Zhang — scroll horizontally to browse four columns">
+    <div class="intro-spread" aria-label="Portrait and biography">
+      <section class="about-panel portrait-panel is-active" aria-label="Portrait">
+        <div class="about-portrait">
+          <div class="portrait-frame">
+            <img src="assets/images/about/portrait.webp" alt="Zhixing Ken Zhang" />
+          </div>
+          <p class="portrait-caption">Zhixing Ken Zhang</p>
         </div>
-        <div class="meta-row">
-          <span class="meta-key">Contact</span>
-          <span class="meta-val"><a href="mailto:contact@zhixingzhang.com">contact@zhixingzhang.com</a></span>
+      </section>
+
+      <section class="about-panel bio-panel" aria-label="Biography">
+        <div class="about-content panel-reveal">
+          <h1 class="about-name">Zhixing<br>Zhang<span class="about-cn-name">张知行<button class="name-audio-btn" id="nameAudioBtn" type="button" aria-label="Play pronunciation of 张知行"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"></path><path d="M16 8.5a4 4 0 0 1 0 7"></path><path d="M18.5 6a7 7 0 0 1 0 12"></path></svg></button></span></h1>
+
+        <div class="about-bio">
+          <p>Zhixing Ken Zhang（张知行）is an interdisciplinary artist whose practice spans interactive installation, moving image, photography, and visual design. The artist's work centers on language, translation, and cultural transmission — examining how meaning mutates across systems.</p>
+          <p>The artist's practice has been formed through movement across the United States, China, and Australia, and is shaped by perpetual translation. The artist approaches art as a social experiment, with growing interest in artificial intelligence and large language models as artistic material.</p>
         </div>
-      </div>
+
+          <div class="about-meta">
+          <div class="meta-row">
+            <span class="meta-key">Based in</span>
+            <span class="meta-val">Shenzhen, Shanghai, New York</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-key">Contact</span>
+            <span class="meta-val"><a href="mailto:contact@zhixingzhang.com">contact@zhixingzhang.com</a></span>
+          </div>
+          </div>
+
+        </div>
+      </section>
     </div>
 
-  </div>
+    <section class="about-panel cv-panel" aria-label="Curriculum vitae">
+            <div class="cv-block panel-reveal">
+              <h2 class="cv-heading">Education</h2>
+              <div class="cv-list">
+                <div class="cv-item"><span class="cv-year">2026</span><span class="cv-detail">University of Sydney, Visiting Student, Social Science</span></div>
+                <div class="cv-item"><span class="cv-year">2024-2025</span><span class="cv-detail">NYU Shanghai, Visiting Student, Interactive Media Arts</span></div>
+                <div class="cv-item"><span class="cv-year">2023-2024</span><span class="cv-detail">School of the Art Institute of Chicago, Undergraduate, Fine Arts</span></div>
+              </div>
+            </div>
 
-  <section class="statement-section" id="statementSection">
-    <p class="statement-text">
-      “My practice begins with a fundamental observation: no signal passes through a medium unchanged. Language, when translated, does not merely shift between systems — it mutates, accumulates, and reveals the gaps between cultures. I am interested in those gaps as material. The untranslatable is not a failure of communication; it is the site where cultural specificity becomes visible.”
-    </p>
-  </section>
+            <div class="cv-block panel-reveal">
+              <h2 class="cv-heading">Solo Projects</h2>
+              <div class="cv-list">
+                <div class="cv-item"><span class="cv-year">2026-</span><span class="cv-detail">21, Multimedia Art <span class="cv-status">*work in progress</span></span></div>
+                <div class="cv-item"><span class="cv-year">2026-</span><span class="cv-detail">BABEL (Colloquy), Spatial Installation, Interactive Media Art <span class="cv-status">*work in progress</span></span></div>
+                <div class="cv-item"><span class="cv-year">2024-2025</span><span class="cv-detail">BABEL (Soliloquy), Installation, Interactive Media Art</span></div>
+                <div class="cv-item"><span class="cv-year">2024-</span><span class="cv-detail">Tsang Chieh 倉頡, Multimedia Art</span></div>
+                <div class="cv-item"><span class="cv-year">2022</span><span class="cv-detail">Untitled, Digital Serial Photography, Photography</span></div>
+                <div class="cv-item"><span class="cv-year">2019-2022</span><span class="cv-detail">Undetected, Digital Serial Photography, Photography</span></div>
+              </div>
+            </div>
 
-  <section class="cv-section" id="cvSection">
-    <div class="cv-block">
-      <h2 class="cv-heading">Education</h2>
-      <div class="cv-list">
-        <div class="cv-item"><span class="cv-year">2026</span><span class="cv-detail">University of Sydney, Visiting Student, Social Science</span></div>
-        <div class="cv-item"><span class="cv-year">2024-2025</span><span class="cv-detail">NYU Shanghai, Visiting Student, Interactive Media Arts</span></div>
-        <div class="cv-item"><span class="cv-year">2023-2024</span><span class="cv-detail">School of the Art Institute of Chicago, Undergraduate, Fine Arts</span></div>
-      </div>
-    </div>
+            <div class="cv-block panel-reveal">
+              <h2 class="cv-heading">Selected Solo &amp; Group Exhibition</h2>
+              <div class="cv-list">
+                <div class="cv-item"><span class="cv-year">2026</span><span class="cv-detail">BABEL, NYU Tisch, New York, NY</span></div>
+                <div class="cv-item"><span class="cv-year">2025</span><span class="cv-detail">FutureLab Ambition! Youth Artists Exhibition, West Bund Art Center, Shanghai, China</span></div>
+                <div class="cv-item"><span class="cv-year">2025</span><span class="cv-detail">BABEL, NYU Shanghai, Shanghai, China</span></div>
+              </div>
+            </div>
+    </section>
 
-    <div class="cv-block">
-      <h2 class="cv-heading">Solo Projects</h2>
-      <div class="cv-list">
-        <div class="cv-item"><span class="cv-year">2026-</span><span class="cv-detail">21, Multimedia Art <span class="cv-status">*work in progress</span></span></div>
-        <div class="cv-item"><span class="cv-year">2026-</span><span class="cv-detail">BABEL (Colloquy), Spatial Installation, Interactive Media Art <span class="cv-status">*work in progress</span></span></div>
-        <div class="cv-item"><span class="cv-year">2024-2025</span><span class="cv-detail">BABEL (Soliloquy), Installation, Interactive Media Art</span></div>
-        <div class="cv-item"><span class="cv-year">2024-</span><span class="cv-detail">Tsang Chieh 倉頡, Multimedia Art</span></div>
-        <div class="cv-item"><span class="cv-year">2022</span><span class="cv-detail">Untitled, Digital Serial Photography, Photography</span></div>
-        <div class="cv-item"><span class="cv-year">2019-2022</span><span class="cv-detail">Undetected, Digital Serial Photography, Photography</span></div>
-      </div>
-    </div>
-
-    <div class="cv-block">
-      <h2 class="cv-heading">Selected Solo &amp; Group Exhibition</h2>
-      <div class="cv-list">
-        <div class="cv-item"><span class="cv-year">2026</span><span class="cv-detail">BABEL, NYU Tisch, New York, NY</span></div>
-        <div class="cv-item"><span class="cv-year">2025</span><span class="cv-detail">FutureLab Ambition! Youth Artists Exhibition, West Bund Art Center, Shanghai, China</span></div>
-        <div class="cv-item"><span class="cv-year">2025</span><span class="cv-detail">BABEL, NYU Shanghai, Shanghai, China</span></div>
-      </div>
-    </div>
-  </section>
+    <section class="about-panel statement-panel" aria-label="Artist statement">
+      <p class="statement-text panel-reveal">
+        “My practice begins with a fundamental observation: no signal passes through a medium unchanged. Language, when translated, does not merely shift between systems — it mutates, accumulates, and reveals the gaps between cultures. I am interested in those gaps as material. The untranslatable is not a failure of communication; it is the site where cultural specificity becomes visible.”
+      </p>
+    </section>
+  </main>
   <script>
     (() => {
       const button = document.getElementById("nameAudioBtn");
@@ -880,26 +965,84 @@
     })();
   </script>
 <script>
-    // Nav scroll shadow
-    const nav = document.querySelector(".site-nav");
-    window.addEventListener("scroll", () => {
-      nav.classList.toggle("scrolled", window.scrollY > 10);
-    }, { passive: true });
+  (() => {
+    const scroller = document.getElementById("aboutHorizontal");
+    const panels = [...scroller.querySelectorAll(".about-panel")];
+    let dragging = false;
+    let dragStartX = 0;
+    let dragStartScroll = 0;
+    let animationFrame = 0;
 
-    // Entrance animation
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
-          observer.unobserve(entry.target);
-        }
+    function updatePanels() {
+      animationFrame = 0;
+      const viewport = Math.max(scroller.clientWidth, 1);
+      const center = scroller.scrollLeft + viewport / 2;
+
+      panels.forEach((panel) => {
+        const panelCenter = panel.offsetLeft + panel.offsetWidth / 2;
+        const distance = Math.abs(panelCenter - center) / viewport;
+        const progress = Math.max(0, 1 - distance);
+        panel.style.setProperty("--panel-progress", progress.toFixed(4));
+        panel.classList.toggle("is-active", progress > 0.54);
       });
-    }, { threshold: 0.05 });
+    }
 
-    [document.getElementById("aboutWrap"), document.getElementById("statementSection"), document.getElementById("cvSection")].forEach(el => {
-      if (el) observer.observe(el);
+    function requestPanelUpdate() {
+      if (!animationFrame) animationFrame = requestAnimationFrame(updatePanels);
+    }
+
+    scroller.addEventListener("scroll", requestPanelUpdate, { passive: true });
+    window.addEventListener("resize", requestPanelUpdate, { passive: true });
+
+    scroller.addEventListener("wheel", (event) => {
+      const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+      event.preventDefault();
+      scroller.scrollLeft += delta;
+    }, { passive: false });
+
+    scroller.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0 || event.target.closest("a, button")) return;
+      dragging = true;
+      dragStartX = event.clientX;
+      dragStartScroll = scroller.scrollLeft;
+      scroller.classList.add("is-dragging");
+      scroller.setPointerCapture(event.pointerId);
     });
-  </script>
+
+    scroller.addEventListener("pointermove", (event) => {
+      if (!dragging) return;
+      scroller.scrollLeft = dragStartScroll - (event.clientX - dragStartX);
+    });
+
+    function stopDragging(event) {
+      if (!dragging) return;
+      dragging = false;
+      scroller.classList.remove("is-dragging");
+      if (event && scroller.hasPointerCapture(event.pointerId)) scroller.releasePointerCapture(event.pointerId);
+    }
+
+    scroller.addEventListener("pointerup", stopDragging);
+    scroller.addEventListener("pointercancel", stopDragging);
+
+    scroller.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "PageUp", "PageDown"].includes(event.key)) return;
+      event.preventDefault();
+      const direction = event.key === "ArrowLeft" || event.key === "PageUp" ? -1 : 1;
+      scroller.scrollBy({ left: direction * scroller.clientWidth * 0.72, behavior: "smooth" });
+    });
+
+    window.portfolioHorizontalAboutScroll = (delta) => {
+      scroller.scrollBy({ left: delta, behavior: "auto" });
+    };
+
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+    requestAnimationFrame(() => {
+      scroller.scrollLeft = 0;
+      updatePanels();
+    });
+  })();
+</script>
 
 <script>
   (() => {
@@ -985,7 +1128,11 @@
         gestureDownTarget = null;
       },
       scrollByDelta(deltaY) {
-        window.scrollBy({ top: deltaY, left: 0, behavior: "auto" });
+        if (typeof window.portfolioHorizontalAboutScroll === "function") {
+          window.portfolioHorizontalAboutScroll(deltaY);
+        } else {
+          window.scrollBy({ top: deltaY, left: 0, behavior: "auto" });
+        }
       }
     };
 
