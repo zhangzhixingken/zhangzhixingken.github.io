@@ -427,17 +427,22 @@
       }
 
       .intro-spread {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        justify-content: safe center;
         overflow-x: hidden;
         overflow-y: auto;
+        padding-top: max(28px, env(safe-area-inset-top));
+        padding-bottom: max(32px, env(safe-area-inset-bottom));
         -webkit-overflow-scrolling: touch;
       }
 
       .portrait-panel {
         width: 100%;
         height: auto;
-        padding-left: max(12px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
+        padding-top: 0;
+        padding-left: max(24px, env(safe-area-inset-left));
+        padding-right: max(24px, env(safe-area-inset-right));
         padding-bottom: 14px;
         justify-items: start;
       }
@@ -446,9 +451,9 @@
         width: 100%;
         height: auto;
         padding-top: 0;
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
-        padding-bottom: max(42px, env(safe-area-inset-bottom));
+        padding-left: max(24px, env(safe-area-inset-left));
+        padding-right: max(24px, env(safe-area-inset-right));
+        padding-bottom: 0;
       }
 
       .statement-panel { width: 100vw; }
