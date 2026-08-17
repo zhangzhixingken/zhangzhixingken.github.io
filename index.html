@@ -2739,7 +2739,7 @@
 
         // Horizontal image cards, with enough radius to prevent overlap.
         // Adjacent card spacing uses chord length: 2 * radius * sin(step / 2).
-        const cardW = clamp(vw * 0.22 * cardScale, 190 * cardScale, 600 * cardScale);
+        const cardW = clamp(vw * 0.16 * cardScale, 190 * cardScale, 400 * cardScale);
         const cardH = cardW * 9 / 16;
         const minGap = clamp(vw * 0.0025, 0.5, 14);
         const minRadiusForGap = (cardW + minGap) / (2 * Math.sin(stepRad / 2));
