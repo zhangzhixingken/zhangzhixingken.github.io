@@ -2741,7 +2741,7 @@
         // Adjacent card spacing uses chord length: 2 * radius * sin(step / 2).
         const cardW = clamp(vw * 0.16 * cardScale, 190 * cardScale, 400 * cardScale);
         const cardH = cardW * 9 / 16;
-        const minGap = clamp(vw * 0.0025, 0.5, 14);
+        const minGap = clamp(vw * 0.002, 3, 10);
         const minRadiusForGap = (cardW + minGap) / (2 * Math.sin(stepRad / 2));
         const naturalRadius = vw * 0.45 * ringScale;
         const maxComfortRadius = Math.max(vw * 0.46 * ringScale, minRadiusForGap);
