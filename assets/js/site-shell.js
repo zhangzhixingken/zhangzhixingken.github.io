@@ -165,7 +165,7 @@
     <a class="logo" href="/">Zhixing Zhang</a>
     <ul class="nav-links">
       <li><a href="${root}arts.html"${section === "arts" ? ' class="is-active"' : ""}>Arts</a></li>
-      <li><a href="${root}careers.html"${section === "work" ? ' class="is-active"' : ""}>Career</a></li>
+      <li><a href="https://career.zhixingzhang.com">Career</a></li>
       <li><a href="${root}about.html"${section === "about" ? ' class="is-active"' : ""}>About</a></li>
       <li><a href="${root}contact.html"${section === "contact" ? ' class="is-active"' : ""}>Contact</a></li>
     </ul>
@@ -184,7 +184,7 @@
   menu.setAttribute("aria-hidden", "true");
   menu.innerHTML = `
     <a href="${root}arts.html">Arts</a>
-    <a href="${root}careers.html">Career</a>
+    <a href="https://career.zhixingzhang.com">Career</a>
     <a href="${root}about.html">About</a>
     <a href="${root}contact.html">Contact</a>
     <div class="shell-mobile-docs">
