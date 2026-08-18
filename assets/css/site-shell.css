@@ -529,3 +529,8 @@ body[data-no-gesture="true"] .shell-mobile-menu a { color: rgba(248, 246, 244, 0
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* Gesture Mode is intentionally hidden only on mobile; retain markup and behavior for later restoration. */
+@media (max-width: 840px) {
+  .gesture-panel { display: none !important; }
+}
