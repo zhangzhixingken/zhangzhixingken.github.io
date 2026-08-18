@@ -2776,9 +2776,9 @@
 
       const cardW = clamp(vw * 0.66 * cardScale, 210 * cardScale, 350 * cardScale);
       const cardH = cardW * 9 / 16;
-      const minGap = clamp(vh * 0.007, 8, 18);
+      const minGap = clamp(vh * .015, 12, 28);
       const minRadiusForGap = (cardH + minGap) / (2 * Math.sin(stepRad / 2));
-      const naturalRadius = vh * 0.326 * ringScale;
+      const naturalRadius = vh * 0.380 * ringScale;
       const maxComfortRadius = Math.max(vh * 0.46 * ringScale, minRadiusForGap);
       const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
 
