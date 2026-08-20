@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="apple-touch-icon" href="/favicon.png" />
-  <meta name="description" content="BABEL, an interactive installation by Zhixing Zhang.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <meta name="description" content="BABEL is an interactive installation by Zhixing Zhang that makes linguistic drift, cultural transmission, and technological bias physically perceptible.">
   <link rel="canonical" href="https://www.zhixingzhang.com/art/babel.html">
   <title>BABEL — Zhixing Zhang</title>
   <link rel="stylesheet" href="../assets/css/site-shell.css?v=20260818-gesture-v1">
-  <link rel="stylesheet" href="../assets/css/installation-scroll.css?v=20260610-responsive-titles">
-  <link rel="stylesheet" href="../assets/css/babel-luxury.css?v=20260820-vimeo-hero">
+  <link rel="stylesheet" href="../assets/css/babel-luxury.css?v=20260820-curatorial-v2">
 </head>
-<body class="installation-page babel-page">
-  <nav class="site-nav">
+<body class="babel-page">
+  <nav class="site-nav" aria-label="Main navigation">
     <a class="logo" href="/">Zhixing Zhang</a>
     <ul class="nav-links">
       <li><a href="../arts.html">Arts</a></li>
@@ -21,56 +20,210 @@
       <li><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
-    <a class="back-link" href="../arts.html">Back to Arts</a>
+    <div class="nav-docs" aria-label="Social media"></div>
   </nav>
 
   <main>
-    <section class="installation-hero babel-hero" aria-labelledby="project-title">
-      <div class="installation-hero-image babel-video-shell">
+    <section class="babel-hero" id="top" aria-labelledby="project-title">
+      <div class="babel-film" aria-hidden="true">
         <iframe
           src="https://player.vimeo.com/video/1087918452?background=1&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;autopause=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1"
-          title="BABEL project film"
+          title=""
           allow="autoplay; fullscreen; picture-in-picture"
           loading="eager"
           tabindex="-1"
         ></iframe>
       </div>
-      <div class="installation-hero-copy">
-        <p class="babel-eyebrow">Interactive Installation</p>
-        <h1 class="installation-title" id="project-title">BABEL</h1>
-        <p class="installation-meta">2024–2025 · Language / Translation</p>
+      <div class="babel-hero-shade" aria-hidden="true"></div>
+      <div class="babel-hero-register" aria-hidden="true">
+        <span>Interactive Installation</span>
+        <span>Oct 2024 — Nov 2025</span>
       </div>
-      <a class="babel-scroll-cue" href="#babel-statement">Discover</a>
+      <div class="babel-hero-copy">
+        <p>Language / Translation / Cultural Transmission</p>
+        <h1 id="project-title">BABEL</h1>
+        <span>Zhixing Zhang</span>
+      </div>
+      <a class="babel-scroll-cue" href="#thesis">Enter the work</a>
     </section>
 
-    <section class="installation-statement babel-statement" id="babel-statement">
-      <p class="babel-section-label">BABEL / 01<br>About the work</p>
-      <p>How much meaning is lost, altered, or invented when language passes between people and systems? BABEL turns translation into a spatial conversation between voices, machines, and an audience.</p>
-    </section>
-
-    <section class="pulled-gallery" id="images" style="--gallery-height: 920vh">
-      <div class="gallery-sticky">
-        <div class="gallery-track" id="galleryTrack">
-          <figure class="gallery-item wide"><img src="../assets/images/babel/gallery-01.webp" alt="BABEL documentation 1" loading="lazy"></figure>
-          <figure class="gallery-item large"><img src="../assets/images/babel/gallery-02.webp" alt="BABEL documentation 2" loading="lazy"></figure>
-          <figure class="gallery-item wide"><img src="../assets/images/babel/gallery-03.webp" alt="BABEL documentation 3" loading="lazy"></figure>
-          <figure class="gallery-item medium"><img src="../assets/images/babel/gallery-04.webp" alt="BABEL documentation 4" loading="lazy"></figure>
-          <figure class="gallery-item wide"><img src="../assets/images/babel/gallery-05.webp" alt="BABEL documentation 5" loading="lazy"></figure>
-          <figure class="gallery-item large"><img src="../assets/images/babel/gallery-06.webp" alt="BABEL documentation 6" loading="lazy"></figure>
-          <figure class="gallery-item wide"><img src="../assets/images/babel/gallery-07.webp" alt="BABEL documentation 7" loading="lazy"></figure>
-          <figure class="gallery-item large"><img src="../assets/images/babel/gallery-08.webp" alt="BABEL documentation 8" loading="lazy"></figure>
-          <figure class="gallery-item wide"><img src="../assets/images/babel/gallery-09.webp" alt="BABEL documentation 9" loading="lazy"></figure>
+    <section class="babel-intro babel-reveal" id="thesis">
+      <div class="babel-folio">
+        <span>01</span>
+        <p>Thesis</p>
+      </div>
+      <div class="babel-intro-copy">
+        <h2>Translation is not a bridge.<br>It is a material.</h2>
+        <div class="babel-intro-body">
+          <p>We live in a multilingual world, yet no sentence crosses from one language to another unchanged. BABEL makes that instability physical. A spoken sentence travels sequentially through twelve linguistic regions and returns to its language of origin — altered, accumulated, and newly strange.</p>
+          <p>By staging translation as sound, movement, projection, and printed trace, the work asks what disappears when language is treated as frictionless infrastructure. What is lost is not only semantic accuracy, but a way of locating time, space, uncertainty, identity, and relation.</p>
         </div>
-        <div class="gallery-progress" aria-hidden="true"><span id="galleryProgress"></span></div>
+        <dl class="babel-object-data">
+          <div><dt>Period</dt><dd>Oct 2024 — Nov 2025</dd></div>
+          <div><dt>Medium</dt><dd>Interactive installation</dd></div>
+          <div><dt>Materials</dt><dd>Arduino, Python, Google Cloud API, twelve mannequin heads, metal ring, sound, projection, paper</dd></div>
+        </dl>
       </div>
     </section>
 
-    <section class="installation-documentation">
-      <a href="../assets/docs/babel-portfolio.pdf" target="_blank" rel="noopener">Documentation ↗</a>
+    <figure class="babel-image babel-image--monument babel-reveal">
+      <img src="../assets/images/babel/gallery-01.webp" alt="BABEL circular installation with twelve mannequin heads" loading="eager">
+      <figcaption><span>Installation view</span><span>BABEL Solo Exhibition, NYU Shanghai · May 2025</span></figcaption>
+    </figure>
+
+    <section class="babel-dark-thesis">
+      <div class="babel-folio babel-folio--light babel-reveal">
+        <span>02</span>
+        <p>Position</p>
+      </div>
+      <div class="babel-dark-copy babel-reveal">
+        <p class="babel-kicker">Language after the network</p>
+        <h2>No signal passes through a medium unchanged.</h2>
+        <p>Within conceptual art’s history of treating language as material, BABEL moves the proposition into an infrastructural condition. The work does not place mistranslation at the edge of communication; it makes mutation the central event. APIs, language taxonomies, machine voices, and hardware cease to be invisible tools and become the sculpture’s active agents.</p>
+      </div>
+      <div class="babel-principles">
+        <article class="babel-reveal">
+          <span>Ⅰ</span>
+          <h3>Linguistic relativity</h3>
+          <p>Language influences habitual attention and how a culture segments the world. Concepts that are precise in one language may only survive as broader approximations in another.</p>
+        </article>
+        <article class="babel-reveal">
+          <span>Ⅱ</span>
+          <h3>Technology is situated</h3>
+          <p>Gaps in API coverage across Central Asia, Africa, Oceania, and Indigenous language regions reveal that the supposedly universal platform carries the priorities of its makers.</p>
+        </article>
+        <article class="babel-reveal">
+          <span>Ⅲ</span>
+          <h3>The untranslatable</h3>
+          <p>The untranslatable is not a failure of communication. It is the point at which cultural specificity becomes visible.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="babel-apparatus" id="system">
+      <header class="babel-section-head babel-reveal">
+        <div class="babel-folio"><span>03</span><p>Apparatus</p></div>
+        <h2>Twelve voices.<br>One sentence.<br>A return that is never identical.</h2>
+      </header>
+      <ol class="babel-sequence">
+        <li class="babel-reveal"><span>01</span><h3>Speak</h3><p>A participant speaks into the microphone. Speech recognition detects the language and converts the voice into text.</p></li>
+        <li class="babel-reveal"><span>02</span><h3>Transmit</h3><p>The sentence passes through twelve linguistic regions, with a language randomly selected from each region during every interaction.</p></li>
+        <li class="babel-reveal"><span>03</span><h3>Embody</h3><p>Machine speech travels through twelve speakers while synchronized servos animate the heads around the ring.</p></li>
+        <li class="babel-reveal"><span>04</span><h3>Return</h3><p>The sentence returns to its origin language as a transformed utterance, made perceptible through voice, projection, and paper.</p></li>
+      </ol>
+      <div class="babel-numbers babel-reveal" aria-label="Project facts">
+        <div><strong>12</strong><span>Linguistic regions</span></div>
+        <div><strong>1→12→1</strong><span>Translation circuit</span></div>
+        <div><strong>≈</strong><span>Meaning after transmission</span></div>
+      </div>
+    </section>
+
+    <section class="babel-gallery" id="documentation">
+      <header class="babel-gallery-head babel-reveal">
+        <div class="babel-folio"><span>04</span><p>Encounters</p></div>
+        <p>The audience does not stand outside the system. Each voice initiates a new linguistic route, making every encounter an unrepeatable edition of the work.</p>
+      </header>
+
+      <figure class="babel-image babel-image--wide babel-reveal">
+        <img src="../assets/images/babel/gallery-02.webp" alt="Visitors encountering the BABEL installation" loading="lazy">
+        <figcaption><span>Audience as activator</span><span>02 / 09</span></figcaption>
+      </figure>
+
+      <div class="babel-image-pair">
+        <figure class="babel-image babel-reveal">
+          <img src="../assets/images/babel/gallery-03.webp" alt="A child speaking into the BABEL microphone" loading="lazy">
+          <figcaption><span>Voice input</span><span>03 / 09</span></figcaption>
+        </figure>
+        <figure class="babel-image babel-image--lower babel-reveal">
+          <img src="../assets/images/babel/gallery-04.webp" alt="A visitor listening to the BABEL translation sequence" loading="lazy">
+          <figcaption><span>Listening position</span><span>04 / 09</span></figcaption>
+        </figure>
+      </div>
+
+      <figure class="babel-image babel-image--contained babel-reveal">
+        <img src="../assets/images/babel/gallery-05.webp" alt="Close view of the mannequin heads in BABEL" loading="lazy">
+        <figcaption><span>Twelve faceless speakers</span><span>05 / 09</span></figcaption>
+      </figure>
+
+      <div class="babel-image-pair babel-image-pair--reverse">
+        <figure class="babel-image babel-reveal">
+          <img src="../assets/images/babel/gallery-06.webp" alt="Projected multilingual text in the BABEL installation" loading="lazy">
+          <figcaption><span>Language made visible</span><span>06 / 09</span></figcaption>
+        </figure>
+        <figure class="babel-image babel-image--lower babel-reveal">
+          <img src="../assets/images/babel/gallery-07.webp" alt="Front installation view of BABEL" loading="lazy">
+          <figcaption><span>Suspended structure</span><span>07 / 09</span></figcaption>
+        </figure>
+      </div>
+
+      <figure class="babel-image babel-image--wide babel-image--right babel-reveal">
+        <img src="../assets/images/babel/gallery-08.webp" alt="Wide installation view of BABEL" loading="lazy">
+        <figcaption><span>A floating linguistic planet</span><span>08 / 09</span></figcaption>
+      </figure>
+    </section>
+
+    <section class="babel-evolution" id="evolution">
+      <header class="babel-evolution-head babel-reveal">
+        <div class="babel-folio"><span>05</span><p>Evolution</p></div>
+        <h2>The work is a living system.</h2>
+        <p>Each version changes the conditions through which loss can be heard, seen, and carried away.</p>
+      </header>
+      <div class="babel-timeline">
+        <article class="babel-reveal"><div><span>V1</span><time>Oct 2024</time></div><h3>Map Projection</h3><p>Light sensors triggered language regions across a floor projection. The translation process remained too abstract to be clearly perceived.</p><small>Arduino · Light sensor · Projection</small></article>
+        <article class="babel-reveal"><div><span>V2</span><time>May 2025</time></div><h3>Telephone Game</h3><p>Twelve heads formed a circular social body. Translation and text-to-speech gave distortion an audible, spatial route.</p><small>Python V8 · Google Cloud API · Solo exhibition</small></article>
+        <article class="babel-reveal"><div><span>V3</span><time>Oct 2025</time></div><h3>Floating Planet</h3><p>The ring was suspended, turning the translation circuit into a planetary image of linguistic communities — isolated, connected, and in motion.</p><small>Python V12 · NYU Global Show &amp; Tell</small></article>
+        <article class="babel-reveal"><div><span>V4</span><time>Nov 2025</time></div><h3>Visible Loss</h3><p>A rice-paper scroll translated ephemeral speech into a physical archive. Sound, text, and trace appeared together as evidence.</p><small>Paper scroll · Public exhibition</small></article>
+        <article class="babel-reveal"><div><span>V5</span><time>Next</time></div><h3>AI Interpretation</h3><p>A future layer uses large language models to explain where semantic drift and contextual misalignment enter the chain, printing the analysis as a take-away object.</p><small>Large language model · Material feedback</small></article>
+      </div>
+    </section>
+
+    <section class="babel-technology">
+      <div class="babel-folio babel-reveal"><span>06</span><p>Technical body</p></div>
+      <div class="babel-tech-lead babel-reveal">
+        <p class="babel-kicker">Software becomes choreography</p>
+        <h2>The machine is not backstage. It is part of the argument.</h2>
+      </div>
+      <div class="babel-tech-grid">
+        <article class="babel-reveal"><span>01</span><h3>Speech recognition</h3><p>OpenAI speech-to-text captures input and detects the participant’s language.</p></article>
+        <article class="babel-reveal"><span>02</span><h3>Translation</h3><p>Python and Google Cloud pass each output forward as the next language’s input.</p></article>
+        <article class="babel-reveal"><span>03</span><h3>Text-to-speech</h3><p>Translated sentences become voices distributed sequentially through the ring.</p></article>
+        <article class="babel-reveal"><span>04</span><h3>Physical computing</h3><p>Two Arduino systems synchronize twelve servos and twelve speakers through serial communication.</p></article>
+      </div>
+    </section>
+
+    <section class="babel-provenance">
+      <header class="babel-reveal">
+        <div class="babel-folio babel-folio--light"><span>07</span><p>Provenance</p></div>
+        <h2>Exhibitions</h2>
+      </header>
+      <div class="babel-exhibition-list">
+        <div class="babel-reveal"><time>May 2025</time><p><strong>BABEL Solo Exhibition</strong><span>NYU Shanghai</span></p><em>Solo</em></div>
+        <div class="babel-reveal"><time>Oct 2025</time><p><strong>NYU Global Show &amp; Tell</strong><span>NYU Shanghai IMA · Shanghai</span></p><em>Global</em></div>
+        <div class="babel-reveal"><time>Oct 2025</time><p><strong>NYU Global Show &amp; Tell</strong><span>NYU Tisch ITP &amp; IMA · New York</span></p><em>Global</em></div>
+        <div class="babel-reveal"><time>Nov 2025</time><p><strong>Public Exhibition</strong><span>West Bund Art Center · Shanghai</span></p><em>Public</em></div>
+      </div>
+    </section>
+
+    <figure class="babel-closing-image babel-reveal">
+      <img src="../assets/images/babel/gallery-09.webp" alt="BABEL installation surrounded by projected multilingual text" loading="lazy">
+      <blockquote>“The untranslatable is not a failure of communication; it is the site where cultural specificity becomes visible.”</blockquote>
+      <figcaption><span>BABEL, 2024—2025</span><span>09 / 09</span></figcaption>
+    </figure>
+
+    <section class="babel-links">
+      <p class="babel-kicker">Archive</p>
+      <a href="https://vimeo.com/1087918452" target="_blank" rel="noopener"><span>Watch the film</span><em>↗</em></a>
+      <a href="../assets/docs/babel-portfolio.pdf" target="_blank" rel="noopener"><span>Read the portfolio</span><em>↗</em></a>
     </section>
   </main>
-<script src="../assets/js/installation-scroll.js?v=20260610-unified-cursor-scroll"></script>
+
+  <footer class="babel-footer">
+    <p>Zhixing Zhang © 2026</p>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+
   <script src="../assets/js/site-shell.js?v=20260818-career-subdomain"></script>
+  <script src="../assets/js/babel-page.js?v=20260820-curatorial-v2"></script>
   <script src="../assets/js/gesture-mode.js?v=20260610-safari-camera"></script>
 </body>
 </html>
