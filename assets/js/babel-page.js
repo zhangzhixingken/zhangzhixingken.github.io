@@ -3,6 +3,18 @@
 
   document.documentElement.classList.add("babel-enhanced");
 
+  const filmFrame = document.querySelector(".babel-film iframe[data-src]");
+  const loadFilm = () => {
+    if (!filmFrame || filmFrame.hasAttribute("src")) return;
+    filmFrame.src = filmFrame.dataset.src;
+  };
+
+  if (document.readyState === "complete") {
+    window.setTimeout(loadFilm, 120);
+  } else {
+    window.addEventListener("load", () => window.setTimeout(loadFilm, 120), { once: true });
+  }
+
   const revealItems = Array.from(document.querySelectorAll(".babel-reveal"));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
