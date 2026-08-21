@@ -1120,7 +1120,7 @@ body.babel-page {
 }
 
 body.babel-page .site-nav {
-  background: rgb(238, 234, 233) !important;
+  background: transparent !important;
   color: rgb(22, 20, 19) !important;
   mix-blend-mode: normal !important;
 }
