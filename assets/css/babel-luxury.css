@@ -1194,3 +1194,16 @@ body.babel-page .site-nav .shell-mobile-toggle span { background: #37332e !impor
   body.babel-page .gallery-item img,
   body.babel-page .gallery-item.tall img { object-fit: cover; }
 }
+
+/* Condense the BABEL statement while preserving its final emphasis. */
+.babel-statement .babel-statement-copy p { font-size: clamp(13px, 1vw, 17px); }
+.babel-statement .babel-statement-copy p:last-child {
+  font-size: clamp(28px, calc(4.8vw - 10px), 66px);
+}
+
+@media (max-width: 900px) {
+  .babel-statement .babel-statement-copy p { font-size: 14px; }
+  .babel-statement .babel-statement-copy p:last-child {
+    font-size: clamp(24px, calc(8.5vw - 10px), 38px);
+  }
+}
