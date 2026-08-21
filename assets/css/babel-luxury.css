@@ -1134,7 +1134,7 @@ body.babel-page .site-nav .nav-links a.is-active,
 body.babel-page .site-nav .nav-docs a { color: rgb(22, 20, 19) !important; }
 body.babel-page .site-nav .shell-mobile-toggle span { background: #37332e !important; }
 
-.translation-machine .language-track::before { inset: 19%; }
+.translation-machine .language-track::before { inset: 11%; }
 .translation-machine .node-symbol {
   width: 18px;
   height: 19px;
@@ -1154,7 +1154,7 @@ body.babel-page .site-nav .shell-mobile-toggle span { background: #37332e !impor
     width: min(92vw, 420px);
     height: min(92vw, 420px);
   }
-  .translation-machine .language-track::before { inset: 20%; }
+  .translation-machine .language-track::before { inset: 11%; }
   .translation-machine .node-symbol { width: 14px; height: 15px; }
 
   body.babel-page .pulled-gallery { padding: 0 0 80px; overflow: hidden; }
