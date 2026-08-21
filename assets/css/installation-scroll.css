@@ -236,12 +236,10 @@ html:has(body.theme-dark) {
 }
 
 .installation-documentation {
-  min-height: 52vh;
-  display: flex;
-  align-items: center;
-  padding: 110px 20px 96px;
-  background: var(--project-bg);
-  border-top: 1px solid var(--project-line);
+  min-height: 5vh;
+  display: left;
+  align-items: left;
+  padding: 0px 0px 0px;
 }
 
 .installation-documentation a,

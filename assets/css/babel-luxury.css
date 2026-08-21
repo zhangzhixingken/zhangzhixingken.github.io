@@ -245,8 +245,6 @@ body.babel-page .gallery-progress {
 body.babel-page .installation-documentation {
   min-height: 72svh;
   padding: 14vh 6vw 10vh;
-  background: var(--babel-paper);
-  border-color: rgba(23, 21, 19, .16);
 }
 
 body.babel-page .installation-documentation a {
@@ -398,7 +396,6 @@ body.babel-page .installation-documentation a {
   width: 100%;
   height: auto;
   background: #d5ceca;
-  box-shadow: 0 18px 52px rgba(33, 28, 23, .11);
 }
 .babel-portfolio-pages figcaption {
   margin-top: 10px;
