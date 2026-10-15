@@ -6,6 +6,7 @@ window.PHOTOGRAPHY_PROJECT = {
   images: [
     "../assets/images/untitled/photo-01.webp",
     "../assets/images/untitled/photo-02.webp",
-    "../assets/images/untitled/photo-03.webp"
+    "../assets/images/untitled/photo-03.webp",
+    "../assets/images/untitled/photo-04.webp"
   ]
 };
