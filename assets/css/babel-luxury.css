@@ -639,7 +639,7 @@ body.babel-page .installation-documentation a {
 }
 body.babel-page .installation-documentation {
   min-height: auto;
-  padding: 44px 6vw 54px;
+  padding: 0px 6vw 0px;
 }
 body.babel-page .installation-documentation a {
   color: rgba(23, 21, 19, .58);
