@@ -2658,11 +2658,11 @@
 
   <script>
     const projects = [
-      { title: "BABEL", year: "2024-2026", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/babel/thumb.webp", href: "art/babel.html", featured: true },
-      { title: "Tsang Chieh", year: "2023", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/cangjie/thumb.webp", href: "art/cangjie.html", featured: true },
-      { title: "Ephemeral", year: "2024", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/ephemeral/thumb.webp", href: "art/ephemeral.html", featured: true },
-      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/undetected/thumb.webp", href: "art/undetected.html", featured: true },
-      { title: "Untitled", year: "2022", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/untitled/thumb.webp", href: "art/untitled.html", featured: true },
+      { title: "BABEL", year: "2024-2026", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/babel/cover.webp", href: "art/babel.html", featured: true },
+      { title: "Tsang Chieh", year: "2023", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/cangjie/cover.webp", href: "art/cangjie.html", featured: true },
+      { title: "Ephemeral", year: "2024", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/ephemeral/cover.webp", href: "art/ephemeral.html", featured: true },
+      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/undetected/cover.webp", href: "art/undetected.html", featured: true },
+      { title: "Untitled", year: "2022", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/untitled/cover.webp", href: "art/untitled.html", featured: true },
       { title: "Shanghai Gift: Shanghai Architecture Cultural-Creative Tea Bag Design", year: "", label: "WORK", medium: "Packaging Design", keywords: "Architecture / Tea / Cultural Product", slug: "shanghai-gift", image: "assets/images/careers/shanghai-gift/main.jpg", href: "career/shanghai-gift.html", featured: false },
       { title: "Event Photography", year: "", label: "WORK", medium: "Editorial Documentation", keywords: "People / Place / Exchange", slug: "event-photography", image: "assets/images/careers/event/thumb.webp", href: "career/event-photography.html", featured: false },
       { title: "AIGC Title Sequence", year: "2025", label: "WORK", medium: "Motion Design", keywords: "Recraft / After Effects", slug: "aigc-title", image: "assets/images/careers/aigc-title/thumb.webp", href: "career/aigc-title.html", featured: false }
@@ -2740,17 +2740,11 @@
         const sparseMode = total <= 4;
         const mediumMode = total > 4 && total <= 8;
         const cardScale = sparseMode ? 1.30 : mediumMode ? 1.12 : 1;
-        const ringScale = sparseMode ? 0.58 : mediumMode ? 0.82 : 1;
-
-        // Horizontal image cards, with enough radius to prevent overlap.
-        // Adjacent card spacing uses chord length: 2 * radius * sin(step / 2).
-        const cardW = clamp(vw * 0.16 * cardScale, 190 * cardScale, 400 * cardScale);
+        // Give each work more visual presence on landscape screens.
+        const cardW = clamp(vw * 0.20 * cardScale, 220 * cardScale, 520 * cardScale);
         const cardH = cardW * 9 / 16;
-        const minGap = clamp(vw * 0.002, 3, 10);
-        const minRadiusForGap = (cardW + minGap) / (2 * Math.sin(stepRad / 2));
-        const naturalRadius = vw * 0.45 * ringScale;
-        const maxComfortRadius = Math.max(vw * 0.46 * ringScale, minRadiusForGap);
-        const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
+        // A 55vw radius makes the orbit diameter approximately 110% of the viewport.
+        const radius = vw * 0.55;
 
         return {
           isLandscape,
@@ -2761,7 +2755,7 @@
           radius,
           sceneW: vw,
           sceneH: Math.min(vh * 0.78, 800),
-          perspective: clamp(vw * 20, 760, 1700),
+          perspective: clamp(vw * 1.2, 900, 3000),
           baseTilt: -5,
           speed: sparseMode ? 0.0032 : mediumMode ? 0.0038 : 0.0042
         };
