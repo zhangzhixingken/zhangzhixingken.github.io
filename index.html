@@ -2814,9 +2814,14 @@
       const cardScale = sparseMode ? 1.12 : mediumMode ? 1.06 : 1;
       const ringScale = sparseMode ? 0.70 : mediumMode ? 0.86 : 1;
 
-      const cardW = clamp(vw * 0.66 * cardScale, 210 * cardScale, 350 * cardScale);
-      const cardH = cardW * 9 / 16;
+      const perspective = clamp(vh * 1.08, 820, 1350);
       const minGap = clamp(vh * .015, 12, 28);
+      const radiusFactor = (9 / 16) / (2 * Math.sin(stepRad / 2));
+      const radiusOffset = minGap / (2 * Math.sin(stepRad / 2));
+      // Solve for an 80vw front card after 3D perspective is applied.
+      const visibleCardW = vw * 0.80;
+      const cardW = visibleCardW * (perspective - radiusOffset) / (perspective + visibleCardW * radiusFactor);
+      const cardH = cardW * 9 / 16;
       const minRadiusForGap = (cardH + minGap) / (2 * Math.sin(stepRad / 2));
       const naturalRadius = vh * 0.380 * ringScale;
       const maxComfortRadius = Math.max(vh * 0.46 * ringScale, minRadiusForGap);
@@ -2831,7 +2836,7 @@
         radius,
         sceneW: Math.min(vw, 820),
         sceneH: Math.min(vh * 0.84, 880),
-        perspective: clamp(vh * 1.08, 820, 1350),
+        perspective,
         baseTilt: 0,
         speed: sparseMode ? 0.0036 : mediumMode ? 0.0042 : 0.0048
       };
