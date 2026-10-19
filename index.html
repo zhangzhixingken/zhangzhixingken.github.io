@@ -793,8 +793,8 @@
       background: rgba(238, 234, 233, 0.86) !important;
     }
 
-    /* Portrait photographs keep the same orbital slot width and spacing as
-       every other image, while extending slightly above the shared baseline. */
+    /* Portrait photographs use the same orbital slot width and spacing as
+       every other image, while remaining vertically centered. */
     .orbit-card.is-portrait .card-face,
     .orbit-card.is-portrait .image-slot,
     .orbit-card.is-portrait .image-media {
@@ -812,7 +812,7 @@
 
     .orbit-card.is-portrait .image-media {
       display: grid;
-      place-items: end center;
+      place-items: center;
     }
 
     .orbit-card.is-portrait .image-slot img {
