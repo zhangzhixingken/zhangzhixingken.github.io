@@ -2658,18 +2658,33 @@
 
   <script>
     const projects = [
-      { title: "BABEL", year: "2024-2026", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/babel/cover.webp", href: "art/babel.html", featured: true },
-      { title: "Tsang Chieh", year: "2023", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/cangjie/cover.webp", href: "art/cangjie.html", featured: true },
-      { title: "Ephemeral", year: "2024", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/ephemeral/cover.webp", href: "art/ephemeral.html", featured: true },
-      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/undetected/cover.webp", href: "art/undetected.html", featured: true },
-      { title: "Untitled", year: "2022", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/untitled/cover.webp", href: "art/untitled.html", featured: true },
-      { title: "Shanghai Gift: Shanghai Architecture Cultural-Creative Tea Bag Design", year: "", label: "WORK", medium: "Packaging Design", keywords: "Architecture / Tea / Cultural Product", slug: "shanghai-gift", image: "assets/images/careers/shanghai-gift/main.jpg", href: "career/shanghai-gift.html", featured: false },
-      { title: "Event Photography", year: "", label: "WORK", medium: "Editorial Documentation", keywords: "People / Place / Exchange", slug: "event-photography", image: "assets/images/careers/event/thumb.webp", href: "career/event-photography.html", featured: false },
-      { title: "AIGC Title Sequence", year: "2025", label: "WORK", medium: "Motion Design", keywords: "Recraft / After Effects", slug: "aigc-title", image: "assets/images/careers/aigc-title/thumb.webp", href: "career/aigc-title.html", featured: false }
+      { title: "BABEL", year: "2024-2026", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/orbit/babel-1.webp", href: "art/babel.html" },
+      { title: "BABEL", year: "2024-2026", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/orbit/babel-2.webp", href: "art/babel.html" },
+      { title: "BABEL", year: "2024-2026", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/orbit/babel-3.webp", href: "art/babel.html" },
+      { title: "Tsang Chieh", year: "2023", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/orbit/tsang-chieh-1.webp", href: "art/cangjie.html" },
+      { title: "Tsang Chieh", year: "2023", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/orbit/tsang-chieh-2.webp", href: "art/cangjie.html" },
+      { title: "Ephemeral", year: "2024", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-1.webp", href: "art/ephemeral.html" },
+      { title: "Ephemeral", year: "2024", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-2.webp", href: "art/ephemeral.html" },
+      { title: "Ephemeral", year: "2024", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-3.webp", href: "art/ephemeral.html" },
+      { title: "Ephemeral", year: "2024", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-4.webp", href: "art/ephemeral.html" },
+      { title: "Ephemeral", year: "2024", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-5.webp", href: "art/ephemeral.html" },
+      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-1.webp", href: "art/undetected.html" },
+      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-2.webp", href: "art/undetected.html" },
+      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-3.webp", href: "art/undetected.html" },
+      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-4.webp", href: "art/undetected.html" },
+      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-5.webp", href: "art/undetected.html" },
+      { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-6.webp", href: "art/undetected.html" },
+      { title: "Untitled", year: "2022", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/orbit/untitled-1.webp", href: "art/untitled.html" },
+      { title: "Untitled", year: "2022", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/orbit/untitled-2.webp", href: "art/untitled.html" },
+      { title: "Untitled", year: "2022", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/orbit/untitled-3.webp", href: "art/untitled.html" },
+      { title: "Untitled", year: "2022", label: "ART", medium: "Staged Photography", keywords: "Domestic Space / Estrangement", slug: "untitled", image: "assets/images/orbit/untitled-4.webp", href: "art/untitled.html" }
     ];
 
-    const homeProjects = projects.filter(project => project.featured && !["aigc-title", "shanghai-gift", "event-photography"].includes(project.slug));
-    if (!homeProjects.length) homeProjects.push(...projects);
+    const homeProjects = [...projects];
+    for (let index = homeProjects.length - 1; index > 0; index -= 1) {
+      const randomIndex = Math.floor(Math.random() * (index + 1));
+      [homeProjects[index], homeProjects[randomIndex]] = [homeProjects[randomIndex], homeProjects[index]];
+    }
 
     const scene = document.getElementById("orbitScene");
     const orbit = document.getElementById("orbit");
@@ -2834,7 +2849,7 @@
           <div class="image-slot ${project.image ? "has-image" : "is-placeholder"}">
             <div class="image-media">
               ${project.image
-                ? `<img src="${project.image}" alt="" loading="lazy" draggable="false" />`
+                ? `<img src="${project.image}" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index === 0 ? "high" : "auto"}" draggable="false" />`
                 : `<div class="image-placeholder" aria-hidden="true"></div>`}
             </div>
             <div class="image-overlay" aria-hidden="true">
