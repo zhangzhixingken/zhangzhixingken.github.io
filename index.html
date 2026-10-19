@@ -42,7 +42,7 @@
       --back-face-transform: rotateY(180deg);
       --center-opacity: 0.5;
       /* Raise the full orbit so the front image sits on the viewport centre. */
-      --orbit-shift-y: -12vh;
+      --orbit-shift-y: -30vh;
     }
 
     * { box-sizing: border-box; }
@@ -2405,7 +2405,7 @@
 
     /* ── Mobile orbit restore ───────────────────── */
     @media (max-width: 840px) and (orientation: portrait) {
-      :root { --orbit-shift-y: -2svh; }
+      :root { --orbit-shift-y: -30svh; }
 
       .orbit-scene {
         width: 100vw !important;
