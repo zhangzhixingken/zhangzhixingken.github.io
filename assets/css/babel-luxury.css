@@ -710,7 +710,7 @@ body.babel-page .installation-documentation a {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
-  padding-left: calc(50vw - min(30vw, 300px));
+  padding-left: calc(75vw - min(45vw, 450px));
   gap: max(120px, calc(76vw - min(60vw, 600px)));
 }
 .gallery-opening .gallery-project-data {
