@@ -234,13 +234,6 @@
       transition: opacity 180ms ease, filter 180ms ease;
     }
 
-    /* Portrait works keep their native orientation while sharing the same
-       centered height as every landscape card. */
-    .orbit-card.is-portrait {
-      left: calc(var(--portrait-card-w) / -2);
-      width: var(--portrait-card-w);
-    }
-
     /* Two-sided card: the back face keeps the image visible when the orbit rotates behind. */
     .card-shell {
       position: relative;
@@ -798,6 +791,35 @@
     .orbit-card:focus-visible .card-face {
       box-shadow: none !important;
       background: rgba(238, 234, 233, 0.86) !important;
+    }
+
+    /* Portrait photographs keep the same orbital slot width and spacing as
+       every other image, while extending slightly above the shared baseline. */
+    .orbit-card.is-portrait .card-face,
+    .orbit-card.is-portrait .image-slot,
+    .orbit-card.is-portrait .image-media {
+      overflow: visible !important;
+    }
+
+    .orbit-card.is-portrait .card-face {
+      background: transparent !important;
+      contain: none !important;
+    }
+
+    .orbit-card.is-portrait .image-slot {
+      background: transparent !important;
+    }
+
+    .orbit-card.is-portrait .image-media {
+      display: grid;
+      place-items: end center;
+    }
+
+    .orbit-card.is-portrait .image-slot img {
+      width: auto !important;
+      height: var(--portrait-image-h) !important;
+      max-width: none;
+      object-fit: contain;
     }
 
     #cursor {
@@ -2820,7 +2842,7 @@
 
       document.documentElement.style.setProperty("--card-w", `${layout.cardW}px`);
       document.documentElement.style.setProperty("--card-h", `${layout.cardH}px`);
-      document.documentElement.style.setProperty("--portrait-card-w", `${layout.cardH * 2 / 3}px`);
+      document.documentElement.style.setProperty("--portrait-image-h", `${layout.cardH * 1.24}px`);
       document.documentElement.style.setProperty("--radius", `${layout.radius}px`);
       document.documentElement.style.setProperty("--back-face-transform", layout.isLandscape ? "rotateY(180deg)" : "rotateX(180deg)");
 
