@@ -2405,19 +2405,21 @@
 
     /* ── Mobile orbit restore ───────────────────── */
     @media (max-width: 840px) and (orientation: portrait) {
-      :root { --orbit-shift-y: -24svh; }
+      /* The hero content box begins below the navigator, so a zero shift keeps
+         the orbit centred between the navigator bottom and viewport bottom. */
+      :root { --orbit-shift-y: 0px; }
 
       .orbit-scene {
         width: 100vw !important;
         height: min(78svh, 680px) !important;
         max-width: 100vw !important;
         overflow: hidden !important;
-        margin-top: 2svh !important;
-        perspective-origin: 50% 44% !important;
+        margin-top: 0 !important;
+        perspective-origin: 50% 50% !important;
       }
 
       .orbit {
-        top: 46% !important;
+        top: 50% !important;
       }
 
       .card-face {
@@ -2784,8 +2786,13 @@
         const sparseMode = total <= 4;
         const mediumMode = total > 4 && total <= 8;
         const cardScale = sparseMode ? 1.30 : mediumMode ? 1.12 : 1;
-        // Give each work more visual presence on landscape screens.
-        const cardW = clamp(vw * 0.20 * cardScale, 220 * cardScale, 520 * cardScale);
+        // Scale both dimensions by sqrt(.75), reducing each card's area by 25%.
+        const desktopAreaScale = Math.sqrt(0.75);
+        const cardW = clamp(
+          vw * 0.20 * cardScale * desktopAreaScale,
+          220 * cardScale * desktopAreaScale,
+          520 * cardScale * desktopAreaScale
+        );
         const cardH = cardW * 9 / 16;
         const minGap = clamp(vw * 0.018, 18, 48);
         const minRadiusForGap = (cardW + minGap) / (2 * Math.sin(stepRad / 2));
@@ -2803,7 +2810,7 @@
           sceneH: Math.min(vh * 0.78, 800),
           perspective: clamp(vw * 1.2, 900, 3000),
           baseTilt: -5,
-          speed: sparseMode ? 0.0032 : mediumMode ? 0.0038 : 0.0042
+          speed: sparseMode ? 0.0016 : mediumMode ? 0.0019 : 0.0021
         };
       }
 
@@ -2816,13 +2823,17 @@
 
       const perspective = clamp(vh * 1.08, 820, 1350);
       const minGap = clamp(vh * .015, 12, 28);
-      const radiusFactor = (9 / 16) / (2 * Math.sin(stepRad / 2));
+      const portraitHeightScale = 1.24;
+      const radiusFactor = ((9 / 16) * portraitHeightScale) / (2 * Math.sin(stepRad / 2));
       const radiusOffset = minGap / (2 * Math.sin(stepRad / 2));
       // Solve for an 80vw front card after 3D perspective is applied.
       const visibleCardW = vw * 0.80;
       const cardW = visibleCardW * (perspective - radiusOffset) / (perspective + visibleCardW * radiusFactor);
       const cardH = cardW * 9 / 16;
-      const minRadiusForGap = (cardH + minGap) / (2 * Math.sin(stepRad / 2));
+      // Portrait images are 24% taller than the shared card slot. Use their
+      // full visible height when sizing the ring so they cannot overlap.
+      const maxVisibleCardH = cardH * portraitHeightScale;
+      const minRadiusForGap = (maxVisibleCardH + minGap) / (2 * Math.sin(stepRad / 2));
       const naturalRadius = vh * 0.380 * ringScale;
       const maxComfortRadius = Math.max(vh * 0.46 * ringScale, minRadiusForGap);
       const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
@@ -2838,7 +2849,7 @@
         sceneH: Math.min(vh * 0.84, 880),
         perspective,
         baseTilt: 0,
-        speed: sparseMode ? 0.0036 : mediumMode ? 0.0042 : 0.0048
+        speed: sparseMode ? 0.0018 : mediumMode ? 0.0021 : 0.0024
       };
     }
 
