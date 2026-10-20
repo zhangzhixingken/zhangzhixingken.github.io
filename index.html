@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="apple-touch-icon" href="/favicon.png" />
-  <meta name="description" content="An artist and visual designer working across interactive installation, photography, moving image, and physical computing." />
+<meta name="description" content="An artist and visual designer working across interactive installation, photography, moving image, and physical computing." />
   <link rel="canonical" href="https://www.zhixingzhang.com/" />
   <title>Zhixing Zhang</title>
   <script>
@@ -73,98 +71,6 @@
     body:not(.is-ready) .hero-center-word { opacity: 0; }
     body:not(.is-ready) .orbit-scene { opacity: 0; transform: translateY(calc(var(--orbit-shift-y) + 8px)); }
     body.is-ready .orbit-scene { opacity: 1; transform: translateY(var(--orbit-shift-y)); }
-
-    .site-nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      height: var(--nav-h);
-      z-index: 100;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      padding: 0 140px;
-      background: var(--bg);
-    }
-
-    .logo {
-      justify-self: start;
-      font-size: 13px;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
-      font-weight: 500;
-      color: var(--accent);
-    }
-
-    .nav-links,
-    .nav-docs {
-      display: flex;
-      align-items: center;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .nav-links {
-      justify-self: center;
-      gap: 32px;
-    }
-
-    .nav-docs {
-      justify-self: end;
-      gap: 14px;
-    }
-
-    .nav-links a,
-    .nav-docs a,
-    .nav-separator {
-      font-size: 11px;
-      letter-spacing: -0em;
-      text-transform: uppercase;
-      color: var(--muted);
-      transition: color 180ms ease;
-      font-weight: 500;
-    }
-
-    .nav-docs a {
-      color: var(--text);
-    }
-
-    .nav-separator {
-      color: rgba(22, 20, 19, 0.28);
-      user-select: none;
-    }
-
-    .nav-links a:hover,
-    .nav-docs a:hover { color: var(--accent); }
-
-    .nav-docs a { position: relative; }
-    .nav-docs a::after {
-      content: attr(data-help);
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      width: max-content;
-      max-width: 180px;
-      color: var(--muted);
-      background: var(--bg);
-      border: 1px solid rgba(22, 20, 19, 0.10);
-      padding: 6px 7px;
-      font-size: 9px;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-      text-transform: none;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-3px);
-      transition: opacity 160ms ease, transform 160ms ease;
-      white-space: normal;
-    }
-
-    .nav-docs a:hover::after,
-    .nav-docs a:focus-visible::after {
-      opacity: 1;
-      transform: translateY(0);
-    }
 
     .hero {
       position: relative;
@@ -485,20 +391,6 @@
     #cursor.hover-card { width: 40px; height: 40px; background: rgba(50,50,50,0.18); }
     #cursor.hover-link { width: 22px; height: 22px; }
 
-    /* ── Nav active state ───────────────────────────────── */
-    .nav-links a.is-active { color: var(--text); }
-
-    /* ── Nav backdrop blur ──────────────────────────────── */
-    .site-nav {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background: rgba(238, 234, 233, 0.82) !important;
-      border-bottom: 0;
-      transition: border-color 300ms ease;
-    }
-
-    .site-nav.scrolled { border-bottom-color: transparent; }
-
     /* ── Hero entrance ──────────────────────────────────── */
     .hero-center-word {
       clip-path: inset(0 60% 0 0);
@@ -510,7 +402,6 @@
     }
 
     /* ── Scroll indicator ───────────────────────────────── */
-
 
     /* ── Enhanced card placeholder textures ────────────── */
     .image-placeholder {
@@ -667,8 +558,6 @@
       color: var(--muted);
     }
 
-
-
     /* ── Clarity fix for 3D orbit placeholders ─────────────
        The previous placeholder texture + noise layer + hover scale
        made the card look grainy after browser 3D resampling. This
@@ -691,7 +580,6 @@
 
     .card-shell {
       transform: scale(var(--depth-scale, 1)) translateZ(0);
-      will-change: transform;
     }
 
     .card-face {
@@ -835,31 +723,13 @@
 
     @media (max-width: 840px) {
       :root { --nav-h: 78px; }
-      .site-nav {
-        grid-template-columns: 1fr auto;
-        grid-template-areas:
-          "logo docs"
-          "menu menu";
-        row-gap: 9px;
-        align-content: center;
-        padding: 10px 18px 9px;
-      }
-      .logo { grid-area: logo; font-size: 12px; letter-spacing: -0.02em; }
-      .nav-links { grid-area: menu; justify-self: center; gap: 18px; }
-      .nav-docs { grid-area: docs; justify-self: end; gap: 7px; }
-      .nav-links a,
-      .nav-docs a,
-      .nav-separator { font-size: 9px; letter-spacing: -0.015em; }
-      .nav-docs a::after { display: none; }
+
       .card-face { position: relative; }
       .card-back { display: none; }
       .placeholder-section { padding: 88px 22px; }
       .site-footer { padding: 22px 18px; flex-direction: column; gap: 6px; text-align: center; }
       .orbit-count { right: 18px; }
     }
-
-
-
 
     /* ── Homepage opening animation ────────────────────── */
     .home-intro {
@@ -1199,7 +1069,6 @@
       }
     }
 
-  
     /* ── Gesture proximity targets + hover scroll zones ───────────── */
     .gesture-status {
       display: block !important;
@@ -1207,25 +1076,6 @@
       line-height: 1;
       letter-spacing: 0.02em;
       color: var(--muted);
-    }
-
-    .site-nav .logo,
-    .site-nav .nav-links a,
-    .site-nav .nav-docs a {
-      display: inline-block;
-      transform-origin: center;
-      transition: transform 160ms ease, color 160ms ease, opacity 160ms ease;
-      will-change: transform;
-    }
-
-    .site-nav .logo.is-gesture-near,
-    .site-nav .nav-links a.is-gesture-near,
-    .site-nav .nav-docs a.is-gesture-near {
-      transform: scale(1.45);
-      color: var(--accent);
-      opacity: 1;
-      position: relative;
-      z-index: 5;
     }
 
     .gesture-panel.is-error .gesture-shell {
@@ -1290,7 +1140,6 @@
       }
     }
 
-  
     /* ── iPhone Portrait 375–430px adaptation ───────────── */
     @media (min-width: 375px) and (max-width: 430px) and (orientation: portrait) {
       :root { --nav-h: 50px; }
@@ -1300,56 +1149,6 @@
         width: 100%;
         max-width: 100%;
         overflow-x: hidden !important;
-      }
-
-      .site-nav {
-        height: var(--nav-h) !important;
-        display: grid !important;
-        grid-template-columns: auto 1fr auto !important;
-        grid-template-areas: none !important;
-        align-items: center !important;
-        column-gap: 7px !important;
-        row-gap: 0 !important;
-        padding: 0 8px !important;
-        overflow: visible !important;
-      }
-
-      .logo {
-        grid-area: auto !important;
-        justify-self: start !important;
-        font-size: 9px !important;
-        letter-spacing: -0.03em !important;
-        white-space: nowrap !important;
-      }
-
-      .nav-links {
-        grid-area: auto !important;
-        justify-self: center !important;
-        gap: 7px !important;
-        flex-wrap: nowrap !important;
-        white-space: nowrap !important;
-        min-width: 0 !important;
-      }
-
-      .nav-docs {
-        grid-area: auto !important;
-        justify-self: end !important;
-        gap: 4px !important;
-        flex-wrap: nowrap !important;
-        white-space: nowrap !important;
-      }
-
-      .nav-links a,
-      .nav-docs a,
-      .nav-separator {
-        font-size: 8px !important;
-        letter-spacing: -0.02em !important;
-        line-height: 1 !important;
-        white-space: nowrap !important;
-      }
-
-      .nav-docs a::after {
-        display: none !important;
       }
 
       .hero {
@@ -1511,7 +1310,6 @@
       }
     }
 
-  
     /* ── Final mobile + scroll fixes ───────────────────── */
     .gesture-scroll-zone {
       width: 116px !important;
@@ -1556,66 +1354,6 @@
         width: 100% !important;
         max-width: 100% !important;
         overflow-x: hidden !important;
-      }
-
-      .site-nav {
-        height: var(--nav-h) !important;
-        display: flex !important;
-        grid-template-columns: none !important;
-        grid-template-areas: none !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 5px !important;
-        padding: 0 7px !important;
-        overflow: hidden !important;
-        white-space: nowrap !important;
-      }
-
-      .logo {
-        flex: 0 0 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        font-size: 8.5px !important;
-        letter-spacing: -0.035em !important;
-        line-height: 1 !important;
-        white-space: nowrap !important;
-        max-width: none !important;
-      }
-
-      .nav-links {
-        flex: 1 1 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        display: flex !important;
-        justify-content: center !important;
-        gap: 5px !important;
-        min-width: 0 !important;
-        flex-wrap: nowrap !important;
-        white-space: nowrap !important;
-      }
-
-      .nav-docs {
-        flex: 0 0 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        display: flex !important;
-        gap: 3px !important;
-        min-width: auto !important;
-        flex-wrap: nowrap !important;
-        white-space: nowrap !important;
-      }
-
-      .nav-links a,
-      .nav-docs a,
-      .nav-separator {
-        font-size: 7.2px !important;
-        letter-spacing: -0.035em !important;
-        line-height: 1 !important;
-        white-space: nowrap !important;
-      }
-
-      .nav-docs a::after {
-        display: none !important;
       }
 
       .hero {
@@ -1767,17 +1505,6 @@
       }
     }
 
-  
-    /* ── Final nav / Vimeo / linear scroll overrides ───────────── */
-    .site-nav,
-    .site-nav * {
-      white-space: nowrap !important;
-    }
-
-    .site-nav {
-      overflow: hidden !important;
-    }
-
     .gesture-scroll-zone {
       width: 116px !important;
       height: 64px !important;
@@ -1835,62 +1562,6 @@
 
     @media (max-width: 840px) {
       :root { --nav-h: 48px; }
-
-      .site-nav {
-        height: var(--nav-h) !important;
-        display: flex !important;
-        grid-template-columns: none !important;
-        grid-template-areas: none !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 4px !important;
-        padding: 0 6px !important;
-        row-gap: 0 !important;
-        overflow: hidden !important;
-      }
-
-      .logo {
-        flex: 0 0 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        font-size: 8px !important;
-        letter-spacing: -0.04em !important;
-        line-height: 1 !important;
-      }
-
-      .nav-links {
-        flex: 1 1 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 4px !important;
-        min-width: 0 !important;
-        flex-wrap: nowrap !important;
-      }
-
-      .nav-docs {
-        flex: 0 0 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 2px !important;
-        flex-wrap: nowrap !important;
-      }
-
-      .nav-links a,
-      .nav-docs a,
-      .nav-separator {
-        font-size: 6.8px !important;
-        letter-spacing: -0.045em !important;
-        line-height: 1 !important;
-      }
-
-      .nav-docs a::after {
-        display: none !important;
-      }
 
       .hero {
         padding-top: var(--nav-h) !important;
@@ -1964,7 +1635,6 @@
       }
     }
 
-  
     /* ── Final fixes: mouse click, nav no-wrap, magnetic scroll button ───────────── */
     #cursor {
       display: block !important;
@@ -2025,15 +1695,6 @@
       background: rgba(238, 234, 233, 0.78) !important;
     }
 
-    .site-nav,
-    .site-nav * {
-      white-space: nowrap !important;
-    }
-
-    .site-nav {
-      overflow: hidden !important;
-    }
-
     .video-section {
       width: 100% !important;
       display: flex !important;
@@ -2072,62 +1733,6 @@
     @media (max-width: 840px) {
       :root {
         --nav-h: 46px;
-      }
-
-      .site-nav {
-        height: var(--nav-h) !important;
-        display: flex !important;
-        grid-template-columns: none !important;
-        grid-template-areas: none !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 3px !important;
-        padding: 0 5px !important;
-        row-gap: 0 !important;
-        overflow: hidden !important;
-      }
-
-      .logo {
-        flex: 0 0 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        font-size: 7.2px !important;
-        letter-spacing: -0.045em !important;
-        line-height: 1 !important;
-      }
-
-      .nav-links {
-        flex: 1 1 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 3.2px !important;
-        min-width: 0 !important;
-        flex-wrap: nowrap !important;
-      }
-
-      .nav-docs {
-        flex: 0 0 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 2px !important;
-        flex-wrap: nowrap !important;
-      }
-
-      .nav-links a,
-      .nav-docs a,
-      .nav-separator {
-        font-size: 6.2px !important;
-        letter-spacing: -0.05em !important;
-        line-height: 1 !important;
-      }
-
-      .nav-docs a::after {
-        display: none !important;
       }
 
       .hero {
@@ -2202,150 +1807,9 @@
       }
     }
 
-  
-    /* ── Mobile dropdown navigation + BABEL title position ───────────── */
-    .mobile-nav-toggle,
-    .mobile-nav-dropdown {
-      display: none;
-    }
-
     @media (max-width: 840px) and (orientation: portrait) {
       :root {
         --nav-h: 52px;
-      }
-
-      .site-nav {
-        height: var(--nav-h) !important;
-        display: flex !important;
-        grid-template-columns: none !important;
-        grid-template-areas: none !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        padding: 0 16px !important;
-        overflow: visible !important;
-        z-index: 160000 !important;
-        white-space: nowrap !important;
-      }
-
-      .logo {
-        flex: 0 0 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        font-size: 11px !important;
-        letter-spacing: -0.03em !important;
-        line-height: 1 !important;
-        white-space: nowrap !important;
-      }
-
-      .site-nav > .nav-links,
-      .site-nav > .nav-docs {
-        display: none !important;
-      }
-
-      .mobile-nav-toggle {
-        width: 34px;
-        height: 34px;
-        border: 0;
-        padding: 0;
-        margin: 0;
-        display: grid !important;
-        place-items: center;
-        background: transparent;
-        color: var(--accent);
-        cursor: pointer;
-        position: relative;
-      }
-
-      .mobile-nav-toggle span {
-        position: absolute;
-        width: 17px;
-        height: 1px;
-        background: var(--accent);
-        left: 50%;
-        transform: translateX(-50%);
-        transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), top 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease;
-      }
-
-      .mobile-nav-toggle span:first-child {
-        top: 13px;
-      }
-
-      .mobile-nav-toggle span:last-child {
-        top: 20px;
-      }
-
-      body.mobile-nav-open .mobile-nav-toggle span:first-child {
-        top: 17px;
-        transform: translateX(-50%) rotate(45deg);
-      }
-
-      body.mobile-nav-open .mobile-nav-toggle span:last-child {
-        top: 17px;
-        transform: translateX(-50%) rotate(-45deg);
-      }
-
-      .mobile-nav-dropdown {
-        position: fixed;
-        top: var(--nav-h);
-        left: 0;
-        right: 0;
-        z-index: 159999;
-        display: block !important;
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        pointer-events: none;
-        transform: translateY(-10px);
-        padding: 0 18px;
-        background: rgba(238, 234, 233, 0.96);
-        border-bottom: 1px solid rgba(22, 20, 19, 0.10);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        transition:
-          max-height 420ms cubic-bezier(0.16, 1, 0.3, 1),
-          opacity 220ms ease,
-          transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
-          padding 420ms cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      body.mobile-nav-open .mobile-nav-dropdown {
-        max-height: calc(100svh - var(--nav-h));
-        opacity: 1;
-        pointer-events: auto;
-        transform: translateY(0);
-        padding: 18px 18px 22px;
-      }
-
-      .mobile-nav-dropdown a {
-        display: block;
-        width: 100%;
-        padding: 8px 0;
-        color: var(--accent);
-        font-family: var(--font);
-        font-size: clamp(30px, 10.4vw, 46px);
-        line-height: 0.98;
-        letter-spacing: -0.075em;
-        text-transform: uppercase;
-        font-weight: 500;
-      }
-
-      .mobile-nav-dropdown .mobile-docs {
-        margin-top: 16px;
-        padding-top: 14px;
-        border-top: 1px solid rgba(22, 20, 19, 0.10);
-        display: flex;
-        gap: 18px;
-      }
-
-      .mobile-nav-dropdown .mobile-docs a {
-        width: auto;
-        font-size: 14px;
-        line-height: 1;
-        letter-spacing: -0.025em;
-      }
-
-      body.mobile-nav-open {
-        overflow-x: hidden;
       }
 
       /* BABEL project title: visible immediately on portrait mobile. */
@@ -2435,193 +1899,46 @@
       }
     }
 
-
-    /* Active nav state, consistent with subpages */
-    .nav-links a.is-active {
-      color: var(--text);
-      position: relative;
-    }
-
-    .nav-links a.is-active::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -7px;
-      height: 1px;
-      background: var(--accent);
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-
-  
-
     /* ── Unified mobile dropdown nav: match index exactly ───────────── */
     @media (max-width: 840px) and (orientation: portrait) {
       :root {
         --nav-h: 52px;
       }
 
-      .site-nav {
-        height: var(--nav-h) !important;
-        display: flex !important;
-        grid-template-columns: none !important;
-        grid-template-areas: none !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        padding: 0 16px !important;
-        overflow: visible !important;
-        z-index: 160000 !important;
-        white-space: nowrap !important;
-      }
-
-      .logo {
-        flex: 0 0 auto !important;
-        grid-area: auto !important;
-        justify-self: auto !important;
-        font-size: 11px !important;
-        letter-spacing: -0.03em !important;
-        line-height: 1 !important;
-        white-space: nowrap !important;
-      }
-
-      .site-nav > .nav-links,
-      .site-nav > .nav-docs {
-        display: none !important;
-      }
-
-      .mobile-nav-toggle {
-        width: 34px !important;
-        height: 34px !important;
-        border: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        display: grid !important;
-        place-items: center !important;
-        background: transparent !important;
-        color: var(--accent) !important;
-        cursor: pointer !important;
-        position: relative !important;
-        justify-self: auto !important;
-        z-index: 160001 !important;
-      }
-
-      .mobile-nav-toggle span {
-        position: absolute !important;
-        width: 17px !important;
-        height: 1px !important;
-        background: var(--accent) !important;
-        left: 50% !important;
-        right: auto !important;
-        transform: translateX(-50%) !important;
-        transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), top 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease !important;
-      }
-
-      .mobile-nav-toggle span:first-child {
-        top: 13px !important;
-      }
-
-      .mobile-nav-toggle span:last-child {
-        top: 20px !important;
-      }
-
-      body.mobile-nav-open .mobile-nav-toggle span:first-child {
-        top: 17px !important;
-        transform: translateX(-50%) rotate(45deg) !important;
-      }
-
-      body.mobile-nav-open .mobile-nav-toggle span:last-child {
-        top: 17px !important;
-        transform: translateX(-50%) rotate(-45deg) !important;
-      }
-
-      .mobile-nav-dropdown {
-        position: fixed !important;
-        top: var(--nav-h) !important;
-        left: 0 !important;
-        right: 0 !important;
-        z-index: 159999 !important;
-        display: block !important;
-        max-height: 0 !important;
-        overflow: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        transform: translateY(-10px) !important;
-        padding: 0 18px !important;
-        background: rgba(238, 234, 233, 0.96) !important;
-        border-bottom: 0 !important;
-        backdrop-filter: blur(18px) !important;
-        -webkit-backdrop-filter: blur(18px) !important;
-        transition: max-height 420ms cubic-bezier(0.16, 1, 0.3, 1), opacity 220ms ease, transform 420ms cubic-bezier(0.16, 1, 0.3, 1), padding 420ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-      }
-
-      body.mobile-nav-open .mobile-nav-dropdown {
-        max-height: calc(100svh - var(--nav-h)) !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        transform: translateY(0) !important;
-        padding: 18px 18px 22px !important;
-      }
-
-      .mobile-nav-dropdown .mobile-main,
-      .mobile-nav-dropdown .mobile-docs {
-        display: block !important;
-      }
-
-      .mobile-nav-dropdown .mobile-main a {
-        display: block !important;
-        width: 100% !important;
-        padding: 8px 0 !important;
-        color: var(--accent) !important;
-        font-family: var(--font) !important;
-        font-size: clamp(30px, 10.4vw, 46px) !important;
-        line-height: 0.98 !important;
-        letter-spacing: -0.075em !important;
-        text-transform: uppercase !important;
-        font-weight: 500 !important;
-      }
-
-      .mobile-nav-dropdown .mobile-docs {
-        margin-top: 16px !important;
-        padding-top: 14px !important;
-        border-top: 1px solid rgba(22, 20, 19, 0.10) !important;
-        display: flex !important;
-        gap: 18px !important;
-      }
-
-      .mobile-nav-dropdown .mobile-docs a {
-        display: block !important;
-        width: auto !important;
-        padding: 8px 0 !important;
-        color: var(--accent) !important;
-        font-family: var(--font) !important;
-        font-size: 14px !important;
-        line-height: 1 !important;
-        letter-spacing: -0.025em !important;
-        text-transform: uppercase !important;
-        font-weight: 500 !important;
-      }
     }
 
-
-
-    /* Requested nav + gesture refinements */
-    .site-nav {
-      height: 80px !important;
-      padding-left: 126px !important;
-      padding-right: 126px !important;
-      border-bottom: 0 !important;
-    }
-    .site-nav.scrolled { border-bottom-color: transparent !important; }
     .gesture-panel { z-index: 2147483600 !important; }
     .gesture-cursor { z-index: 2147483647 !important; }
     .gesture-scroll-zone { z-index: 2147483645 !important; }
-    @media (max-width: 840px) {
-      .site-nav { height: 52px !important; padding-left: 16px !important; padding-right: 16px !important; }
-    }
 
+
+    /* AI render label on orbit cards (see .ai-render-label in site-shell.css) */
+    .image-media > .ai-render { position: absolute; inset: 0; }
+    .orbit-card.is-portrait .image-media > .ai-render { position: relative; inset: auto; height: var(--portrait-image-h); }
+    .orbit-card .ai-render-label { left: 9px; bottom: 8px; }
 </style>
   <link rel="stylesheet" href="assets/css/site-shell.css?v=20260818-gesture-v1" />
+<!-- shared-head:start -->
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Zhixing Zhang">
+<meta property="og:title" content="Zhixing Zhang">
+<meta property="og:description" content="An artist and visual designer working across interactive installation, photography, moving image, and physical computing.">
+<meta property="og:url" content="https://www.zhixingzhang.com/">
+<meta property="og:image" content="https://www.zhixingzhang.com/assets/og/home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="BABEL by Zhixing Zhang: canvas heads on an aluminium ring">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zhixing Zhang">
+<meta name="twitter:description" content="An artist and visual designer working across interactive installation, photography, moving image, and physical computing.">
+<meta name="twitter:image" content="https://www.zhixingzhang.com/assets/og/home.jpg">
+<link rel="stylesheet" href="/assets/nav/nav.css?v=20261020">
+<script src="/assets/nav/nav.js?v=20261020" defer></script>
+<!-- shared-head:end -->
 </head>
 <body data-gesture-edge-scroll="false">
   <div class="home-intro" aria-hidden="true">
@@ -2659,18 +1976,9 @@
       </div>
     </div>
   </aside>
-  <nav class="site-nav" aria-label="Main navigation">
-    <a class="logo" href="/">Zhixing Zhang</a>
-    <ul class="nav-links" aria-label="Site sections">
-      <li><a href="arts.html" data-filter="ART">Arts</a></li>
-      <li><a href="https://career.zhixingzhang.com" data-filter="WORK">Career</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-    <div class="nav-docs" aria-label="Social media">
-      <a class="nav-instagram" href="https://www.instagram.com/zhixing_gallery/" target="_blank" rel="noopener" title="Instagram" data-help="Visit Zhixing Zhang’s Instagram." aria-label="Visit Zhixing Zhang’s Instagram"><span class="nav-instagram-icon" aria-hidden="true"></span></a>
-    </div>
-  </nav>
+  <!-- shared-nav:start -->
+<nav class="site-nav" aria-label="Main navigation"><a class="logo" href="/">Zhixing Zhang</a><ul class="nav-links"><li><a href="/arts.html">Arts</a></li><li><a href="https://career.zhixingzhang.com/">Career</a></li><li><a href="/about.html">About</a></li><li><a href="/contact.html">Contact</a></li></ul><div class="nav-docs"><a class="nav-instagram" href="https://www.instagram.com/zhixing_gallery/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a></div><button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button></nav>
+<!-- shared-nav:end -->
 
   <main id="top">
     <section class="hero" aria-label="Rotating homepage orbit">
@@ -2696,9 +2004,9 @@
       { title: "Tsang Chieh", year: "2023", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/orbit/tsang-chieh-2.webp", href: "art/cangjie.html" },
       { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-1.webp", href: "art/ephemeral.html" },
       { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-2.webp", href: "art/ephemeral.html" },
-      { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-3.webp", href: "art/ephemeral.html", portrait: true },
+      { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-3.webp", href: "art/ephemeral.html", aiRender: true, portrait: true },
       { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-4.webp", href: "art/ephemeral.html" },
-      { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-5.webp", href: "art/ephemeral.html" },
+      { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-5.webp", href: "art/ephemeral.html", aiRender: true },
       { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-1.webp", href: "art/undetected.html" },
       { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-2.webp", href: "art/undetected.html" },
       { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-3.webp", href: "art/undetected.html" },
@@ -2807,13 +2115,14 @@
         // stay identical to the layout before spacing was doubled.
         const perspective = basePerspective * (radius / baseRadius);
 
+        const m = perspective / (perspective - radius);
         return {
           isLandscape,
           axis: "Y",
           dragAxis: "x",
-          cardW,
-          cardH,
-          radius,
+          cardW: cardW * m,
+          cardH: cardH * m,
+          radius: radius * m,
           sceneW: vw,
           sceneH: Math.min(vh * 0.78, 800),
           perspective,
@@ -2846,13 +2155,14 @@
       const maxComfortRadius = Math.max(vh * 0.46 * ringScale, minRadiusForGap);
       const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
 
+      const m = perspective / (perspective - radius);
       return {
         isLandscape,
         axis: "X",
         dragAxis: "y",
-        cardW,
-        cardH,
-        radius,
+        cardW: cardW * m,
+        cardH: cardH * m,
+        radius: radius * m,
         sceneW: Math.min(vw, 820),
         sceneH: Math.min(vh * 0.84, 880),
         perspective,
@@ -2885,6 +2195,7 @@
         }
       });
 
+      document.querySelectorAll(".orbit-card img").forEach((img) => img.sizes = `${Math.round(layout.cardW)}px`);
       updateOrbitTransform();
       updateDepthAndCenter();
     }
@@ -2892,9 +2203,9 @@
     function updateOrbitTransform(mouseTilt = 0) {
       if (!layout) return;
       if (layout.isLandscape) {
-        orbit.style.transform = `rotateX(${layout.baseTilt + mouseTilt}deg) rotateY(${rotation}deg)`;
+        orbit.style.transform = `translateZ(${-layout.radius}px) rotateX(${layout.baseTilt + mouseTilt}deg) rotateY(${rotation}deg)`;
       } else {
-        orbit.style.transform = `rotateX(${rotation}deg) rotateY(0deg)`;
+        orbit.style.transform = `translateZ(${-layout.radius}px) rotateX(${rotation}deg) rotateY(0deg)`;
       }
       updateDepthAndCenter();
     }
@@ -2907,7 +2218,7 @@
           <div class="image-slot ${project.image ? "has-image" : "is-placeholder"}">
             <div class="image-media">
               ${project.image
-                ? `<img src="${highResImage}" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index === 0 ? "high" : "auto"}" draggable="false" />`
+                ? `${project.aiRender ? '<span class="ai-render">' : ""}<img src="${project.image}" srcset="${project.image} 1600w, ${highResImage} 3200w" sizes="${Math.round(getLayout().cardW)}px" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index === 0 ? "high" : "auto"}" draggable="false" />${project.aiRender ? '<span class="ai-render-label">Proposal — AI render</span></span>' : ""}`
                 : `<div class="image-placeholder" aria-hidden="true"></div>`}
             </div>
             <div class="image-overlay" aria-hidden="true">
@@ -3283,76 +2594,6 @@
 
 <script src="assets/js/gesture-mode.js?v=20260610-safari-camera"></script>
 
-  <script>
-    (() => {
-      function setupMobileNav() {
-        document.querySelectorAll(".site-nav").forEach((nav) => {
-          if (nav.dataset.mobileReady === "true") return;
-          nav.dataset.mobileReady = "true";
-
-          const toggle = document.createElement("button");
-          toggle.className = "mobile-nav-toggle";
-          toggle.type = "button";
-          toggle.setAttribute("aria-label", "Open menu");
-          toggle.setAttribute("aria-expanded", "false");
-          toggle.innerHTML = "<span></span><span></span>";
-          nav.appendChild(toggle);
-
-          const dropdown = document.createElement("div");
-          dropdown.className = "mobile-nav-dropdown";
-          dropdown.setAttribute("aria-hidden", "true");
-
-          const main = document.createElement("div");
-          main.className = "mobile-main";
-          nav.querySelectorAll(".nav-links a").forEach((link) => {
-            const clone = link.cloneNode(true);
-            clone.removeAttribute("data-filter");
-            main.appendChild(clone);
-          });
-
-          const docs = document.createElement("div");
-          docs.className = "mobile-docs";
-          nav.querySelectorAll(".nav-docs a").forEach((link) => {
-            const clone = link.cloneNode(true);
-            clone.removeAttribute("data-help");
-            docs.appendChild(clone);
-          });
-
-          dropdown.append(main, docs);
-          nav.insertAdjacentElement("afterend", dropdown);
-
-          function setOpen(open) {
-            document.body.classList.toggle("mobile-nav-open", open);
-            toggle.setAttribute("aria-expanded", open ? "true" : "false");
-            toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-            dropdown.setAttribute("aria-hidden", open ? "false" : "true");
-          }
-
-          toggle.addEventListener("click", () => {
-            setOpen(!document.body.classList.contains("mobile-nav-open"));
-          });
-
-          dropdown.querySelectorAll("a").forEach((link) => {
-            link.addEventListener("click", () => setOpen(false));
-          });
-
-          document.addEventListener("keydown", (event) => {
-            if (event.key === "Escape") setOpen(false);
-          });
-
-          window.addEventListener("resize", () => {
-            if (window.innerWidth > 840) setOpen(false);
-          }, { passive: true });
-        });
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", setupMobileNav);
-      } else {
-        setupMobileNav();
-      }
-    })();
-  </script>
 
 
 <script src="assets/js/site-shell.js?v=20260818-career-subdomain"></script>
