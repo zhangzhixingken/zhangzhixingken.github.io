@@ -265,39 +265,6 @@ html:has(body.theme-dark) {
   display: none;
 }
 
-.theme-dark .site-nav {
-  background: rgba(5, 5, 5, 0.84) !important;
-  color: var(--project-text) !important;
-  border-color: transparent !important;
-}
-
-.theme-dark .site-nav .logo,
-.theme-dark .site-nav .nav-links a,
-.theme-dark .site-nav .nav-docs a,
-.theme-dark .site-nav .nav-separator {
-  color: rgba(250, 249, 246, 0.62) !important;
-}
-
-.theme-dark .site-nav .nav-links a:hover,
-.theme-dark .site-nav .nav-links a.is-active,
-.theme-dark .site-nav .logo,
-.theme-dark .site-nav .nav-docs a:hover {
-  color: rgb(250, 249, 246) !important;
-}
-
-.theme-dark .shell-mobile-menu {
-  background: rgba(5, 5, 5, 0.97) !important;
-  border-color: rgba(250, 249, 246, 0.12) !important;
-}
-
-.theme-dark .shell-mobile-menu a {
-  color: rgb(250, 249, 246) !important;
-}
-
-.theme-dark .shell-mobile-toggle span {
-  background: rgb(250, 249, 246) !important;
-}
-
 .theme-dark .gesture-shell {
   color: rgb(250, 249, 246);
   background: rgba(5, 5, 5, 0.84);
@@ -359,7 +326,7 @@ html:has(body.theme-dark) {
   .gallery-progress { display: none; }
   .installation-documentation { min-height: 38vh; padding: 76px 18px; }
   .installation-documentation a,
-  .installation-documentation span { font-size: clamp(48px, 16vw, 92px); }
+  .installation-documentation span { font-size: clamp(32px, 10.5vw, 92px); }
   .installation-footer { padding: 28px 18px 36px; }
 }
 

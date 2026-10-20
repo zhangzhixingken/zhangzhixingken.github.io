@@ -45,3 +45,22 @@ When only Undetected or Untitled changes, this shorter command also works:
 ```bash
 ./tools/update-photography.sh "/Users/ken/Desktop/webpage picture/arts"
 ```
+
+## Navigation bar, favicon and share previews
+
+The navigation bar is identical on www.zhixingzhang.com and career.zhixingzhang.com.
+Its style and behaviour live in `assets/nav/nav.css` and `assets/nav/nav.js` (the career
+site loads them from this site, so keep those paths). The markup, favicon links and
+Open Graph / share-preview tags are written into every page by one script:
+
+```bash
+python3 tools/sync-shared.py                     # this site
+python3 tools/sync-shared.py ../career --career  # career site (path to its folder)
+```
+
+Run it after adding a page or changing the nav. Share-preview images are 1200 × 630 JPEGs
+in `assets/og/`; add a line for a new page in `OG_IMAGES` inside the script.
+Pages with a dark background use `<body data-nav-tone="dark">`.
+
+AI-generated proposal images carry a small white "Proposal — AI render" label:
+wrap the image as `<span class="ai-render"><img …><span class="ai-render-label">Proposal — AI render</span></span>`.
