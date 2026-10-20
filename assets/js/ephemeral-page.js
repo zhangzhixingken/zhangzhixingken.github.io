@@ -165,3 +165,29 @@
   measure();
   start();
 })();
+
+(() => {
+  "use strict";
+
+  // Hero film: muted autoplay loop, paused while off screen or for reduced motion.
+  const video = document.querySelector(".eph-hero-video");
+  if (!video) return;
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    video.removeAttribute("autoplay");
+    video.pause();
+    video.setAttribute("controls", "");
+    return;
+  }
+
+  const play = () => {
+    const attempt = video.play();
+    if (attempt && attempt.catch) attempt.catch(() => {});
+  };
+
+  new IntersectionObserver((entries) => {
+    const visible = entries.some((entry) => entry.isIntersecting);
+    if (visible && video.paused) play();
+    else if (!visible && !video.paused) video.pause();
+  }, { threshold: 0.05 }).observe(video);
+})();
