@@ -342,7 +342,7 @@ body.ephemeral-page .eph-artworks .gallery-track {
 }
 
 .eph-process-images figure {
-  width: clamp(120px, 11vw, 190px);
+  width: clamp(96px, 8.4vw, 150px);
   margin: 0;
 }
 
@@ -352,6 +352,8 @@ body.ephemeral-page .eph-artworks .gallery-track {
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
   opacity: 0.82;
   transition: opacity 220ms ease;
 }
@@ -504,7 +506,7 @@ body.ephemeral-page .eph-portfolio .installation-documentation a {
 
   .eph-process-images:not(:empty) { margin-top: 22px; }
 
-  .eph-process-images figure { width: calc(50% - 7px); }
+  .eph-process-images figure { width: calc((100% - 28px) / 3); }
 
   .eph-portfolio {
     --portfolio-vertical-space: 105px;
