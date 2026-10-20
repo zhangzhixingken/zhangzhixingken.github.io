@@ -2801,6 +2801,11 @@
         const baseRadius = Math.max(vw * 0.70, minRadiusForGap);
         const baseGap = (2 * baseRadius * Math.sin(stepRad / 2)) - cardW;
         const radius = (cardW + baseGap * 2) / (2 * Math.sin(stepRad / 2));
+        const basePerspective = clamp(vw * 1.2, 900, 3000);
+        // A larger ring otherwise magnifies the front card through perspective.
+        // Scale perspective with the radius so its on-screen width and height
+        // stay identical to the layout before spacing was doubled.
+        const perspective = basePerspective * (radius / baseRadius);
 
         return {
           isLandscape,
@@ -2811,7 +2816,7 @@
           radius,
           sceneW: vw,
           sceneH: Math.min(vh * 0.78, 800),
-          perspective: clamp(vw * 1.2, 900, 3000),
+          perspective,
           baseTilt: -5,
           speed: sparseMode ? 0.0016 : mediumMode ? 0.0019 : 0.0021
         };
@@ -2896,18 +2901,13 @@
 
     function renderCardFace(project, faceClass, index) {
       const highResImage = project.image ? project.image.replace(/\.webp$/i, "-2x.webp") : "";
-      const baseImageWidth = project.image?.endsWith("ephemeral-3.webp")
-        ? 1024
-        : project.image?.endsWith("ephemeral-5.webp")
-          ? 1536
-          : 1600;
 
       return `
         <div class="card-face ${faceClass}">
           <div class="image-slot ${project.image ? "has-image" : "is-placeholder"}">
             <div class="image-media">
               ${project.image
-                ? `<img src="${project.image}" srcset="${project.image} ${baseImageWidth}w, ${highResImage} ${baseImageWidth * 2}w" sizes="(orientation: portrait) 80vw, 70vw" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index === 0 ? "high" : "auto"}" draggable="false" />`
+                ? `<img src="${highResImage}" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index === 0 ? "high" : "auto"}" draggable="false" />`
                 : `<div class="image-placeholder" aria-hidden="true"></div>`}
             </div>
             <div class="image-overlay" aria-hidden="true">
