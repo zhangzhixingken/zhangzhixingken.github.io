@@ -10,8 +10,9 @@
   <title>Ephemeral — Zhixing Zhang</title>
   <link rel="stylesheet" href="../assets/css/site-shell.css?v=20260818-gesture-v1">
   <link rel="stylesheet" href="../assets/css/installation-scroll.css?v=20260610-responsive-titles">
+  <link rel="stylesheet" href="../assets/css/ephemeral.css?v=20261020-v1">
 </head>
-<body class="installation-page theme-dark">
+<body class="installation-page theme-dark ephemeral-page">
   <nav class="site-nav">
     <a class="logo" href="/">Zhixing Zhang</a>
     <ul class="nav-links">
@@ -34,29 +35,166 @@
       </div>
     </section>
 
-    <section class="installation-statement">
-      <p>A temporary ring of light appears within an institutional landscape. Its brief presence asks who may alter a shared space, what remains afterward, and whether permission is also an artistic material.</p>
-    </section>
-
-    <section class="pulled-gallery" id="images" style="--gallery-height: 620vh">
+    <!-- Artwork presentation: full-screen horizontal slider, grouped by phase. -->
+    <section class="pulled-gallery eph-artworks" id="images" style="--gallery-height: 1180vh" aria-label="Ephemeral, artwork by phase">
       <div class="gallery-sticky">
         <div class="gallery-track" id="galleryTrack">
-          <figure class="gallery-item tall"><img src="../assets/images/ephemeral/gallery-01.webp" alt="Ephemeral documentation 1" loading="lazy"></figure>
-          <figure class="gallery-item tall"><img src="../assets/images/ephemeral/gallery-02.webp" alt="Ephemeral documentation 2" loading="lazy"></figure>
-          <figure class="gallery-item wide"><img src="../assets/images/ephemeral/gallery-03.webp" alt="Ephemeral documentation 3" loading="lazy"></figure>
-          <figure class="gallery-item large"><img src="../assets/images/ephemeral/gallery-04.webp" alt="Ephemeral documentation 4" loading="lazy"></figure>
-          <figure class="gallery-item wide"><img src="../assets/images/ephemeral/gallery-05.webp" alt="Ephemeral documentation 5" loading="lazy"></figure>
+          <aside class="eph-project-data" aria-label="Project details">
+            <dl>
+              <div><dt>Period</dt><dd>2021; 2024 — ongoing</dd></div>
+              <div><dt>Medium</dt><dd>Light installation, land art</dd></div>
+              <div><dt>Materials</dt><dd>LED strip, Arduino, smoke, copper wire</dd></div>
+              <div><dt>Sites</dt><dd>High school sports ground, 2021; NYU Shanghai rooftop, 2024</dd></div>
+              <div><dt>Show</dt><dd>NYU Shanghai, Dec 2024</dd></div>
+            </dl>
+          </aside>
+
+          <!-- Phase I · 2021 -->
+          <header class="eph-phase-card" id="phase-1" data-phase="1">
+            <p class="eph-phase-index">Phase I</p>
+            <p class="eph-phase-year">2021</p>
+            <h2 class="eph-phase-title">High School</h2>
+            <p class="eph-phase-tags">Building scale · LED · Torch relay</p>
+            <p class="eph-phase-text">LED and smoke. A fifty-meter light strip from the ground to the rooftop, two transformers, one hanging in mid-air. A negotiation with institutional machinery.</p>
+          </header>
+          <figure class="gallery-item large" data-phase="1">
+            <img src="../assets/images/ephemeral/phase1-light-line.webp" alt="Aerial view at night: a glowing line drawn on the sports ground rises to a bright point on the roof of the school stand" loading="lazy">
+            <figcaption><span>High school sports ground, 2021</span><span>LED strip and smoke</span></figcaption>
+          </figure>
+
+          <!-- Phase II · 2024 -->
+          <header class="eph-phase-card" id="phase-2" data-phase="2">
+            <p class="eph-phase-index">Phase II</p>
+            <p class="eph-phase-year">2024</p>
+            <h2 class="eph-phase-title">NYU Shanghai</h2>
+            <p class="eph-phase-tags">Building scale · LED · Midnight rooftop</p>
+            <p class="eph-phase-text">Hanging items on the exterior of the building is prohibited. At midnight on the roof, repeated negotiations with security guards. Resistance was the material; flashlight beams were co-authors.</p>
+          </header>
+          <figure class="gallery-item large eph-film" data-phase="2">
+            <video class="eph-film-video" muted loop playsinline preload="metadata" poster="../assets/images/ephemeral/ephemeral-2024-poster.webp" aria-label="Ephemeral, NYU Shanghai, 2024: a small ring of orange light glows on the dark facade of a campus building at night">
+              <source src="../assets/images/ephemeral/ephemeral-2024.mp4" type="video/mp4">
+            </video>
+            <figcaption><span>NYU Shanghai, 2024</span><span>Video, 34 s <button class="eph-sound" type="button" aria-pressed="false">Sound off</button></span></figcaption>
+          </figure>
+          <figure class="gallery-item tall" data-phase="2">
+            <img src="../assets/images/ephemeral/gallery-01.webp" alt="A ring of orange LED light on the exterior of an NYU Shanghai building at night" loading="lazy">
+            <figcaption><span>NYU Shanghai, 2024</span><span>LED ring, building exterior</span></figcaption>
+          </figure>
+          <figure class="gallery-item wide" data-phase="2">
+            <img src="../assets/images/ephemeral/phase2-security.webp" alt="Black-and-white still: the glowing ring in a dim corridor as two security guards approach" loading="lazy">
+            <figcaption><span>NYU Shanghai, 2024</span><span>Security and flashlight</span></figcaption>
+          </figure>
+
+          <!-- Phase III–IV · 2026 → -->
+          <header class="eph-phase-card" id="phase-3" data-phase="3">
+            <p class="eph-phase-index">Phase III–IV</p>
+            <p class="eph-phase-year">2026&nbsp;→</p>
+            <h2 class="eph-phase-title">Urban Scale</h2>
+            <p class="eph-phase-tags">Proposals · AI prospection renders</p>
+            <p class="eph-phase-text">A kilometer-long line of light or flame across a city. Permits, waterway authorities, ecology, noise and public sentiment become part of the work.</p>
+          </header>
+          <figure class="gallery-item tall" data-phase="3">
+            <img src="../assets/images/ephemeral/gallery-02.webp" alt="AI render: a line of light along the harbour beside the Sydney Opera House at dusk" loading="lazy">
+            <figcaption><span>Sydney Opera House</span><span>AI prospection render</span></figcaption>
+          </figure>
+          <figure class="gallery-item wide" data-phase="3">
+            <img src="../assets/images/ephemeral/gallery-03.webp" alt="AI render: a line of light crossing Sydney Harbour at sunset" loading="lazy">
+            <figcaption><span>Sydney Harbour</span><span>AI prospection render</span></figcaption>
+          </figure>
+          <figure class="gallery-item large" data-phase="3">
+            <img src="../assets/images/ephemeral/gallery-04.webp" alt="AI render: a line of light through Paris seen from a helicopter" loading="lazy">
+            <figcaption><span>Paris</span><span>AI prospection render</span></figcaption>
+          </figure>
+          <figure class="gallery-item wide" data-phase="3">
+            <img src="../assets/images/ephemeral/gallery-05.webp" alt="AI render: a line of light crossing the Golden Gate Bridge toward the sunset" loading="lazy">
+            <figcaption><span>Golden Gate, San Francisco</span><span>AI prospection render</span></figcaption>
+          </figure>
         </div>
+
+        <nav class="eph-timeline" aria-label="Phases">
+          <button type="button" data-phase="1"><b>I</b> 2021 · High School</button>
+          <button type="button" data-phase="2"><b>II</b> 2024 · NYU Shanghai</button>
+          <button type="button" data-phase="3"><b>III–IV</b> 2026 → · Urban Scale</button>
+        </nav>
         <div class="gallery-progress" aria-hidden="true"><span id="galleryProgress"></span></div>
       </div>
     </section>
 
-    <section class="installation-documentation">
-      <a href="../assets/docs/ephemeral-portfolio.pdf" target="_blank" rel="noopener">Documentation ↗</a>
+    <section class="eph-statement" aria-labelledby="eph-statement-label">
+      <p class="eph-label" id="eph-statement-label">Ephemeral</p>
+      <blockquote class="eph-quote">
+        <p>“What are you hanging here? … I don’t understand what you’re doing. This isn’t art at all.”</p>
+        <cite>On the rooftop, NYU Shanghai, 2024</cite>
+      </blockquote>
+      <div class="eph-statement-copy">
+        <p>Ephemeral draws a temporary line of light through a shared space: a fifty-meter strip from the ground to the rooftop of my high school in 2021, then a ring of LED light hung at midnight from an NYU Shanghai rooftop in 2024.</p>
+        <p>Each version has to pass through the people and rules that govern its site: administrators, property management, regulations, security guards. Their refusals changed the material, the scale and the form. The moment I was forced to compromise was when the work found its true meaning. Materials are never only mine to decide. Space isn’t either.</p>
+        <p>Visuals are the result; the struggle is the process. AI can generate urban-scale land art, but it cannot negotiate with a government, face resident complaints, or weigh waterways, ecology, noise and security. That negotiation is the work.</p>
+      </div>
+    </section>
+
+    <!-- Process: supporting material, kept deliberately small. -->
+    <section class="eph-process" aria-labelledby="eph-process-label">
+      <div class="eph-process-head">
+        <h2 class="eph-label" id="eph-process-label">Process</h2>
+        <p>Models, rigging and the negotiations behind each phase.</p>
+      </div>
+
+      <div class="eph-process-phase" data-phase="1">
+        <p class="eph-process-meta"><span>Phase I</span><span>2021</span><span>High School</span></p>
+        <div class="eph-process-notes">
+          <p>The first plan used real flames, inspired by the Olympic opening ceremony: paraffin wax melted onto cotton rope, rope soaked in alcohol. The school administration rejected fire outright, so LED lights and smoke replaced it, re-soldered, re-bound and re-tested with my team until 4 a.m.</p>
+          <p>A helium balloon was also calculated. It needed to be 1.2 meters across and cost 3,000 RMB, far over budget.</p>
+        </div>
+        <div class="eph-process-images">
+          <figure>
+            <a href="../assets/images/ephemeral/process-2021-maquette.webp" target="_blank" rel="noopener"><img src="../assets/images/ephemeral/process-2021-maquette.webp" alt="White card model of the stand with a twisted wire line running from a figure on the ground to the roof" loading="lazy"></a>
+            <figcaption>Card and wire model</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/images/ephemeral/process-2021-installation.webp" target="_blank" rel="noopener"><img src="../assets/images/ephemeral/process-2021-installation.webp" alt="The artist on a ladder fixing the light line to the concrete facade of the stand" loading="lazy"></a>
+            <figcaption>Rigging the line on the stand</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="eph-process-phase" data-phase="2">
+        <p class="eph-process-meta"><span>Phase II</span><span>2024</span><span>NYU Shanghai</span></p>
+        <div class="eph-process-notes">
+          <p>The university doesn’t allow hanging items from heights, so the ring meant dealing with security, property management, regulations and liability.</p>
+          <p>Driven through a signal line over ten meters long, the ring suffered voltage drop and its colors broke into noise. With the lab assistant, I measured the voltage along the line and rewired it: the LED strip split into two parallel segments, with thicker copper wire to reduce Arduino signal loss.</p>
+        </div>
+        <div class="eph-process-images" aria-hidden="true"></div>
+      </div>
+
+      <div class="eph-process-phase" data-phase="3">
+        <p class="eph-process-meta"><span>Phase III–IV</span><span>2026 →</span><span>Urban Scale</span></p>
+        <div class="eph-process-notes">
+          <p>Each proposal starts from its permits: special-event and lane-closure approvals in San Francisco, light, noise and marine permits in Sydney, restricted-zone and ferry coordination in Hong Kong. Legal compliance first, minimum disturbance, and every element reversible.</p>
+        </div>
+        <div class="eph-process-images" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- Document: same reader as BABEL, in Ephemeral's colours. -->
+    <section class="eph-portfolio" aria-label="Ephemeral project portfolio">
+      <div class="eph-portfolio-pages">
+        <figure><img src="../assets/images/ephemeral/ephemeral-page-01.webp" alt="Ephemeral portfolio, page 1" loading="lazy"><figcaption>Ephemeral</figcaption></figure>
+        <figure><img src="../assets/images/ephemeral/ephemeral-page-02.webp" alt="Ephemeral portfolio, page 2: Version I, High School" loading="lazy"><figcaption>Phase I · 2021</figcaption></figure>
+        <figure><img src="../assets/images/ephemeral/ephemeral-page-03.webp" alt="Ephemeral portfolio, page 3: Version II, NYU Shanghai" loading="lazy"><figcaption>Phase II · 2024</figcaption></figure>
+        <figure><img src="../assets/images/ephemeral/ephemeral-page-04.webp" alt="Ephemeral portfolio, page 4: Creative motivation" loading="lazy"><figcaption>Creative motivation</figcaption></figure>
+        <figure><img src="../assets/images/ephemeral/ephemeral-page-05.webp" alt="Ephemeral portfolio, page 5: Version III and IV, urban-scale proposals" loading="lazy"><figcaption>Phase III–IV · 2026 →</figcaption></figure>
+        <figure><img src="../assets/images/ephemeral/ephemeral-page-06.webp" alt="Ephemeral portfolio, page 6: What is Ephemeral, and the four phases" loading="lazy"><figcaption>Phases</figcaption></figure>
+      </div>
+
+      <div class="installation-documentation">
+        <a href="../assets/docs/ephemeral-portfolio.pdf" target="_blank" rel="noopener">Documentation</a>
+      </div>
     </section>
   </main>
 <script src="../assets/js/installation-scroll.js?v=20260610-unified-cursor-scroll"></script>
   <script src="../assets/js/site-shell.js?v=20260818-career-subdomain"></script>
   <script src="../assets/js/gesture-mode.js?v=20260610-safari-camera"></script>
+  <script src="../assets/js/ephemeral-page.js?v=20261020-v1"></script>
 </body>
 </html>

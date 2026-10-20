@@ -1,0 +1,532 @@
+/* Ephemeral project page.
+   Hero and navigation come from installation-scroll.css and are untouched here.
+   Artwork images keep the pinned full-screen slider; process images stay small. */
+
+body.ephemeral-page {
+  --eph-text: rgb(245, 242, 237);
+  --eph-muted: rgba(245, 242, 237, 0.56);
+  --eph-faint: rgba(245, 242, 237, 0.32);
+  --eph-line: rgba(245, 242, 237, 0.14);
+  --eph-ember: #c98559;
+  --eph-band: #12100e;
+  --eph-serif: "Sorts Mill Goudy", Georgia, "Times New Roman", serif;
+  --eph-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.eph-label {
+  margin: 4px 0 0;
+  color: var(--eph-muted);
+  font-family: var(--eph-sans);
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ── Artwork slider ─────────────────────────────────────────── */
+
+body.ephemeral-page .eph-artworks .gallery-track {
+  padding-left: 26vw;
+}
+
+.eph-project-data {
+  flex: 0 0 auto;
+  width: min(30vw, 440px);
+  align-self: center;
+}
+
+.eph-project-data dl { margin: 0; }
+
+.eph-project-data dl > div {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 22px;
+  padding: 7px 0;
+}
+
+.eph-project-data dt,
+.eph-project-data dd {
+  margin: 0;
+  font-family: var(--eph-serif);
+  font-size: clamp(11px, 0.9vw, 14px);
+  font-weight: 400;
+  line-height: 1.38;
+}
+
+.eph-project-data dt { color: var(--eph-muted); }
+.eph-project-data dd { color: var(--eph-text); }
+
+.eph-phase-card {
+  flex: 0 0 auto;
+  width: min(28vw, 420px);
+  margin-left: clamp(40px, 6vw, 110px);
+  padding-top: 18px;
+  border-top: 1px solid var(--eph-line);
+  align-self: center;
+  color: var(--eph-text);
+}
+
+.eph-phase-card p,
+.eph-phase-card h2 { margin: 0; }
+
+.eph-phase-index {
+  color: var(--eph-ember);
+  font-family: var(--eph-sans);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eph-phase-year {
+  margin-top: 26px !important;
+  font-family: var(--eph-sans);
+  font-size: clamp(64px, 8.4vw, 150px);
+  font-weight: 500;
+  line-height: 0.8;
+  letter-spacing: -0.075em;
+  white-space: nowrap;
+}
+
+.eph-phase-title {
+  margin-top: 22px !important;
+  font-family: var(--eph-serif);
+  font-size: clamp(24px, 2.3vw, 38px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.eph-phase-tags {
+  margin-top: 14px !important;
+  color: var(--eph-muted);
+  font-family: var(--eph-sans);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eph-phase-text {
+  max-width: 34ch;
+  margin-top: 28px !important;
+  color: var(--eph-muted);
+  font-family: var(--eph-sans);
+  font-size: clamp(12px, 0.92vw, 15px);
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.eph-artworks .gallery-item video {
+  display: block;
+  width: 100%;
+  height: min(70vh, 780px);
+  object-fit: cover;
+  background: #000;
+}
+
+.eph-artworks .gallery-item figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  margin-top: 12px;
+  color: var(--eph-muted);
+  font-family: var(--eph-sans);
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eph-sound {
+  margin-left: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--eph-text);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.eph-sound[aria-pressed="true"] { color: var(--eph-ember); }
+
+/* Phase timeline laid over the slider's progress line. */
+.eph-timeline {
+  position: absolute;
+  left: 42px;
+  right: 42px;
+  bottom: 31px;
+  z-index: 9;
+  height: 0;
+  pointer-events: none;
+}
+
+.eph-timeline button {
+  position: absolute;
+  left: calc(var(--at, 0) * 100%);
+  bottom: 12px;
+  padding: 0 0 0 9px;
+  border: 0;
+  background: none;
+  color: var(--eph-faint);
+  font-family: var(--eph-sans);
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 320ms ease;
+}
+
+.eph-timeline button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -12px;
+  width: 1px;
+  height: 21px;
+  background: currentColor;
+}
+
+.eph-timeline button b {
+  margin-right: 6px;
+  font-weight: 400;
+  color: inherit;
+}
+
+.eph-timeline button:hover { color: var(--eph-muted); }
+.eph-timeline button.is-active { color: var(--eph-text); }
+.eph-timeline button.is-active b { color: var(--eph-ember); }
+
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+  /* Dim everything except the image nearest the centre of the screen. */
+  body.ephemeral-page .eph-artworks .gallery-item,
+  body.ephemeral-page .eph-artworks .gallery-item.is-active {
+    opacity: 0.38;
+    transform: translate3d(0, 22px, 0) scale(0.985);
+  }
+
+  body.ephemeral-page .eph-artworks .gallery-item.is-current {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (min-width: 901px) {
+  /* Portrait images share the landscape height so captions clear the timeline. */
+  body.ephemeral-page .eph-artworks .gallery-item.tall img { height: min(70vh, 780px); }
+}
+
+/* ── Statement ──────────────────────────────────────────────── */
+
+.eph-statement {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.5fr) minmax(280px, 0.9fr) minmax(300px, 1fr);
+  gap: clamp(28px, 6vw, 110px);
+  align-items: start;
+  padding: 16vh 6vw clamp(76px, 10vh, 136px);
+  background: var(--project-bg);
+  color: var(--eph-text);
+}
+
+.eph-quote { margin: 0; }
+
+.eph-quote p {
+  margin: 0;
+  font-family: var(--eph-serif);
+  font-size: clamp(28px, 3.35vw, 54px);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.eph-quote cite {
+  display: block;
+  margin-top: 22px;
+  color: var(--eph-muted);
+  font-family: var(--eph-serif);
+  font-size: clamp(16px, 1.3vw, 20px);
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.eph-statement-copy { max-width: 620px; }
+
+.eph-statement-copy p {
+  margin: 0;
+  color: rgba(245, 242, 237, 0.84);
+  font-family: var(--eph-sans);
+  font-size: clamp(13px, 1vw, 17px);
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.eph-statement-copy p + p { margin-top: 1.25em; }
+
+/* ── Process (low emphasis) ─────────────────────────────────── */
+
+.eph-process {
+  padding: clamp(64px, 10vh, 130px) 6vw clamp(90px, 13vh, 170px);
+  background: var(--project-bg);
+  color: var(--eph-text);
+}
+
+.eph-process-head,
+.eph-process-phase {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.5fr) minmax(280px, 0.9fr) minmax(300px, 1fr);
+  gap: clamp(28px, 6vw, 110px);
+}
+
+.eph-process-head { margin-bottom: clamp(28px, 5vh, 56px); }
+
+.eph-process-head h2 { margin: 4px 0 0; }
+
+.eph-process-head p {
+  grid-column: 2 / -1;
+  margin: 0;
+  color: var(--eph-muted);
+  font-family: var(--eph-sans);
+  font-size: clamp(12px, 0.92vw, 15px);
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.eph-process-phase {
+  padding: 22px 0 34px;
+  border-top: 1px solid var(--eph-line);
+}
+
+.eph-process-meta {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  margin: 0;
+  color: var(--eph-muted);
+  font-family: var(--eph-sans);
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eph-process-meta span:first-child { color: var(--eph-ember); }
+
+.eph-process-notes p {
+  margin: 0;
+  color: rgba(245, 242, 237, 0.66);
+  font-family: var(--eph-sans);
+  font-size: clamp(12px, 0.92vw, 15px);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.eph-process-notes p + p { margin-top: 1em; }
+
+.eph-process-images {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.eph-process-images figure {
+  width: clamp(120px, 11vw, 190px);
+  margin: 0;
+}
+
+.eph-process-images a { display: block; }
+
+.eph-process-images img {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.82;
+  transition: opacity 220ms ease;
+}
+
+.eph-process-images a:hover img,
+.eph-process-images a:focus-visible img { opacity: 1; }
+
+.eph-process-images figcaption {
+  margin-top: 8px;
+  color: var(--eph-faint);
+  font-family: var(--eph-sans);
+  font-size: 8px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── Document: BABEL's portfolio reader, recoloured ─────────── */
+
+.eph-portfolio {
+  --portfolio-vertical-space: clamp(110px, 15vh, 190px);
+  padding: var(--portfolio-vertical-space) 6vw;
+  overflow: hidden;
+  background: var(--eph-band);
+  color: var(--eph-text);
+}
+
+.eph-portfolio-pages {
+  display: flex;
+  width: auto;
+  gap: clamp(20px, 3vw, 50px);
+  margin-right: calc(-1 * 6vw);
+  padding: 0 6vw 14px 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 242, 237, 0.3) transparent;
+}
+
+.eph-portfolio-pages::-webkit-scrollbar { height: 4px; }
+.eph-portfolio-pages::-webkit-scrollbar-thumb { background: rgba(245, 242, 237, 0.3); }
+
+.eph-portfolio-pages figure {
+  flex: 0 0 min(78vw, 1440px);
+  width: min(78vw, 1440px);
+  margin: 0;
+  scroll-snap-align: start;
+}
+
+.eph-portfolio-pages img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #1d1a17;
+}
+
+.eph-portfolio-pages figcaption {
+  margin-top: 10px;
+  color: rgba(245, 242, 237, 0.5);
+  font-family: var(--eph-sans);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+body.ephemeral-page .eph-portfolio .installation-documentation {
+  min-height: auto;
+  padding: 0 6vw;
+}
+
+body.ephemeral-page .eph-portfolio .installation-documentation a {
+  color: rgba(250, 249, 246, 0.58);
+  font-family: var(--eph-sans);
+  font-size: 9px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  body.ephemeral-page .eph-artworks .gallery-track { padding-left: 0; }
+
+  .eph-project-data,
+  .eph-phase-card {
+    width: auto;
+    margin-left: 0;
+  }
+
+  .eph-project-data { padding: 30px 4px 0; }
+
+  .eph-project-data dl > div { grid-template-columns: 76px 1fr; gap: 16px; }
+
+  .eph-project-data dt,
+  .eph-project-data dd { font-size: 14px; }
+
+  .eph-phase-card { margin-top: 40px; padding: 18px 4px 0; }
+
+  .eph-phase-year { margin-top: 20px !important; font-size: clamp(56px, 18vw, 96px); }
+
+  .eph-phase-title { font-size: clamp(24px, 7vw, 32px); }
+
+  .eph-phase-text { max-width: none; font-size: 14px; }
+
+  .eph-artworks .gallery-item video {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .eph-artworks .gallery-item figcaption {
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-top: 10px;
+    padding: 0 4px;
+  }
+
+  .eph-timeline { display: none; }
+
+  .eph-statement {
+    display: block;
+    padding: 105px 18px 84px;
+  }
+
+  .eph-quote { margin: 78px 0; }
+  .eph-quote p { font-size: clamp(34px, 10.5vw, 51px); }
+  .eph-statement-copy p { font-size: 14px; line-height: 1.58; }
+
+  .eph-process { padding: 40px 18px 96px; }
+
+  .eph-process-head,
+  .eph-process-phase { display: block; }
+
+  .eph-process-head p { margin-top: 18px; font-size: 14px; }
+
+  .eph-process-phase { padding: 18px 0 30px; }
+
+  .eph-process-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-bottom: 18px;
+  }
+
+  .eph-process-notes p { font-size: 14px; }
+
+  .eph-process-images:not(:empty) { margin-top: 22px; }
+
+  .eph-process-images figure { width: calc(50% - 7px); }
+
+  .eph-portfolio {
+    --portfolio-vertical-space: 105px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .eph-portfolio-pages {
+    gap: 18px;
+    margin-right: -14px;
+    padding-right: 14px;
+  }
+
+  .eph-portfolio-pages figure {
+    flex-basis: 88vw;
+    width: 88vw;
+  }
+
+  body.ephemeral-page .eph-portfolio .installation-documentation { padding: 34px 18px 42px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eph-timeline button,
+  .eph-process-images img { transition: none; }
+}
