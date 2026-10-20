@@ -266,3 +266,46 @@ body.gesture-active .gesture-scroll-zone.is-gesture-hover { opacity: 1; transfor
 @media (max-width: 840px) {
   .gesture-panel { display: none !important; }
 }
+
+/* ── AI render label ───────────────────────────────────────
+   Every AI-generated proposal image carries this label on the image itself.
+   Markup: <span class="ai-render"><img …><span class="ai-render-label">Proposal — AI render</span></span> */
+.ai-render {
+  position: relative;
+  display: block;
+}
+
+.ai-render-label {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  white-space: nowrap;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Portrait images shown with object-fit: contain — shrink the wrapper to the picture
+   so the label sits on the image, not on the letterbox. */
+@media (min-width: 901px) {
+  .gallery-item.tall .ai-render {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .gallery-item.tall .ai-render img {
+    width: auto;
+    max-width: 100%;
+  }
+}
