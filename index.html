@@ -691,7 +691,6 @@
 
     .card-shell {
       transform: scale(var(--depth-scale, 1)) translateZ(0);
-      will-change: transform;
     }
 
     .card-face {
@@ -2807,13 +2806,14 @@
         // stay identical to the layout before spacing was doubled.
         const perspective = basePerspective * (radius / baseRadius);
 
+        const m = perspective / (perspective - radius);
         return {
           isLandscape,
           axis: "Y",
           dragAxis: "x",
-          cardW,
-          cardH,
-          radius,
+          cardW: cardW * m,
+          cardH: cardH * m,
+          radius: radius * m,
           sceneW: vw,
           sceneH: Math.min(vh * 0.78, 800),
           perspective,
@@ -2846,13 +2846,14 @@
       const maxComfortRadius = Math.max(vh * 0.46 * ringScale, minRadiusForGap);
       const radius = clamp(Math.max(naturalRadius, minRadiusForGap), minRadiusForGap, maxComfortRadius);
 
+      const m = perspective / (perspective - radius);
       return {
         isLandscape,
         axis: "X",
         dragAxis: "y",
-        cardW,
-        cardH,
-        radius,
+        cardW: cardW * m,
+        cardH: cardH * m,
+        radius: radius * m,
         sceneW: Math.min(vw, 820),
         sceneH: Math.min(vh * 0.84, 880),
         perspective,
@@ -2885,6 +2886,7 @@
         }
       });
 
+      document.querySelectorAll(".orbit-card img").forEach((img) => img.sizes = `${Math.round(layout.cardW)}px`);
       updateOrbitTransform();
       updateDepthAndCenter();
     }
@@ -2892,9 +2894,9 @@
     function updateOrbitTransform(mouseTilt = 0) {
       if (!layout) return;
       if (layout.isLandscape) {
-        orbit.style.transform = `rotateX(${layout.baseTilt + mouseTilt}deg) rotateY(${rotation}deg)`;
+        orbit.style.transform = `translateZ(${-layout.radius}px) rotateX(${layout.baseTilt + mouseTilt}deg) rotateY(${rotation}deg)`;
       } else {
-        orbit.style.transform = `rotateX(${rotation}deg) rotateY(0deg)`;
+        orbit.style.transform = `translateZ(${-layout.radius}px) rotateX(${rotation}deg) rotateY(0deg)`;
       }
       updateDepthAndCenter();
     }
@@ -2907,7 +2909,7 @@
           <div class="image-slot ${project.image ? "has-image" : "is-placeholder"}">
             <div class="image-media">
               ${project.image
-                ? `<img src="${highResImage}" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index === 0 ? "high" : "auto"}" draggable="false" />`
+                ? `<img src="${project.image}" srcset="${project.image} 1600w, ${highResImage} 3200w" sizes="${Math.round(getLayout().cardW)}px" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index === 0 ? "high" : "auto"}" draggable="false" />`
                 : `<div class="image-placeholder" aria-hidden="true"></div>`}
             </div>
             <div class="image-overlay" aria-hidden="true">
