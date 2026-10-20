@@ -1912,6 +1912,10 @@
     .gesture-scroll-zone { z-index: 2147483645 !important; }
 
 
+    /* AI render label on orbit cards (see .ai-render-label in site-shell.css) */
+    .image-media > .ai-render { position: absolute; inset: 0; }
+    .orbit-card.is-portrait .image-media > .ai-render { position: relative; inset: auto; height: var(--portrait-image-h); }
+    .orbit-card .ai-render-label { left: 9px; bottom: 8px; }
 </style>
   <link rel="stylesheet" href="assets/css/site-shell.css?v=20260818-gesture-v1" />
 <!-- shared-head:start -->
@@ -2000,9 +2004,9 @@
       { title: "Tsang Chieh", year: "2023", label: "ART", medium: "Interactive Installation", keywords: "Writing / Power / Erasure", slug: "cangjie", image: "assets/images/orbit/tsang-chieh-2.webp", href: "art/cangjie.html" },
       { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-1.webp", href: "art/ephemeral.html" },
       { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-2.webp", href: "art/ephemeral.html" },
-      { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-3.webp", href: "art/ephemeral.html", portrait: true },
+      { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-3.webp", href: "art/ephemeral.html", aiRender: true, portrait: true },
       { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-4.webp", href: "art/ephemeral.html" },
-      { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-5.webp", href: "art/ephemeral.html" },
+      { title: "Ephemeral", year: "2021, 2024–ongoing", label: "ART", medium: "Installation / Land Art", keywords: "Light / Permission / Process", slug: "ephemeral", image: "assets/images/orbit/ephemeral-5.webp", href: "art/ephemeral.html", aiRender: true },
       { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-1.webp", href: "art/undetected.html" },
       { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-2.webp", href: "art/undetected.html" },
       { title: "Undetected", year: "2019-2022", label: "ART", medium: "Documentary Photography", keywords: "Subway / Construction / Hidden City", slug: "undetected", image: "assets/images/orbit/undetected-3.webp", href: "art/undetected.html" },
@@ -2214,7 +2218,7 @@
           <div class="image-slot ${project.image ? "has-image" : "is-placeholder"}">
             <div class="image-media">
               ${project.image
-                ? `<img src="${project.image}" srcset="${project.image} 1600w, ${highResImage} 3200w" sizes="${Math.round(getLayout().cardW)}px" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index === 0 ? "high" : "auto"}" draggable="false" />`
+                ? `${project.aiRender ? '<span class="ai-render">' : ""}<img src="${project.image}" srcset="${project.image} 1600w, ${highResImage} 3200w" sizes="${Math.round(getLayout().cardW)}px" alt="" loading="${index === 0 ? "eager" : "lazy"}" decoding="async" fetchpriority="${index === 0 ? "high" : "auto"}" draggable="false" />${project.aiRender ? '<span class="ai-render-label">Proposal — AI render</span></span>' : ""}`
                 : `<div class="image-placeholder" aria-hidden="true"></div>`}
             </div>
             <div class="image-overlay" aria-hidden="true">
