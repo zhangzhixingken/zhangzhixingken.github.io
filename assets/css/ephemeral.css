@@ -574,3 +574,14 @@ body.ephemeral-page .eph-portfolio .installation-documentation a {
   .eph-timeline button,
   .eph-process-images img { transition: none; }
 }
+
+/* Navigation is fully transparent while it sits over the hero film. */
+body.ephemeral-page.eph-nav-over-hero .site-nav {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+body.ephemeral-page .site-nav {
+  transition: background-color 300ms ease, backdrop-filter 300ms ease;
+}

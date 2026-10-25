@@ -191,3 +191,20 @@
     else if (!visible && !video.paused) video.pause();
   }, { threshold: 0.05 }).observe(video);
 })();
+
+(() => {
+  "use strict";
+  // Transparent navigation while the hero is behind it.
+  const hero = document.querySelector(".installation-hero");
+  if (!hero) return;
+  const update = () => {
+    const nav = document.querySelector(".site-nav");
+    const navHeight = nav ? nav.offsetHeight : 80;
+    const film = hero.querySelector(".installation-hero-image");
+    const bottom = (film || hero).getBoundingClientRect().bottom;
+    document.body.classList.toggle("eph-nav-over-hero", bottom > navHeight);
+  };
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update, { passive: true });
+})();
