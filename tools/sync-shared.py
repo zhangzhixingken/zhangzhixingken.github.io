@@ -6,7 +6,7 @@
 
 Run it after adding a page or changing the nav layout. It keeps every page's own link
 targets (logo, Arts, Career, About, Contact) exactly as they are — career has its own
-About/Contact and home link. It rewrites only two marked blocks in
+About (/about/), Contact (/contact.html) and home link. It rewrites only two marked blocks in
 each page — <!-- shared-head:start/end --> before </head> and <!-- shared-nav:start/end -->
 where the <nav class="site-nav"> sits — so it is safe to run repeatedly.
 Pages that only redirect (meta refresh) are skipped.
@@ -93,7 +93,7 @@ def default_hrefs(site, rel):
         return {"logo": "/", "Arts": f"{depth}arts.html", "Career": CAREER,
                 "About": f"{depth}about.html", "Contact": f"{depth}contact.html"}
     return {"logo": "/", "Arts": f"{WWW}/arts.html", "Career": "/",
-            "About": "/about/", "Contact": f"{WWW}/contact.html"}
+            "About": "/about/", "Contact": "/contact.html"}
 
 
 def nav_html(site, rel, hrefs):
@@ -103,7 +103,8 @@ def nav_html(site, rel, hrefs):
                    "Career" if rel == "careers.html" or rel.startswith("career/") else
                    "About" if rel == "about.html" else "Contact" if rel == "contact.html" else "")
     else:
-        section = "About" if rel == "about/index.html" else "Career"
+        section = ("About" if rel == "about/index.html" else
+                   "Contact" if rel == "contact.html" else "Career")
 
     def link(label):
         active = ' class="is-active" aria-current="page"' if label == section else ""
