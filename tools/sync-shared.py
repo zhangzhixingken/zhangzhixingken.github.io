@@ -4,7 +4,9 @@
     python3 tools/sync-shared.py                     # www.zhixingzhang.com (this repo)
     python3 tools/sync-shared.py ../career --career  # career.zhixingzhang.com
 
-Run it after adding a page or changing the nav. It rewrites only two marked blocks in
+Run it after adding a page or changing the nav layout. It keeps every page's own link
+targets (logo, Arts, Career, About, Contact) exactly as they are — career has its own
+About/Contact and home link. It rewrites only two marked blocks in
 each page — <!-- shared-head:start/end --> before </head> and <!-- shared-nav:start/end -->
 where the <nav class="site-nav"> sits — so it is safe to run repeatedly.
 Pages that only redirect (meta refresh) are skipped.
@@ -63,30 +65,54 @@ DESCRIPTIONS = {
 }
 
 
-def nav_html(site, rel):
-    """The one nav. www links are root-relative (they work locally too); career links are absolute."""
-    if site == "www":
-        home, arts, about, contact = "/", "/arts.html", "/about.html", "/contact.html"
-        section = ("arts" if rel == "arts.html" or rel.startswith("art/") else
-                   "career" if rel == "careers.html" or rel.startswith("career/") else
-                   "about" if rel == "about.html" else "contact" if rel == "contact.html" else "")
-    else:
-        home, arts, contact = f"{WWW}/", f"{WWW}/arts.html", f"{WWW}/contact.html"
-        about = "/about/"  # the career site keeps its own professional About page
-        section = "about" if rel == "about/index.html" else "career"
-    career = f"{CAREER}/" if site == "www" else "/"
+LABELS = ("Arts", "Career", "About", "Contact")
 
-    def link(key, href, label):
-        active = ' class="is-active" aria-current="page"' if key == section else ""
-        return f'<li><a href="{href}"{active}>{label}</a></li>'
+
+def current_hrefs(text):
+    """Link targets of the page's existing nav. The nav's *layout* is shared; where each
+    link points belongs to the page and is never changed by this script."""
+    m = (re.search(r"<!-- shared-nav:start -->(.*?)<!-- shared-nav:end -->", text, re.S)
+         or re.search(r'<nav class="site-nav[^"]*"[^>]*>(.*?)</nav>', text, re.S))
+    if not m:
+        return {}
+    block = m.group(1)
+    hrefs = {}
+    logo = re.search(r'<a[^>]*class="logo"[^>]*href="([^"]*)"|<a[^>]*href="([^"]*)"[^>]*class="logo"', block)
+    if logo:
+        hrefs["logo"] = logo.group(1) or logo.group(2)
+    for href, label in re.findall(r'<a[^>]*href="([^"]*)"[^>]*>\s*([A-Za-z]+)\s*</a>', block):
+        if label in LABELS:
+            hrefs.setdefault(label, href)
+    return hrefs
+
+
+def default_hrefs(site, rel):
+    """Only for a page that has no nav yet (e.g. a new page)."""
+    depth = "../" * rel.count("/")
+    if site == "www":
+        return {"logo": "/", "Arts": f"{depth}arts.html", "Career": CAREER,
+                "About": f"{depth}about.html", "Contact": f"{depth}contact.html"}
+    return {"logo": "/", "Arts": f"{WWW}/arts.html", "Career": "/",
+            "About": "/about/", "Contact": f"{WWW}/contact.html"}
+
+
+def nav_html(site, rel, hrefs):
+    """The one nav layout. Link targets come from `hrefs` (the page's own)."""
+    if site == "www":
+        section = ("Arts" if rel == "arts.html" or rel.startswith("art/") else
+                   "Career" if rel == "careers.html" or rel.startswith("career/") else
+                   "About" if rel == "about.html" else "Contact" if rel == "contact.html" else "")
+    else:
+        section = "About" if rel == "about/index.html" else "Career"
+
+    def link(label):
+        active = ' class="is-active" aria-current="page"' if label == section else ""
+        return f'<li><a href="{hrefs[label]}"{active}>{label}</a></li>'
 
     return ("<!-- shared-nav:start -->\n"
             '<nav class="site-nav" aria-label="Main navigation">'
-            f'<a class="logo" href="{home if site == "www" else WWW + "/"}">Zhixing Zhang</a>'
-            '<ul class="nav-links">'
-            + link("arts", arts, "Arts") + link("career", career, "Career")
-            + link("about", about, "About") + link("contact", contact, "Contact")
-            + '</ul>'
+            f'<a class="logo" href="{hrefs["logo"]}">Zhixing Zhang</a>'
+            '<ul class="nav-links">' + "".join(link(l) for l in LABELS) + '</ul>'
             f'<div class="nav-docs"><a class="nav-instagram" href="{INSTAGRAM}" target="_blank" rel="noopener" aria-label="Instagram">{INSTAGRAM_SVG}</a></div>'
             '<button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>'
             "</nav>\n<!-- shared-nav:end -->")
@@ -162,7 +188,8 @@ def sync(root, site):
         block = head_html(site, rel, text)
         text = re.sub(r"\s*</head>", lambda m: "\n" + block + "\n</head>", text, count=1)
         # Nav: replace the marked block, or the first <nav class="site-nav ...">…</nav>.
-        nav = nav_html(site, rel)
+        hrefs = {**default_hrefs(site, rel), **current_hrefs(original)}
+        nav = nav_html(site, rel, hrefs)
         if "<!-- shared-nav:start -->" in text:
             text = re.sub(r"<!-- shared-nav:start -->.*?<!-- shared-nav:end -->", lambda m: nav, text, count=1, flags=re.S)
         elif re.search(r'<nav class="site-nav[^"]*"', text):
