@@ -9,44 +9,6 @@ body.babel-page {
   color: var(--babel-ink);
 }
 
-/* The navigation stays visually embedded in both the film and the pale page. */
-body.babel-page .site-nav {
-  background: transparent !important;
-  color: #fff !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  mix-blend-mode: difference !important;
-}
-
-body.babel-page .site-nav .logo,
-body.babel-page .site-nav .nav-links a,
-body.babel-page .site-nav .nav-docs a,
-body.babel-page .site-nav .nav-separator {
-  color: #fff !important;
-  text-shadow: none !important;
-}
-
-/* Keep BABEL's navigation metrics identical to the site shell. */
-body.babel-page .site-nav .logo {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  font-size: 13px !important;
-  line-height: 1 !important;
-  letter-spacing: -0.02em !important;
-}
-body.babel-page .site-nav .nav-links a,
-body.babel-page .site-nav .nav-docs a {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  font-size: 11px !important;
-  line-height: 1 !important;
-  letter-spacing: 0 !important;
-}
-
-body.babel-page .site-nav .shell-mobile-toggle span {
-  background: #fff !important;
-}
-
 .babel-hero {
   height: 100svh;
   min-height: 620px;
@@ -1118,18 +1080,6 @@ body.babel-page {
   overflow-x: clip;
   overscroll-behavior-x: none;
 }
-
-body.babel-page .site-nav {
-  background: transparent !important;
-  color: rgb(22, 20, 19) !important;
-  mix-blend-mode: normal !important;
-}
-body.babel-page .site-nav .logo { color: #37332e !important; }
-body.babel-page .site-nav .nav-links a { color: rgba(22, 20, 19, .58) !important; }
-body.babel-page .site-nav .nav-links a:hover,
-body.babel-page .site-nav .nav-links a.is-active,
-body.babel-page .site-nav .nav-docs a { color: rgb(22, 20, 19) !important; }
-body.babel-page .site-nav .shell-mobile-toggle span { background: #37332e !important; }
 
 .translation-machine .language-track::before { inset: 11%; }
 .translation-machine .node-symbol {
