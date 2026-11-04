@@ -40,26 +40,28 @@
       border: 0;
     }
 
-    /* Email and Instagram sit together in the lower-left corner, same size, same sans as the nav. */
+    /* Email and Instagram sit together in the centre of the page, same size, same type as the nav. */
     .contact {
       position: fixed;
-      left: 30vw;
+      left: 50%;
       top: 50%;
-      transform: translateY(-50%);
+      transform: translate(-50%, -50%);
       margin: 0;
       padding: 0;
       list-style: none;
       display: grid;
-      gap: 14px;
+      justify-items: center;
+      gap: 16px;
     }
 
     .contact a {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-size: 13px;
+      font-size: 11px;
       line-height: 1;
-      letter-spacing: 0;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
       color: var(--ink);
       transition: color 180ms ease;
     }
@@ -68,10 +70,6 @@
     .contact a:focus-visible { color: var(--muted); outline: none; }
 
     .contact svg { width: 14px; height: 14px; flex: 0 0 14px; }
-
-    @media (max-width: 840px) {
-      .contact { left: 18px; bottom: 28px; }
-    }
   </style>
 <!-- shared-head:start -->
 <link rel="icon" href="/favicon.ico" sizes="48x48">
