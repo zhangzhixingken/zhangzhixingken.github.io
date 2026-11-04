@@ -1916,6 +1916,34 @@
     .image-media > .ai-render { position: absolute; inset: 0; }
     .orbit-card.is-portrait .image-media > .ai-render { position: relative; inset: auto; height: var(--portrait-image-h); }
     .orbit-card .ai-render-label { left: 9px; bottom: 8px; }
+
+    /* ── WebGL image layer (assets/js/orbit-gl.js) ─────────
+       When active, the DOM cards stay for hover/click/captions but draw nothing;
+       the images are drawn by the canvas behind them. */
+    .orbit-gl {
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+    }
+    .gl-quad { position: absolute; inset: 0; pointer-events: none; visibility: hidden; }
+    .gl-quad > i { position: absolute; width: 0; height: 0; }
+    .gl-quad > i:nth-child(1) { left: 0; top: 0; }
+    .gl-quad > i:nth-child(2) { left: 100%; top: 0; }
+    .gl-quad > i:nth-child(3) { left: 100%; top: 100%; }
+    .gl-quad > i:nth-child(4) { left: 0; top: 100%; }
+    body.gl-orbit .card-face,
+    body.gl-orbit .image-slot,
+    body.gl-orbit .orbit-card:hover .card-face { background: transparent !important; }
+    body.gl-orbit .image-slot img,
+    body.gl-orbit .orbit-card .ai-render-label { visibility: hidden !important; }
+    body.gl-orbit.is-ready .orbit-card { animation-name: orbitCardEnterGL; }
+    @keyframes orbitCardEnterGL {
+      0% { opacity: 0; }
+      100% { opacity: var(--card-opacity, 1); }
+    }
 </style>
   <link rel="stylesheet" href="assets/css/site-shell.css?v=20260818-gesture-v1" />
 <!-- shared-head:start -->
@@ -1995,6 +2023,7 @@
     </section>
 
 
+  <script src="assets/js/orbit-gl.js?v=20261104"></script>
   <script>
     const projects = [
       { title: "BABEL", year: "2024-2026", label: "ART", medium: "Interactive Installation", keywords: "Language / Translation", slug: "babel", image: "assets/images/orbit/babel-1.webp", href: "art/babel.html" },
@@ -2046,6 +2075,7 @@
     let activePointerId = null;
     let lastPointer = { x: 0, y: 0 };
     let layout = null;
+    let orbitGL = null;
     const ORBIT_DRAG_THRESHOLD_PX = 7;
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -2198,6 +2228,7 @@
       document.querySelectorAll(".orbit-card img").forEach((img) => img.sizes = `${Math.round(layout.cardW)}px`);
       updateOrbitTransform();
       updateDepthAndCenter();
+      if (orbitGL) orbitGL.relayout();
     }
 
     function updateOrbitTransform(mouseTilt = 0) {
@@ -2319,6 +2350,7 @@
       if (Math.abs(velocity) < 0.001) velocity = 0;
 
       updateOrbitTransform();
+      if (orbitGL) orbitGL.render();
       requestAnimationFrame(animate);
     }
 
@@ -2515,6 +2547,15 @@
 
     buildOrbit();
     applyLayout();
+    // WebGL draws the images (assets/js/orbit-gl.js); falls back to CSS images if unavailable.
+    orbitGL = window.initOrbitGL ? window.initOrbitGL({
+      cards,
+      projects: homeProjects,
+      scene,
+      getLayout: () => layout,
+      depthOf: (card) => Math.cos((rotation + step * cards.indexOf(card)) * Math.PI / 180),
+      onRender: (value) => { orbitGL = value; }
+    }) : null;
     requestAnimationFrame(animate);
     window.setTimeout(() => document.body.classList.add("is-ready"), 520);
 
